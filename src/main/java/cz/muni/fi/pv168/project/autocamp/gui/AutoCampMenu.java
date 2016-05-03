@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package cz.muni.fi.pv168.project.autocamp.gui;
+
+import cz.muni.fi.pv168.project.autocamp.Parcel;
+
 /**
  *
  * @author Administrator
@@ -16,6 +19,8 @@ public class AutoCampMenu extends javax.swing.JFrame {
     public AutoCampMenu() {
         initComponents();
         GuestsTableModel guestsModel = (GuestsTableModel) guestTable.getModel();
+        ParcelsTableModel parcelsModel = (ParcelsTableModel) parcelTable.getModel();
+        ReservationsTableModel reservationsModel = (ReservationsTableModel) reservationsTable.getModel();
     }
 
     /**
@@ -45,7 +50,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
         guestFilterField = new javax.swing.JTextField();
         guestFilterLabel = new javax.swing.JLabel();
         parcelsTab = new javax.swing.JPanel();
-        parcelScrollPane = new javax.swing.JScrollPane();
+        parcelTablePanel = new javax.swing.JScrollPane();
         parcelTable = new javax.swing.JTable();
         parcelCreateButton = new javax.swing.JButton();
         parcelLocationField = new javax.swing.JTextField();
@@ -59,12 +64,10 @@ public class AutoCampMenu extends javax.swing.JFrame {
         reservationsScrollPane = new javax.swing.JScrollPane();
         reservationsTable = new javax.swing.JTable();
         reservationsCreateButton = new javax.swing.JButton();
-        reservationsFromField = new javax.swing.JTextField();
         reservationsFromLabel = new javax.swing.JLabel();
         reservationsFilterField = new javax.swing.JTextField();
         reservationsFilterButton = new javax.swing.JButton();
         reservationsToLabel = new javax.swing.JLabel();
-        reservationsToField = new javax.swing.JTextField();
         reservationsParcelField = new javax.swing.JTextField();
         reservationsParcelLabel = new javax.swing.JLabel();
         reservationsGuestField = new javax.swing.JTextField();
@@ -207,7 +210,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
         autocampTabbedPane.addTab("Guests", guestsTab);
 
         parcelTable.setModel(new ParcelsTableModel());
-        parcelScrollPane.setViewportView(parcelTable);
+        parcelTablePanel.setViewportView(parcelTable);
 
         parcelCreateButton.setText("Create");
         parcelCreateButton.addActionListener(new java.awt.event.ActionListener() {
@@ -230,7 +233,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
         parcelsTab.setLayout(parcelsTabLayout);
         parcelsTabLayout.setHorizontalGroup(
             parcelsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(parcelScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 729, Short.MAX_VALUE)
+            .addComponent(parcelTablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 729, Short.MAX_VALUE)
             .addGroup(parcelsTabLayout.createSequentialGroup()
                 .addGroup(parcelsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(parcelFilterField)
@@ -273,99 +276,20 @@ public class AutoCampMenu extends javax.swing.JFrame {
                     .addComponent(parcelFilterField)
                     .addComponent(parcelFilterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(parcelScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE))
+                .addComponent(parcelTablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE))
         );
 
         autocampTabbedPane.addTab("Parcels", parcelsTab);
 
-        reservationsTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
-            },
-            new String [] {
-                "ID", "From", "To", "Guest", "Parcel", "Delete"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Long.class, java.lang.String.class, java.lang.String.class, java.lang.Long.class, java.lang.Long.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, true, true, true, true, true
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        reservationsTable.setModel(new ReservationsTableModel());
         reservationsScrollPane.setViewportView(reservationsTable);
 
         reservationsCreateButton.setText("Create");
+        reservationsCreateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reservationsCreateButtonActionPerformed(evt);
+            }
+        });
 
         reservationsFromLabel.setText("From:");
 
@@ -390,13 +314,9 @@ public class AutoCampMenu extends javax.swing.JFrame {
                             .addGroup(javax.swing.GroupLayout.Alignment.LEADING, ReservationsLayout.createSequentialGroup()
                                 .addContainerGap()
                                 .addComponent(reservationsFromLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(reservationsFromField, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addGap(158, 158, 158)
                                 .addComponent(reservationsToLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(reservationsToField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 134, Short.MAX_VALUE)))
+                                .addGap(0, 0, Short.MAX_VALUE)))
                         .addGap(18, 18, 18))
                     .addGroup(ReservationsLayout.createSequentialGroup()
                         .addContainerGap()
@@ -407,7 +327,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
                         .addComponent(reservationsParcelLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(reservationsParcelField, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 152, Short.MAX_VALUE)))
                 .addGroup(ReservationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(reservationsCreateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(reservationsFilterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -420,9 +340,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
                 .addGroup(ReservationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ReservationsLayout.createSequentialGroup()
                         .addGroup(ReservationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(reservationsFromField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(reservationsFromLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(reservationsToField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(reservationsToLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(ReservationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -460,7 +378,11 @@ public class AutoCampMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void parcelCreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parcelCreateButtonActionPerformed
-        // TODO add your handling code here:
+        Parcel parcel = new Parcel();
+        parcel.setLocation(parcelLocationField.getText());
+        parcel.setWithElectricity(parcelElectricityCheckBox.isSelected());
+        parcel.setWithWater(parcelWaterCheckBox.isSelected());
+        ((ParcelsTableModel) parcelTable.getModel()).createParcel(parcel);
     }//GEN-LAST:event_parcelCreateButtonActionPerformed
 
     private void guestsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guestsButtonMouseClicked
@@ -474,6 +396,10 @@ public class AutoCampMenu extends javax.swing.JFrame {
     private void reservationsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reservationsButtonMouseClicked
         autocampTabbedPane.setSelectedIndex(2);
     }//GEN-LAST:event_reservationsButtonMouseClicked
+
+    private void reservationsCreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reservationsCreateButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_reservationsCreateButtonActionPerformed
 
     private void guestFilterButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guestFilterButtonMouseClicked
         ((GuestsTableModel) guestTable.getModel()).filterTable(guestFilterField.getText());
@@ -542,8 +468,8 @@ public class AutoCampMenu extends javax.swing.JFrame {
     private javax.swing.JTextField parcelLocationField;
     private javax.swing.JLabel parcelLocationLabel;
     private javax.swing.JLabel parcelResourcesLabel;
-    private javax.swing.JScrollPane parcelScrollPane;
     private javax.swing.JTable parcelTable;
+    private javax.swing.JScrollPane parcelTablePanel;
     private javax.swing.JCheckBox parcelWaterCheckBox;
     private javax.swing.JButton parcelsButton;
     private javax.swing.JPanel parcelsTab;
@@ -551,7 +477,6 @@ public class AutoCampMenu extends javax.swing.JFrame {
     private javax.swing.JButton reservationsCreateButton;
     private javax.swing.JButton reservationsFilterButton;
     private javax.swing.JTextField reservationsFilterField;
-    private javax.swing.JTextField reservationsFromField;
     private javax.swing.JLabel reservationsFromLabel;
     private javax.swing.JTextField reservationsGuestField;
     private javax.swing.JLabel reservationsGuestLabel;
@@ -559,7 +484,6 @@ public class AutoCampMenu extends javax.swing.JFrame {
     private javax.swing.JLabel reservationsParcelLabel;
     private javax.swing.JScrollPane reservationsScrollPane;
     private javax.swing.JTable reservationsTable;
-    private javax.swing.JTextField reservationsToField;
     private javax.swing.JLabel reservationsToLabel;
     // End of variables declaration//GEN-END:variables
 }

@@ -7,9 +7,12 @@
 package cz.muni.fi.pv168.project.autocamp.gui;
 
 import cz.muni.fi.pv168.project.autocamp.Reservation;
+import cz.muni.fi.pv168.project.autocamp.ReservationManagerImpl;
 import java.util.ArrayList;
 import java.util.List;
+import javax.sql.DataSource;
 import javax.swing.table.AbstractTableModel;
+import org.apache.derby.jdbc.ClientDataSource;
 
 /**
  *
@@ -18,8 +21,22 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ReservationsTableModel extends AbstractTableModel {
 
-    private List<Reservation> reservations = new ArrayList<Reservation>();
+    private List<Reservation> reservations;
+    private DataSource dataSource;
 
+    public ReservationsTableModel() {
+        dataSource = prepareDataSource();
+        reservations = new ReservationManagerImpl(dataSource).findAllReservations();
+    }
+
+    private DataSource prepareDataSource() {
+        ClientDataSource ds = new ClientDataSource();
+        ds.setDatabaseName("pv168");
+        ds.setUser("pv168");
+        ds.setPassword("pv168");
+        return ds;
+    }
+    
     @Override
     public int getRowCount() {
         return reservations.size();
@@ -27,7 +44,7 @@ public class ReservationsTableModel extends AbstractTableModel {
 
     @Override
     public int getColumnCount() {
-        return 3;
+        return 5;
     }
 
     @Override
