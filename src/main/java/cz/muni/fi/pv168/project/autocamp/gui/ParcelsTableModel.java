@@ -7,9 +7,12 @@
 package cz.muni.fi.pv168.project.autocamp.gui;
 
 import cz.muni.fi.pv168.project.autocamp.Parcel;
+import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
 import java.util.ArrayList;
 import java.util.List;
+import javax.sql.DataSource;
 import javax.swing.table.AbstractTableModel;
+import org.apache.derby.jdbc.ClientDataSource;
 
 /**
  *
@@ -18,7 +21,21 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ParcelsTableModel extends AbstractTableModel {
 
-    private List<Parcel> parcels = new ArrayList<Parcel>();
+    private List<Parcel> parcels;
+    private DataSource dataSource;
+    
+    public ParcelsTableModel() {
+        dataSource = prepareDataSource();
+        parcels = new ParcelManagerImpl(dataSource).findAllParcels();
+    }
+
+    private DataSource prepareDataSource() {
+        ClientDataSource ds = new ClientDataSource();
+        ds.setDatabaseName("pv168");
+        ds.setUser("pv168");
+        ds.setPassword("pv168");
+        return ds;
+    }
 
     @Override
     public int getRowCount() {
@@ -46,4 +63,22 @@ public class ParcelsTableModel extends AbstractTableModel {
                 throw new IllegalArgumentException("columnIndex");
         }
     }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        switch (columnIndex) {
+            case 0:
+                return Long.class;
+            case 1:
+                return String.class;
+            case 2:
+                return Boolean.class;
+            case 3:
+                return Boolean.class;
+            default:
+                throw new IllegalArgumentException("columnIndex");
+        }
+    }
+    
+    
 }
