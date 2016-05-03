@@ -12,8 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.sql.DataSource;
 import javax.swing.table.AbstractTableModel;
+import org.apache.derby.jdbc.ClientDataSource;
 import org.apache.derby.jdbc.EmbeddedDataSource;
 
 /**
@@ -25,15 +27,12 @@ import org.apache.derby.jdbc.EmbeddedDataSource;
 public class GuestsTableModel extends AbstractTableModel {
 
     private List<Guest> guests = new ArrayList<Guest>();
+
     DataSource dataSource;
 
     public GuestsTableModel() {
-        try {
-            dataSource = prepareDataSource();
-            guests = new GuestManagerImpl(dataSource).findAllGuests();
-        } catch (SQLException ex) {
-            Logger.getLogger(GuestsTableModel.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        dataSource = prepareDataSource();
+        guests = new GuestManagerImpl(dataSource).findAllGuests();
     }
 
     @Override
@@ -88,12 +87,12 @@ public class GuestsTableModel extends AbstractTableModel {
                 throw new IllegalArgumentException("columnIndex");
         }
     }
-    
-    private static DataSource prepareDataSource() throws SQLException {
-        EmbeddedDataSource ds = new EmbeddedDataSource();
-        ds.setDatabaseName("jdbc:derby://localhost:1527/autocampDB");
-        ds.setUser("autocampManager");
-        ds.setPassword("autocampManager");
+
+    private DataSource prepareDataSource() {
+        ClientDataSource ds = new ClientDataSource();
+        ds.setDatabaseName("pv168");
+        ds.setUser("pv168");
+        ds.setPassword("pv168");
         return ds;
     }
 }
