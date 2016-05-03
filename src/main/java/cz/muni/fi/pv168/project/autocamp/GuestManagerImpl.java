@@ -1,8 +1,5 @@
 package cz.muni.fi.pv168.project.autocamp;
 
-import cz.muni.fi.pv168.project.autocamp.GuestManager;
-import cz.muni.fi.pv168.project.autocamp.Guest;
-import cz.muni.fi.pv168.project.autocamp.DBInteractionException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

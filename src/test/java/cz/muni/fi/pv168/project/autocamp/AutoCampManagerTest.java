@@ -1,16 +1,5 @@
-package cz.muni.fi.pv168.autocamp;
+package cz.muni.fi.pv168.project.autocamp;
 
-import cz.muni.fi.pv168.project.autocamp.AutoCampManager;
-import cz.muni.fi.pv168.project.autocamp.AutoCampManagerImpl;
-import cz.muni.fi.pv168.project.autocamp.Guest;
-import cz.muni.fi.pv168.project.autocamp.GuestManager;
-import cz.muni.fi.pv168.project.autocamp.GuestManagerImpl;
-import cz.muni.fi.pv168.project.autocamp.Parcel;
-import cz.muni.fi.pv168.project.autocamp.ParcelManager;
-import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
-import cz.muni.fi.pv168.project.autocamp.Reservation;
-import cz.muni.fi.pv168.project.autocamp.ReservationManager;
-import cz.muni.fi.pv168.project.autocamp.ReservationManagerImpl;
 import java.time.LocalDate;
 import java.sql.Connection;
 import java.sql.SQLException;
