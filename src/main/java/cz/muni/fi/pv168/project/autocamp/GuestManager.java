@@ -49,4 +49,11 @@ public interface GuestManager {
      */
     List<Guest> findAllGuests();
     
+    /**
+     * Find all guests with given parameter in their ID or name or phone number
+     *
+     * @param param filter
+     * @return list of guests whose attributes contain given param
+     */
+    List<Guest> filterGuestsWithGivenParamter(String param);
 }

@@ -158,5 +158,4 @@ public class AutoCampManagerImpl implements AutoCampManager {
             throw new DBInteractionException("Error while retrieving current guest of guest "+ guest, ex);
         }
    }
-
 }

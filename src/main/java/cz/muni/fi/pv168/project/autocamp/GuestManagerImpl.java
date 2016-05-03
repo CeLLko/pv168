@@ -185,6 +185,33 @@ public class GuestManagerImpl implements GuestManager {
         }
     }
 
+    @Override
+    public List<Guest> filterGuestsWithGivenParamter(String param) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement st = connection.prepareStatement(
+                        "SELECT id,fullname,phone FROM GUEST WHERE LOWER(fullname) LIKE LOWER(?) OR LOWER(phone) LIKE LOWER(?) OR id = ?")) {
+            
+            st.setString(1, "%"+param+"%");
+            st.setString(2, "%"+param+"%");
+            try{
+                st.setLong(3, Long.valueOf(param));
+            } catch(NumberFormatException ex){
+                st.setLong(3, Long.valueOf(-1));
+            }
+            
+            ResultSet rs = st.executeQuery();
+            
+            List<Guest> result = new ArrayList<>();
+            while (rs.next()) {
+                result.add(resultSetToGuest(rs));
+            }
+            return result;
+            
+        } catch (SQLException ex) {
+            throw new DBInteractionException("Error while retrieving all guests.", ex);
+        }
+    }
+
     public static Guest resultSetToGuest(ResultSet rs) throws SQLException{
         Guest guest = new Guest();
         
