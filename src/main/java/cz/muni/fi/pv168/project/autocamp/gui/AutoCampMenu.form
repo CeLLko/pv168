@@ -139,27 +139,28 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="guestTablePanel" alignment="0" pref="729" max="32767" attributes="0"/>
-                  <Group type="102" alignment="0" attributes="0">
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="guestPhoneLabel" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="guestFullNameLabel" alignment="0" pref="58" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="guestPhoneField" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="guestFullNameField" alignment="0" max="32767" attributes="0"/>
-                              </Group>
-                          </Group>
-                          <Component id="guestFilterField" alignment="0" max="32767" attributes="0"/>
+                  <Component id="guestTablePanel" pref="729" max="32767" attributes="0"/>
+                  <Group type="102" attributes="0">
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                          <Component id="guestPhoneLabel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="guestFullNameLabel" alignment="0" pref="58" max="32767" attributes="0"/>
+                          <Component id="guestFilterLabel" max="32767" attributes="0"/>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="1" attributes="0">
+                          <Group type="102" attributes="0">
+                              <Component id="guestFilterField" max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Component id="guestFilterButton" min="-2" pref="132" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="guestPhoneField" alignment="1" max="32767" attributes="0"/>
+                          <Component id="guestFullNameField" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="guestCreateButton" alignment="0" min="-2" pref="132" max="-2" attributes="0"/>
-                          <Component id="guestFilterButton" alignment="0" min="-2" pref="132" max="-2" attributes="0"/>
+                          <Component id="guestCreateButton" min="-2" pref="132" max="-2" attributes="0"/>
+                          <Component id="guestDeleteButton" alignment="1" min="-2" pref="132" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -184,9 +185,13 @@
                           <Component id="guestCreateButton" alignment="0" min="-2" pref="70" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="guestFilterField" alignment="0" max="32767" attributes="0"/>
-                          <Component id="guestFilterButton" alignment="0" min="-2" pref="32" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="3" attributes="0">
+                              <Component id="guestFilterButton" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                              <Component id="guestFilterField" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                              <Component id="guestFilterLabel" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                          </Group>
+                          <Component id="guestDeleteButton" alignment="0" min="-2" pref="32" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="guestTablePanel" pref="492" max="32767" attributes="0"/>
@@ -230,11 +235,27 @@
                 <Property name="text" type="java.lang.String" value="Phone:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="guestFilterField">
-            </Component>
             <Component class="javax.swing.JButton" name="guestFilterButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Filter"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="guestFilterButtonMouseClicked"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="guestDeleteButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Delete selected"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="guestDeleteButtonMouseClicked"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JTextField" name="guestFilterField">
+            </Component>
+            <Component class="javax.swing.JLabel" name="guestFilterLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Filter:"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -319,14 +340,8 @@
               <SubComponents>
                 <Component class="javax.swing.JTable" name="parcelTable">
                   <Properties>
-                    <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                      <Table columnCount="5" rowCount="63">
-                        <Column editable="false" title="ID" type="java.lang.Long"/>
-                        <Column editable="true" title="Location" type="java.lang.String"/>
-                        <Column editable="true" title="Electiricty" type="java.lang.Boolean"/>
-                        <Column editable="true" title="Water" type="java.lang.Boolean"/>
-                        <Column editable="true" title="Delete" type="java.lang.Object"/>
-                      </Table>
+                    <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
+                      <Connection code="new ParcelsTableModel()" type="code"/>
                     </Property>
                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                       <TableHeader reorderingAllowed="true" resizingAllowed="true"/>

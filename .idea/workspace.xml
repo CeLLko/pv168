@@ -3,7 +3,12 @@
   <component name="ChangeListManager">
     <list default="true" id="5a42d92f-8f2c-4967-a256-642ec2189a93" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/derby.log" afterPath="$PROJECT_DIR$/derby.log" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/AutoCampManager.java" afterPath="$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/AutoCampManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/AutoCampManagerImpl.java" afterPath="$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/AutoCampManagerImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/GuestManager.java" afterPath="$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/GuestManager.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/GuestManagerImpl.java" afterPath="$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/GuestManagerImpl.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/gui/AutoCampMenu.form" afterPath="$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/gui/AutoCampMenu.form" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/gui/AutoCampMenu.java" afterPath="$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/gui/AutoCampMenu.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/gui/GuestsTableModel.java" afterPath="$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/gui/GuestsTableModel.java" />
     </list>
     <ignored path="PV168.iws" />
@@ -31,30 +36,25 @@
       <file leaf-file-name="ReservationManagerImplTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/cz/muni/fi/pv168/project/autocamp/ReservationManagerImplTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="48">
+            <state relative-caret-position="-414">
               <caret line="228" column="22" selection-start-line="228" selection-start-column="22" selection-end-line="228" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AdventurerTableModel.class" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/../../PV168/brat/PV168/build/classes/GUI/AdventurerTableModel.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="141" column="49" selection-start-line="158" selection-start-column="96" selection-end-line="158" selection-end-column="100" />
               <folding>
-                <element signature="imports" expanded="true" />
+                <marker date="1462279397660" expanded="true" signature="2261:2488" placeholder="CREATE TABLE... PARCEL" />
+                <marker date="1462279397660" expanded="true" signature="2562:2746" placeholder="CREATE TABLE... GUEST" />
+                <marker date="1462279397660" expanded="true" signature="2820:3074" placeholder="CREATE TABLE... RESERVATION" />
+                <marker date="1462279397660" expanded="true" signature="3776:3798" placeholder="DROP TABLE R... " />
+                <marker date="1462279397660" expanded="true" signature="3859:3876" placeholder="DROP TABLE P... " />
+                <marker date="1462279397660" expanded="true" signature="3937:3953" placeholder="DROP TABLE G... " />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="DBTools.class" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/../../PV168/brat/PV168/build/classes/Support/DBTools.class">
+      <file leaf-file-name="MainWindow.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/../../PV168/brat/PV168/src/GUI/MainWindow.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="-2282">
+              <caret line="457" column="8" selection-start-line="457" selection-start-column="8" selection-end-line="457" selection-end-column="8" />
               <folding />
             </state>
           </provider>
@@ -129,6 +129,8 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scope" />
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -245,9 +247,7 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -734,7 +734,8 @@
       <workItem from="1462265584096" duration="1084000" />
       <workItem from="1462267422521" duration="2237000" />
       <workItem from="1462272477968" duration="213000" />
-      <workItem from="1462281532809" duration="182000" />
+      <workItem from="1462281532809" duration="512000" />
+      <workItem from="1462283507032" duration="4687000" />
     </task>
     <servers />
   </component>
@@ -753,11 +754,11 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="3716000" />
+    <option name="totallyTimeSpent" value="8733000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -812,35 +813,65 @@
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/src/test/java/cz/muni/fi/pv168/project/autocamp/ReservationManagerImplTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5324">
-          <caret line="276" column="12" selection-start-line="276" selection-start-column="12" selection-end-line="276" selection-end-column="12" />
-          <folding />
+        <state relative-caret-position="4532">
+          <caret line="228" column="22" selection-start-line="228" selection-start-column="22" selection-end-line="228" selection-end-column="22" />
+          <folding>
+            <marker date="1462279397660" expanded="true" signature="2261:2488" placeholder="CREATE TABLE... PARCEL" />
+            <marker date="1462279397660" expanded="true" signature="2562:2746" placeholder="CREATE TABLE... GUEST" />
+            <marker date="1462279397660" expanded="true" signature="2820:3074" placeholder="CREATE TABLE... RESERVATION" />
+            <marker date="1462279397660" expanded="true" signature="3776:3798" placeholder="DROP TABLE R... " />
+            <marker date="1462279397660" expanded="true" signature="3859:3876" placeholder="DROP TABLE P... " />
+            <marker date="1462279397660" expanded="true" signature="3937:3953" placeholder="DROP TABLE G... " />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/gui/MainMenu.java">
+    <entry file="file://$PROJECT_DIR$/../../PV168/brat/PV168/build/classes/GUI/AdventurerTableModel.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1694">
-          <caret line="88" column="51" selection-start-line="88" selection-start-column="51" selection-end-line="88" selection-end-column="51" />
+        <state relative-caret-position="2640">
+          <caret line="141" column="49" selection-start-line="158" selection-start-column="96" selection-end-line="158" selection-end-column="100" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/gui/MainMenu.form">
-      <provider selected="true" editor-type-id="ui-designer">
-        <state />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/gui/MainMenu.jfd">
-      <provider selected="true" editor-type-id="JFormDesigner">
-        <state paletteWidth="0" propertiesWidth="0" />
+    <entry file="file://$PROJECT_DIR$/../../PV168/brat/PV168/build/classes/Support/DBTools.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/cz/muni/fi/pv168/project/autocamp/ReservationManagerImplTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5324">
           <caret line="276" column="12" selection-start-line="276" selection-start-column="12" selection-end-line="276" selection-end-column="12" />
-          <folding />
+          <folding>
+            <marker date="1462279397660" expanded="true" signature="2261:2488" placeholder="CREATE TABLE... PARCEL" />
+            <marker date="1462279397660" expanded="true" signature="2562:2746" placeholder="CREATE TABLE... GUEST" />
+            <marker date="1462279397660" expanded="true" signature="2820:3074" placeholder="CREATE TABLE... RESERVATION" />
+            <marker date="1462279397660" expanded="true" signature="3776:3798" placeholder="DROP TABLE R... " />
+            <marker date="1462279397660" expanded="true" signature="3859:3876" placeholder="DROP TABLE P... " />
+            <marker date="1462279397660" expanded="true" signature="3937:3953" placeholder="DROP TABLE G... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/gui/MainMenu.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/gui/MainMenu.form" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/gui/MainMenu.jfd" />
+    <entry file="file://$PROJECT_DIR$/src/test/java/cz/muni/fi/pv168/project/autocamp/ReservationManagerImplTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="5324">
+          <caret line="276" column="12" selection-start-line="276" selection-start-column="12" selection-end-line="276" selection-end-column="12" />
+          <folding>
+            <marker date="1462279397660" expanded="true" signature="2261:2488" placeholder="CREATE TABLE... PARCEL" />
+            <marker date="1462279397660" expanded="true" signature="2562:2746" placeholder="CREATE TABLE... GUEST" />
+            <marker date="1462279397660" expanded="true" signature="2820:3074" placeholder="CREATE TABLE... RESERVATION" />
+            <marker date="1462279397660" expanded="true" signature="3776:3798" placeholder="DROP TABLE R... " />
+            <marker date="1462279397660" expanded="true" signature="3859:3876" placeholder="DROP TABLE P... " />
+            <marker date="1462279397660" expanded="true" signature="3937:3953" placeholder="DROP TABLE G... " />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -861,28 +892,41 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/gui/MainMenu.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/gui/MainMenu.form" />
     <entry file="file://$PROJECT_DIR$/src/main/java/cz/muni/fi/pv168/project/autocamp/gui/MainMenu.jfd" />
-    <entry file="file://$PROJECT_DIR$/src/test/java/cz/muni/fi/pv168/project/autocamp/ReservationManagerImplTest.java">
+    <entry file="file://$PROJECT_DIR$/../../PV168/brat/PV168/build/classes/Support/DBTools.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="48">
-          <caret line="228" column="22" selection-start-line="228" selection-start-column="22" selection-end-line="228" selection-end-column="22" />
+        <state relative-caret-position="-132">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../PV168/brat/PV168/build/classes/GUI/AdventurerTableModel.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="141" column="49" selection-start-line="158" selection-start-column="96" selection-end-line="158" selection-end-column="100" />
+        <state relative-caret-position="-1012">
+          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/cz/muni/fi/pv168/project/autocamp/ReservationManagerImplTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-414">
+          <caret line="228" column="22" selection-start-line="228" selection-start-column="22" selection-end-line="228" selection-end-column="22" />
           <folding>
-            <element signature="imports" expanded="true" />
+            <marker date="1462279397660" expanded="true" signature="2261:2488" placeholder="CREATE TABLE... PARCEL" />
+            <marker date="1462279397660" expanded="true" signature="2562:2746" placeholder="CREATE TABLE... GUEST" />
+            <marker date="1462279397660" expanded="true" signature="2820:3074" placeholder="CREATE TABLE... RESERVATION" />
+            <marker date="1462279397660" expanded="true" signature="3776:3798" placeholder="DROP TABLE R... " />
+            <marker date="1462279397660" expanded="true" signature="3859:3876" placeholder="DROP TABLE P... " />
+            <marker date="1462279397660" expanded="true" signature="3937:3953" placeholder="DROP TABLE G... " />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/../../PV168/brat/PV168/build/classes/Support/DBTools.class">
+    <entry file="file://$PROJECT_DIR$/../../PV168/brat/PV168/src/GUI/MainWindow.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        <state relative-caret-position="-2282">
+          <caret line="457" column="8" selection-start-line="457" selection-start-column="8" selection-end-line="457" selection-end-column="8" />
           <folding />
         </state>
       </provider>

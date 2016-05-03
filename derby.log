@@ -1,7 +1,46 @@
 ----------------------------------------------------------------
-Tue May 03 15:15:00 CEST 2016:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0154-76c1-ea03-000006992188 
-on database directory C:\Dokumenty\Skola\PV168-Maven\PV168\jdbc\pv168 with class loader sun.misc.Launcher$AppClassLoader@4e0e2f2a 
+Tue May 03 18:10:57 CEST 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0154-7762-fec8-0000067b6da0 
+on database directory memory:C:\Dokumenty\Skola\PV168-Maven\PV168\autocampmgr-test with class loader sun.misc.Launcher$AppClassLoader@75b84c92 
+Loaded from file:/C:/Users/Administrator/.m2/repository/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_65-b17
+user.dir=C:\Dokumenty\Skola\PV168-Maven\PV168
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Tue May 03 18:10:58 CEST 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance 00e08275-0154-7762-fec8-0000067b6da0 
+on database directory memory:C:\Dokumenty\Skola\PV168-Maven\PV168\guestmgr-test with class loader sun.misc.Launcher$AppClassLoader@75b84c92 
+Loaded from file:/C:/Users/Administrator/.m2/repository/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_65-b17
+user.dir=C:\Dokumenty\Skola\PV168-Maven\PV168
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Tue May 03 18:10:58 CEST 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance e6854407-0154-7762-fec8-0000067b6da0 
+on database directory memory:C:\Dokumenty\Skola\PV168-Maven\PV168\parcelmgr-test with class loader sun.misc.Launcher$AppClassLoader@75b84c92 
+Loaded from file:/C:/Users/Administrator/.m2/repository/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
+java.vendor=Oracle Corporation
+java.runtime.version=1.8.0_65-b17
+user.dir=C:\Dokumenty\Skola\PV168-Maven\PV168
+os.name=Windows 10
+os.arch=amd64
+os.version=10.0
+derby.system.home=null
+Database Class Loader started - derby.database.classpath=''
+----------------------------------------------------------------
+Tue May 03 18:10:58 CEST 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a0950598-0154-7762-fec8-0000067b6da0 
+on database directory memory:C:\Dokumenty\Skola\PV168-Maven\PV168\reservationmgr-test with class loader sun.misc.Launcher$AppClassLoader@75b84c92 
 Loaded from file:/C:/Users/Administrator/.m2/repository/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_65-b17
