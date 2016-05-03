@@ -184,7 +184,7 @@ public class ReservationManagerImplTest {
         manager.updateReservation(reservation);
     }
 
-    @Ignore @Test
+    @Test
     public void testUpdateReservationWithNonExistingId() {
         Reservation reservation = new Reservation(TODAY.minusDays(7), TODAY.plusDays(7), guest1, parcel1);
         manager.createReservation(reservation);
@@ -194,7 +194,7 @@ public class ReservationManagerImplTest {
         manager.updateReservation(reservation);
     }
 
-    @Ignore @Test
+    @Test
     public void testUpdateReservationWithNullFromDate() {
         Reservation reservation = new Reservation(TODAY.minusDays(7), TODAY.plusDays(7), guest1, parcel1);
         manager.createReservation(reservation);
@@ -264,7 +264,7 @@ public class ReservationManagerImplTest {
         manager.updateReservation(reservation);
     }
 
-    @Ignore @Test
+    @Test
     public void testDeleteReservationWithNonExistingId() {
         Reservation reservation = new Reservation(TODAY.minusDays(7), TODAY.plusDays(7), guest1, parcel1);
         manager.createReservation(reservation);
