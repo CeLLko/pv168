@@ -11,6 +11,7 @@ import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
+import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 import org.apache.derby.jdbc.ClientDataSource;
 
@@ -23,10 +24,12 @@ public class ParcelsTableModel extends AbstractTableModel {
 
     private List<Parcel> parcels;
     private DataSource dataSource;
+    private ParcelManagerImpl manager;
     
     public ParcelsTableModel() {
         dataSource = prepareDataSource();
-        parcels = new ParcelManagerImpl(dataSource).findAllParcels();
+        manager = new ParcelManagerImpl(dataSource);
+        parcels = manager.findAllParcels();
     }
 
     private DataSource prepareDataSource() {
@@ -80,5 +83,13 @@ public class ParcelsTableModel extends AbstractTableModel {
         }
     }
     
+    public void createParcel(Parcel parcel) {
+        manager.createParcel(parcel);
+        parcels = manager.findAllParcels(); 
+    }
     
+    public void deleteParcel(Parcel parcel) {
+        manager.deleteParcel(parcel);
+        parcels = manager.findAllParcels();
+    }
 }

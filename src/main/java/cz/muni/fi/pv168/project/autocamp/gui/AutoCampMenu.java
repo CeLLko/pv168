@@ -4,6 +4,9 @@
  * and open the template in the editor.
  */
 package cz.muni.fi.pv168.project.autocamp.gui;
+
+import cz.muni.fi.pv168.project.autocamp.Parcel;
+
 /**
  *
  * @author Administrator
@@ -263,6 +266,11 @@ public class AutoCampMenu extends javax.swing.JFrame {
         reservationsScrollPane.setViewportView(reservationsTable);
 
         reservationsCreateButton.setText("Create");
+        reservationsCreateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                reservationsCreateButtonActionPerformed(evt);
+            }
+        });
 
         reservationsFromLabel.setText("From:");
 
@@ -363,7 +371,11 @@ public class AutoCampMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void parcelCreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parcelCreateButtonActionPerformed
-        // TODO add your handling code here:
+        Parcel parcel = new Parcel();
+        parcel.setLocation(parcelLocationField.getText());
+        parcel.setWithElectricity(parcelElectricityCheckBox.isSelected());
+        parcel.setWithWater(parcelWaterCheckBox.isSelected());
+        ((ParcelsTableModel) parcelTable.getModel()).createParcel(parcel);
     }//GEN-LAST:event_parcelCreateButtonActionPerformed
 
     private void guestsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guestsButtonMouseClicked
@@ -377,6 +389,10 @@ public class AutoCampMenu extends javax.swing.JFrame {
     private void reservationsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reservationsButtonMouseClicked
         autocampTabbedPane.setSelectedIndex(2);
     }//GEN-LAST:event_reservationsButtonMouseClicked
+
+    private void reservationsCreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reservationsCreateButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_reservationsCreateButtonActionPerformed
 
     /**
      * @param args the command line arguments
