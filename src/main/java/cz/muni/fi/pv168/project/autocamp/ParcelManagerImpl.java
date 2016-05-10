@@ -217,4 +217,31 @@ public class ParcelManagerImpl implements ParcelManager {
         
         return parcel;
     }
+
+    @Override
+    public List<Parcel> filterParcels(String filter) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement st = connection.prepareStatement(
+                     "SELECT id,location,electricity,water FROM PARCEL WHERE LOWER(location) LIKE LOWER(?) OR id = ?")) {
+            
+            st.setString(1, "%"+filter+"%");
+            try {
+                st.setLong(2, Long.valueOf(filter));
+            } catch (NumberFormatException ex) {
+                st.setLong(2, (long) -1);
+            }
+            
+            ResultSet rs = st.executeQuery();
+            
+            List<Parcel> result = new ArrayList<>();
+            while (rs.next()) {
+                Parcel parcel = resultSetToParcel(rs);
+                result.add(parcel);
+            }
+            return result;
+            
+        } catch (SQLException ex) {
+            throw new DBInteractionException("Error while retrieving all parcels.", ex);
+        }
+    }
 }

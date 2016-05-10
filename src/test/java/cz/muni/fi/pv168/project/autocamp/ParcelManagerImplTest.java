@@ -24,6 +24,18 @@ public class ParcelManagerImplTest {
     private DataSource dataSource;
     private ParcelManager manager;
     
+    private Parcel correctParcel1;
+    private Parcel correctParcel2;
+    private Parcel correctParcel3;
+    private Parcel correctParcel4;
+    private Parcel correctParcel5;
+    private Parcel correctParcel6;
+    private Parcel correctParcel7;
+    private Parcel correctParcel8;
+    private Parcel incorrectParcel1;
+    private Parcel incorrectParcel2;
+    
+    
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
     
@@ -38,6 +50,17 @@ public class ParcelManagerImplTest {
                     + "water boolean)").executeUpdate();
         }
         manager = new ParcelManagerImpl(dataSource);
+        
+        correctParcel1 = new Parcel("a:1", false, false);
+        correctParcel2 = new Parcel("ab:1", true, true);
+        correctParcel3 = new Parcel("ba:1", true, true);
+        correctParcel4 = new Parcel("bab:1", false, false);
+        correctParcel5 = new Parcel("b:1", false, false);
+        correctParcel6 = new Parcel("b:12", true, true);
+        correctParcel7 = new Parcel("bb:21", true, true);
+        correctParcel8 = new Parcel("bab:212", false, false);
+        incorrectParcel1 = new Parcel("a12", false, true);
+        incorrectParcel2 = new Parcel(null, false, true);
     }
     
     @After
@@ -57,29 +80,26 @@ public class ParcelManagerImplTest {
     
     @Test
     public void testCreateParcel()  {
-        Parcel parcel = newParcel("a:12", false, true);
-        manager.createParcel(parcel);
+        manager.createParcel(correctParcel1);
         
-        Long id = parcel.getId();
+        Long id = correctParcel1.getId();
         assertThat(id).isNotNull();
         
         assertThat(manager.findParcelByID(id))
-                .isNotSameAs(parcel)
-                .isEqualToComparingFieldByField(parcel);
+                .isNotSameAs(correctParcel1)
+                .isEqualToComparingFieldByField(correctParcel1);
     }
     
     @Test
     public void testFindAllParcels() {
         assertThat(manager.findAllParcels()).isEmpty();
         
-        Parcel parcel_1 = newParcel("a:1", false, false);
-        Parcel parcel_2 = newParcel("b:2", true, true);
-        manager.createParcel(parcel_1);
-        manager.createParcel(parcel_2);
+        manager.createParcel(correctParcel1);
+        manager.createParcel(correctParcel2);
         
         assertThat(manager.findAllParcels())
                 .usingFieldByFieldElementComparator()
-                .containsOnly(parcel_1, parcel_2);
+                .containsOnly(correctParcel1, correctParcel2);
    }
     
     @Test (expected = IllegalArgumentException.class)
@@ -89,27 +109,22 @@ public class ParcelManagerImplTest {
     
     @Test
     public void testCreateParcelWithExistingId() {
-        Parcel parcel = newParcel("a:1", false, false);
-        parcel.setId(1L);
+        correctParcel1.setId(1L);
         
         expectedException.expect(IllegalArgumentException.class);
-        manager.createParcel(parcel);
+        manager.createParcel(correctParcel1);
     }
     
     @Test
     public void testCreateParcelWithWrongLocationFormat() {
-        Parcel parcel = newParcel("a1", false, false);
-        
         expectedException.expect(IllegalArgumentException.class);
-        manager.createParcel(parcel);
+        manager.createParcel(incorrectParcel1);
     }
     
     @Test
     public void testCreateParcelWithNullLocation() {
-        Parcel parcel = newParcel(null, false, false);
-        
         expectedException.expect(IllegalArgumentException.class);
-        manager.createParcel(parcel);
+        manager.createParcel(incorrectParcel2);
     }
     
     @Test
@@ -128,20 +143,18 @@ public class ParcelManagerImplTest {
     }
     
     private void testUpdate(Consumer<Parcel> updateOperation)  {
-        Parcel parcelToUpdate = newParcel("a:1", false, false);
-        Parcel otherParcel = newParcel("b:2", true, true);
-        manager.createParcel(otherParcel);
-        manager.createParcel(parcelToUpdate);
+        manager.createParcel(correctParcel1);
+        manager.createParcel(correctParcel2);
         
-        updateOperation.accept(parcelToUpdate);
-        manager.updateParcel(parcelToUpdate);
+        updateOperation.accept(correctParcel2);
+        manager.updateParcel(correctParcel2);
         
-        assertThat(manager.findParcelByID(parcelToUpdate.getId()))
-                .isEqualToComparingFieldByField(parcelToUpdate);
+        assertThat(manager.findParcelByID(correctParcel2.getId()))
+                .isEqualToComparingFieldByField(correctParcel2);
         
         //update should not affect other parcels
-        assertThat(manager.findParcelByID(otherParcel.getId()))
-                .isEqualToComparingFieldByField(otherParcel);
+        assertThat(manager.findParcelByID(correctParcel1.getId()))
+                .isEqualToComparingFieldByField(correctParcel1);
     }
     
     @Test (expected = IllegalArgumentException.class)
@@ -151,58 +164,52 @@ public class ParcelManagerImplTest {
     
     @Test
     public void testUpdateParcelWithNullId() {
-        Parcel parcel = newParcel("a:1", false, false);
-        manager.createParcel(parcel);
+        manager.createParcel(correctParcel1);
         
-        parcel.setId(null);
+        correctParcel1.setId(null);
         expectedException.expect(IllegalArgumentException.class);
-        manager.updateParcel(parcel);
+        manager.updateParcel(correctParcel1);
     }
     
     @Test
     public void testUpdateParcelWithNonExistingId() {
-        Parcel parcel = newParcel("a:1", false, false);
-        manager.createParcel(parcel);
+        manager.createParcel(correctParcel1);
         
-        parcel.setId(parcel.getId() + 1);
+        correctParcel1.setId(correctParcel1.getId() + 1);
         expectedException.expect(DBInteractionException.class);
-        manager.updateParcel(parcel);
+        manager.updateParcel(correctParcel1);
     }
     
     @Test
     public void testUpdateParcelWithNullLocation() {
-        Parcel parcel = newParcel("a:1", false, false);
-        manager.createParcel(parcel);
+        manager.createParcel(correctParcel1);
         
-        parcel.setLocation(null);
+        correctParcel1.setLocation(null);
         expectedException.expect(IllegalArgumentException.class);
-        manager.updateParcel(parcel);
+        manager.updateParcel(correctParcel1);
     }
     
     @Test
     public void testUpdateParcelWithWrongLocationFormat() {
-        Parcel parcel = newParcel("a:1", false, false);
-        manager.createParcel(parcel);
+        manager.createParcel(correctParcel1);
         
-        parcel.setLocation("a1");
+        correctParcel1.setLocation("a1");
         expectedException.expect(IllegalArgumentException.class);
-        manager.updateParcel(parcel);
+        manager.updateParcel(correctParcel1);
     }
     
     @Test
     public void testDeleteParcel() {
-        Parcel parcelToDelete = newParcel("a:1", false, false);
-        Parcel otherParcel = newParcel("b:2", true, true);
-        manager.createParcel(otherParcel);
-        manager.createParcel(parcelToDelete);
+        manager.createParcel(correctParcel2);
+        manager.createParcel(correctParcel1);
         
-        assertThat(manager.findParcelByID(parcelToDelete.getId())).isNotNull();
-        assertThat(manager.findParcelByID(otherParcel.getId())).isNotNull();
+        assertThat(manager.findParcelByID(correctParcel1.getId())).isNotNull();
+        assertThat(manager.findParcelByID(correctParcel2.getId())).isNotNull();
         
-        manager.deleteParcel(parcelToDelete);
+        manager.deleteParcel(correctParcel1);
         
-        assertThat(manager.findParcelByID(parcelToDelete.getId())).isNull();
-        assertThat(manager.findParcelByID(otherParcel.getId())).isNotNull();
+        assertThat(manager.findParcelByID(correctParcel1.getId())).isNull();
+        assertThat(manager.findParcelByID(correctParcel2.getId())).isNotNull();
     }
     
     @Test (expected = IllegalArgumentException.class)
@@ -212,31 +219,120 @@ public class ParcelManagerImplTest {
     
     @Test
     public void testDeleteParcelWithNullId() {
-        Parcel parcel = newParcel("a:1", false, false);
-        manager.createParcel(parcel);
+        manager.createParcel(correctParcel1);
         
-        parcel.setId(null);
+        correctParcel1.setId(null);
         expectedException.expect(IllegalArgumentException.class);
-        manager.updateParcel(parcel);
+        manager.updateParcel(correctParcel1);
     }
     
     @Test
     public void testDeleteParcelWithNonExistingId() {
-        Parcel parcel = newParcel("a:1", false, false);
-        manager.createParcel(parcel);
+        manager.createParcel(correctParcel1);
         
-        parcel.setId(parcel.getId()+1);
+        correctParcel1.setId(correctParcel1.getId()+1);
         expectedException.expect(DBInteractionException.class);
-        manager.updateParcel(parcel);
+        manager.updateParcel(correctParcel1);
     }
-
-    private static Parcel newParcel(String location, boolean withElectricity, boolean withWater) {
-        Parcel parcel = new Parcel();
+    
+    @Test
+    public void testFilterUsingEmptyString()  {
+        prepareTestFilter();
         
-        parcel.setLocation(location);
-        parcel.setWithElectricity(withElectricity);
-        parcel.setWithWater(withWater);
+        assertThat(manager.filterParcels(""))
+                .usingFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(correctParcel1, 
+                                           correctParcel2,
+                                           correctParcel3, 
+                                           correctParcel4,
+                                           correctParcel5, 
+                                           correctParcel6,
+                                           correctParcel7, 
+                                           correctParcel8);
+    }
+    
+    @Test
+    public void testFilterSingleLetter()  {
+        prepareTestFilter();
         
-        return parcel;
+        assertThat(manager.filterParcels("a"))
+                .usingFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(correctParcel1, 
+                                           correctParcel2,
+                                           correctParcel3, 
+                                           correctParcel4,
+                                           correctParcel8);
+    }
+    
+    @Test
+    public void testFilterSingleDigit()  {
+        prepareTestFilter();
+        
+        assertThat(manager.filterParcels("2"))
+                .usingFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(correctParcel2,  //id of the parcel is 2 -> filter should catch it
+                                           correctParcel6,
+                                           correctParcel7, 
+                                           correctParcel8);
+    }
+    
+    @Test
+    public void testFilterLetters()  {
+        prepareTestFilter();
+        
+        assertThat(manager.filterParcels("ab"))
+                .usingFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(correctParcel2,
+                                           correctParcel4,
+                                           correctParcel8);
+        
+        assertThat(manager.filterParcels("ba"))
+                .usingFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(correctParcel3,
+                                           correctParcel4,
+                                           correctParcel8);
+    }
+    
+    @Test
+    public void testFilterDigits()  {
+        prepareTestFilter();
+        
+        assertThat(manager.filterParcels("12"))
+                .usingFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(correctParcel6,
+                                           correctParcel8);
+        
+        assertThat(manager.filterParcels("21"))
+                .usingFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(correctParcel7,
+                                           correctParcel8);
+    }
+    
+    @Test
+    public void testFilterMiddle()  {
+        prepareTestFilter();
+        
+        assertThat(manager.filterParcels("b:1"))
+                .usingFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(correctParcel2,
+                                           correctParcel4,
+                                           correctParcel5,
+                                           correctParcel6);
+        
+        assertThat(manager.filterParcels("a:1"))
+                .usingFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(correctParcel1,
+                                           correctParcel3);
+    }
+    
+    private void prepareTestFilter() {
+        manager.createParcel(correctParcel1);
+        manager.createParcel(correctParcel2);
+        manager.createParcel(correctParcel3);
+        manager.createParcel(correctParcel4);
+        manager.createParcel(correctParcel5);
+        manager.createParcel(correctParcel6);
+        manager.createParcel(correctParcel7);
+        manager.createParcel(correctParcel8);
     }
 }

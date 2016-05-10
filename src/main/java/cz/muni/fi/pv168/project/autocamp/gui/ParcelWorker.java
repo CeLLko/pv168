@@ -6,8 +6,12 @@
 package cz.muni.fi.pv168.project.autocamp.gui;
 
 import cz.muni.fi.pv168.project.autocamp.Parcel;
+import java.io.InterruptedIOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.SwingWorker;
 
 /**
@@ -62,7 +66,29 @@ public class ParcelWorker {
         protected void done() {
             tableModel.setParcels(parcels);
         }
+    }
+    
+    public static class FilterParcelWorker extends SwingWorker<List<Parcel>, Void> {
+
+        private final ParcelsTableModel tableModel;
+        private final String filter;
+        private List<Parcel> parcels = new ArrayList<>();
         
+        public FilterParcelWorker(String filter, ParcelsTableModel tableModel) {
+            this.filter = filter;
+            this.tableModel = tableModel;
+        }
+        
+        @Override
+        protected List<Parcel> doInBackground() throws Exception {
+            parcels.addAll(tableModel.getManager().filterParcels(filter));
+            return parcels;
+        }
+
+        @Override
+        protected void done() {
+            tableModel.setParcels(this.parcels);
+        }
         
     }
 }

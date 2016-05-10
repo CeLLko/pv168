@@ -52,10 +52,10 @@ public class ParcelsTableModel extends AbstractTableModel {
 
     public void setParcels(List<Parcel> parcels) {
         clearParcelTable();
-        this.parcels.addAll(parcels);
-    }
-    
-    
+        parcels.stream().forEach((parcel) -> {
+            this.parcels.add(parcel);
+        });
+    }   
 
     @Override
     public int getRowCount() {
@@ -81,8 +81,7 @@ public class ParcelsTableModel extends AbstractTableModel {
             default:
                 throw new IllegalArgumentException("columnIndex");
         }
-    }   
-    
+    }    
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -122,14 +121,17 @@ public class ParcelsTableModel extends AbstractTableModel {
         createParcelWorker.execute();
     }
     
-     
-    
-    private void clearParcelTable() {
-        this.parcels.clear();
-    }
-    
     public void deleteParcel(List<Parcel> parcels) {
         DeleteParcelWorker deleteParcelWorker = new DeleteParcelWorker(parcels, ParcelsTableModel.this);
         deleteParcelWorker.execute();
+    }
+    
+    public void filterParcels(String filter) {
+        FilterParcelWorker filterParcelWorker = new FilterParcelWorker(filter, ParcelsTableModel.this);
+        filterParcelWorker.execute();
+    }
+             
+    private void clearParcelTable() {
+        this.parcels.clear();
     }
 }

@@ -146,6 +146,11 @@ public class AutoCampMenu extends javax.swing.JFrame {
         guestTablePanel.setViewportView(guestTable);
 
         guestCreateButton.setText("Create");
+        guestCreateButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                guestCreateButtonActionPerformed(evt);
+            }
+        });
 
         guestFullNameLabel.setText("Full name:");
 
@@ -236,6 +241,11 @@ public class AutoCampMenu extends javax.swing.JFrame {
         parcelLocationLabel.setText("Location:");
 
         parcelFilterButton.setText("Filter");
+        parcelFilterButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                parcelFilterButtonActionPerformed(evt);
+            }
+        });
 
         parcelElectricityCheckBox.setText("Electricity");
 
@@ -445,6 +455,14 @@ public class AutoCampMenu extends javax.swing.JFrame {
         }
         tableModel.deleteParcel(parcels);
     }//GEN-LAST:event_parcelDeleteButtonActionPerformed
+
+    private void parcelFilterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parcelFilterButtonActionPerformed
+        ((ParcelsTableModel) parcelTable.getModel()).filterParcels(parcelFilterField.getText());
+    }//GEN-LAST:event_parcelFilterButtonActionPerformed
+
+    private void guestCreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guestCreateButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_guestCreateButtonActionPerformed
 
     /**
      * @param args the command line arguments
