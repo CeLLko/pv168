@@ -8,16 +8,18 @@ package cz.muni.fi.pv168.project.autocamp.gui;
 
 import cz.muni.fi.pv168.project.autocamp.Parcel;
 import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
-import java.util.ArrayList;
+import cz.muni.fi.pv168.project.autocamp.gui.ParcelWorker.*;
+
 import java.util.List;
 import javax.sql.DataSource;
-import javax.swing.JButton;
 import javax.swing.table.AbstractTableModel;
 import org.apache.derby.jdbc.ClientDataSource;
 
 /**
  *
- * Adam Gdovin, 433305
+ * @author Adam Gdovin, 433305
+ * @author Lenka Smitalova, 410198
+ * 
  * @version May 3, 2016
  */
 public class ParcelsTableModel extends AbstractTableModel {
@@ -40,6 +42,21 @@ public class ParcelsTableModel extends AbstractTableModel {
         return ds;
     }
 
+    public ParcelManagerImpl getManager() {
+        return manager;
+    }
+
+    public List<Parcel> getParcels() {
+        return parcels;
+    }
+
+    public void setParcels(List<Parcel> parcels) {
+        clearParcelTable();
+        this.parcels.addAll(parcels);
+    }
+    
+    
+
     @Override
     public int getRowCount() {
         return parcels.size();
@@ -49,6 +66,23 @@ public class ParcelsTableModel extends AbstractTableModel {
     public int getColumnCount() {
         return 4;
     }
+
+    @Override
+    public String getColumnName(int columnIndex) {
+        switch (columnIndex) {
+            case 0:
+                return "ID";
+            case 1:
+                return "Location";
+            case 2:
+                return "Electricity";
+            case 3:
+                return "Water";
+            default:
+                throw new IllegalArgumentException("columnIndex");
+        }
+    }   
+    
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -84,12 +118,18 @@ public class ParcelsTableModel extends AbstractTableModel {
     }
     
     public void createParcel(Parcel parcel) {
-        manager.createParcel(parcel);
-        parcels = manager.findAllParcels(); 
+        CreateParcelWorker createParcelWorker = new CreateParcelWorker(parcel, ParcelsTableModel.this);
+        createParcelWorker.execute();
     }
     
-    public void deleteParcel(Parcel parcel) {
-        manager.deleteParcel(parcel);
-        parcels = manager.findAllParcels();
+     
+    
+    private void clearParcelTable() {
+        this.parcels.clear();
+    }
+    
+    public void deleteParcel(List<Parcel> parcels) {
+        DeleteParcelWorker deleteParcelWorker = new DeleteParcelWorker(parcels, ParcelsTableModel.this);
+        deleteParcelWorker.execute();
     }
 }

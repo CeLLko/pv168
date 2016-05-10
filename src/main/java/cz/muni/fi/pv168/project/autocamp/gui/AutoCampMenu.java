@@ -6,6 +6,8 @@
 package cz.muni.fi.pv168.project.autocamp.gui;
 
 import cz.muni.fi.pv168.project.autocamp.Parcel;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -60,6 +62,8 @@ public class AutoCampMenu extends javax.swing.JFrame {
         parcelElectricityCheckBox = new javax.swing.JCheckBox();
         parcelWaterCheckBox = new javax.swing.JCheckBox();
         parcelResourcesLabel = new javax.swing.JLabel();
+        parcelFilterLabel = new javax.swing.JLabel();
+        parcelDeleteButton = new javax.swing.JButton();
         Reservations = new javax.swing.JPanel();
         reservationsScrollPane = new javax.swing.JScrollPane();
         reservationsTable = new javax.swing.JTable();
@@ -116,7 +120,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
             .addGroup(leftPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(reservationsButton, javax.swing.GroupLayout.DEFAULT_SIZE, 177, Short.MAX_VALUE)
+                    .addComponent(reservationsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(guestsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(parcelsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
@@ -167,27 +171,31 @@ public class AutoCampMenu extends javax.swing.JFrame {
         guestsTab.setLayout(guestsTabLayout);
         guestsTabLayout.setHorizontalGroup(
             guestsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(guestTablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 829, Short.MAX_VALUE)
+            .addComponent(guestTablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 835, Short.MAX_VALUE)
             .addGroup(guestsTabLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(guestsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(guestPhoneLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(guestFullNameLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 58, Short.MAX_VALUE)
-                    .addComponent(guestFilterLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGroup(guestsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(guestsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(guestFilterLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(guestPhoneLabel, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 58, Short.MAX_VALUE))
+                    .addComponent(guestFullNameLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(guestsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(guestsTabLayout.createSequentialGroup()
-                        .addComponent(guestFilterField)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, guestsTabLayout.createSequentialGroup()
+                        .addComponent(guestFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(guestFilterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(guestFilterButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(guestPhoneField)
                     .addComponent(guestFullNameField, javax.swing.GroupLayout.Alignment.LEADING))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(guestsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(guestCreateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(guestDeleteButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(guestsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(guestDeleteButton, javax.swing.GroupLayout.DEFAULT_SIZE, 132, Short.MAX_VALUE)
+                    .addComponent(guestCreateButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
+
+        guestsTabLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {guestFilterLabel, guestPhoneLabel});
+
         guestsTabLayout.setVerticalGroup(
             guestsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, guestsTabLayout.createSequentialGroup()
@@ -202,7 +210,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
                             .addComponent(guestPhoneField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(guestPhoneLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addComponent(guestCreateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(guestsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(guestsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                         .addComponent(guestFilterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -210,7 +218,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
                         .addComponent(guestFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(guestDeleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(guestTablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE))
+                .addComponent(guestTablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 498, Short.MAX_VALUE))
         );
 
         autocampTabbedPane.addTab("Guests", guestsTab);
@@ -235,54 +243,68 @@ public class AutoCampMenu extends javax.swing.JFrame {
 
         parcelResourcesLabel.setText("Resources:");
 
+        parcelFilterLabel.setText("Filter:");
+
+        parcelDeleteButton.setText("Delete selected");
+        parcelDeleteButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                parcelDeleteButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout parcelsTabLayout = new javax.swing.GroupLayout(parcelsTab);
         parcelsTab.setLayout(parcelsTabLayout);
         parcelsTabLayout.setHorizontalGroup(
             parcelsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(parcelTablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 829, Short.MAX_VALUE)
+            .addComponent(parcelTablePanel)
             .addGroup(parcelsTabLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(parcelsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(parcelFilterField)
+                    .addComponent(parcelFilterLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(parcelLocationLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(parcelResourcesLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(parcelsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(parcelLocationField)
                     .addGroup(parcelsTabLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(parcelsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(parcelLocationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(parcelResourcesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(32, 32, 32)
-                        .addGroup(parcelsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(parcelsTabLayout.createSequentialGroup()
-                                .addComponent(parcelElectricityCheckBox)
-                                .addGap(18, 18, 18)
-                                .addComponent(parcelWaterCheckBox)
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addComponent(parcelLocationField))))
-                .addGap(18, 18, 18)
+                        .addGap(115, 115, 115)
+                        .addComponent(parcelElectricityCheckBox)
+                        .addGap(115, 115, 115)
+                        .addComponent(parcelWaterCheckBox))
+                    .addGroup(parcelsTabLayout.createSequentialGroup()
+                        .addComponent(parcelFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(parcelFilterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(parcelsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(parcelCreateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(parcelFilterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(parcelDeleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
         parcelsTabLayout.setVerticalGroup(
             parcelsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, parcelsTabLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(parcelsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(parcelsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(parcelCreateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(parcelsTabLayout.createSequentialGroup()
                         .addGroup(parcelsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(parcelLocationField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(parcelLocationLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(parcelsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(parcelResourcesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(parcelElectricityCheckBox)
-                            .addComponent(parcelWaterCheckBox)
-                            .addComponent(parcelResourcesLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(parcelCreateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(parcelsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(parcelFilterField)
-                    .addComponent(parcelFilterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(parcelTablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 492, Short.MAX_VALUE))
+                            .addComponent(parcelWaterCheckBox))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(parcelsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(parcelFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(parcelsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(parcelFilterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(parcelFilterField)
+                                .addComponent(parcelDeleteButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(parcelTablePanel, javax.swing.GroupLayout.DEFAULT_SIZE, 497, Short.MAX_VALUE))
         );
 
         autocampTabbedPane.addTab("Parcels", parcelsTab);
@@ -320,12 +342,11 @@ public class AutoCampMenu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(ReservationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ReservationsLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(ReservationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(ReservationsLayout.createSequentialGroup()
                                 .addComponent(reservationsFromLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(reservationsDateFromChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE))
+                                .addComponent(reservationsDateFromChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE))
                             .addGroup(ReservationsLayout.createSequentialGroup()
                                 .addComponent(reservationsGuestLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -336,10 +357,10 @@ public class AutoCampMenu extends javax.swing.JFrame {
                             .addComponent(reservationsParcelLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(ReservationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(reservationsDateToChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 237, Short.MAX_VALUE)
+                            .addComponent(reservationsDateToChooser, javax.swing.GroupLayout.DEFAULT_SIZE, 240, Short.MAX_VALUE)
                             .addGroup(ReservationsLayout.createSequentialGroup()
                                 .addGap(1, 1, 1)
-                                .addComponent(reservationsParcelField, javax.swing.GroupLayout.DEFAULT_SIZE, 236, Short.MAX_VALUE))))
+                                .addComponent(reservationsParcelField, javax.swing.GroupLayout.DEFAULT_SIZE, 239, Short.MAX_VALUE))))
                     .addComponent(reservationsFilterField))
                 .addGap(21, 21, 21)
                 .addGroup(ReservationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -353,11 +374,11 @@ public class AutoCampMenu extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(ReservationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(ReservationsLayout.createSequentialGroup()
-                        .addGroup(ReservationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(reservationsFromLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(ReservationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(reservationsToLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(reservationsDateToChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(reservationsDateFromChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(reservationsDateToChooser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(reservationsDateFromChooser, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(reservationsFromLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(ReservationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(reservationsGuestField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -386,6 +407,9 @@ public class AutoCampMenu extends javax.swing.JFrame {
         parcel.setWithElectricity(parcelElectricityCheckBox.isSelected());
         parcel.setWithWater(parcelWaterCheckBox.isSelected());
         ((ParcelsTableModel) parcelTable.getModel()).createParcel(parcel);
+        parcelLocationField.setText(null);
+        parcelElectricityCheckBox.setSelected(false);
+        parcelWaterCheckBox.setSelected(false);
     }//GEN-LAST:event_parcelCreateButtonActionPerformed
 
     private void guestsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guestsButtonMouseClicked
@@ -411,6 +435,16 @@ public class AutoCampMenu extends javax.swing.JFrame {
     private void guestDeleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guestDeleteButtonMouseClicked
         // TODO add your handling code here:
     }//GEN-LAST:event_guestDeleteButtonMouseClicked
+
+    private void parcelDeleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parcelDeleteButtonActionPerformed
+        int[] rows = parcelTable.getSelectedRows();
+        ParcelsTableModel tableModel = (ParcelsTableModel) parcelTable.getModel();
+        List<Parcel> parcels = new ArrayList<>();
+        for (int i = 0; i < rows.length; i++) {
+            parcels.add(tableModel.getParcels().get(rows[i]));
+        }
+        tableModel.deleteParcel(parcels);
+    }//GEN-LAST:event_parcelDeleteButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -465,9 +499,11 @@ public class AutoCampMenu extends javax.swing.JFrame {
     private javax.swing.JPanel guestsTab;
     private javax.swing.JPanel leftPanel;
     private javax.swing.JButton parcelCreateButton;
+    private javax.swing.JButton parcelDeleteButton;
     private javax.swing.JCheckBox parcelElectricityCheckBox;
     private javax.swing.JButton parcelFilterButton;
     private javax.swing.JTextField parcelFilterField;
+    private javax.swing.JLabel parcelFilterLabel;
     private javax.swing.JTextField parcelLocationField;
     private javax.swing.JLabel parcelLocationLabel;
     private javax.swing.JLabel parcelResourcesLabel;

@@ -40,7 +40,7 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="reservationsButton" alignment="0" pref="177" max="32767" attributes="0"/>
+                      <Component id="reservationsButton" alignment="0" max="32767" attributes="0"/>
                       <Component id="guestsButton" alignment="0" max="32767" attributes="0"/>
                       <Component id="parcelsButton" alignment="0" max="32767" attributes="0"/>
                   </Group>
@@ -127,28 +127,30 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="guestTablePanel" pref="829" max="32767" attributes="0"/>
+                  <Component id="guestTablePanel" pref="835" max="32767" attributes="0"/>
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                          <Component id="guestPhoneLabel" alignment="0" max="32767" attributes="0"/>
-                          <Component id="guestFullNameLabel" alignment="0" pref="58" max="32767" attributes="0"/>
-                          <Component id="guestFilterLabel" max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Group type="103" groupAlignment="1" max="-2" attributes="0">
+                              <Component id="guestFilterLabel" linkSize="2" max="32767" attributes="0"/>
+                              <Component id="guestPhoneLabel" linkSize="2" alignment="0" pref="58" max="32767" attributes="0"/>
+                          </Group>
+                          <Component id="guestFullNameLabel" min="-2" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
-                          <Group type="102" attributes="0">
-                              <Component id="guestFilterField" max="32767" attributes="0"/>
+                          <Group type="102" alignment="0" attributes="0">
+                              <Component id="guestFilterField" min="-2" pref="464" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Component id="guestFilterButton" min="-2" pref="132" max="-2" attributes="0"/>
+                              <Component id="guestFilterButton" max="32767" attributes="0"/>
                           </Group>
                           <Component id="guestPhoneField" alignment="1" max="32767" attributes="0"/>
                           <Component id="guestFullNameField" alignment="0" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="guestCreateButton" min="-2" pref="132" max="-2" attributes="0"/>
-                          <Component id="guestDeleteButton" alignment="1" min="-2" pref="132" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                          <Component id="guestDeleteButton" pref="132" max="32767" attributes="0"/>
+                          <Component id="guestCreateButton" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -172,7 +174,7 @@
                           </Group>
                           <Component id="guestCreateButton" alignment="0" min="-2" pref="70" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                      <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="103" groupAlignment="3" attributes="0">
                               <Component id="guestFilterButton" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
@@ -182,7 +184,7 @@
                           <Component id="guestDeleteButton" alignment="0" min="-2" pref="32" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="guestTablePanel" pref="492" max="32767" attributes="0"/>
+                      <Component id="guestTablePanel" pref="498" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -260,34 +262,35 @@
           <Layout>
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
-                  <Component id="parcelTablePanel" alignment="0" pref="829" max="32767" attributes="0"/>
+                  <Component id="parcelTablePanel" alignment="0" max="32767" attributes="0"/>
                   <Group type="102" alignment="0" attributes="0">
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="parcelFilterField" alignment="0" max="32767" attributes="0"/>
+                          <Component id="parcelFilterLabel" max="32767" attributes="0"/>
+                          <Component id="parcelLocationLabel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="parcelResourcesLabel" alignment="0" max="32767" attributes="0"/>
+                      </Group>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="parcelLocationField" alignment="0" max="32767" attributes="0"/>
+                          <Group type="102" attributes="0">
+                              <EmptySpace min="-2" pref="115" max="-2" attributes="0"/>
+                              <Component id="parcelElectricityCheckBox" min="-2" max="-2" attributes="0"/>
+                              <EmptySpace min="-2" pref="115" max="-2" attributes="0"/>
+                              <Component id="parcelWaterCheckBox" min="-2" max="-2" attributes="0"/>
+                          </Group>
                           <Group type="102" alignment="0" attributes="0">
+                              <Component id="parcelFilterField" min="-2" pref="464" max="-2" attributes="0"/>
                               <EmptySpace max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="parcelLocationLabel" alignment="0" min="-2" pref="58" max="-2" attributes="0"/>
-                                  <Component id="parcelResourcesLabel" alignment="0" min="-2" pref="58" max="-2" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" pref="32" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="parcelElectricityCheckBox" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="parcelWaterCheckBox" min="-2" max="-2" attributes="0"/>
-                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                                  </Group>
-                                  <Component id="parcelLocationField" alignment="0" max="32767" attributes="0"/>
-                              </Group>
+                              <Component id="parcelFilterButton" min="-2" pref="132" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="parcelCreateButton" alignment="0" min="-2" pref="132" max="-2" attributes="0"/>
-                          <Component id="parcelFilterButton" alignment="0" min="-2" pref="132" max="-2" attributes="0"/>
+                          <Component id="parcelCreateButton" min="-2" pref="132" max="-2" attributes="0"/>
+                          <Component id="parcelDeleteButton" min="-2" pref="132" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace max="-2" attributes="0"/>
+                      <EmptySpace min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -295,28 +298,32 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="parcelCreateButton" min="-2" pref="70" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <Group type="103" groupAlignment="3" attributes="0">
                                   <Component id="parcelLocationField" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                                   <Component id="parcelLocationLabel" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace max="32767" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="parcelResourcesLabel" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                                   <Component id="parcelElectricityCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
                                   <Component id="parcelWaterCheckBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  <Component id="parcelResourcesLabel" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="3" attributes="0">
+                                  <Component id="parcelFilterLabel" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                                  <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                                      <Component id="parcelFilterButton" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                                      <Component id="parcelFilterField" alignment="3" max="32767" attributes="0"/>
+                                      <Component id="parcelDeleteButton" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
-                          <Component id="parcelCreateButton" alignment="0" min="-2" pref="70" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="parcelFilterField" alignment="0" max="32767" attributes="0"/>
-                          <Component id="parcelFilterButton" alignment="0" min="-2" pref="32" max="-2" attributes="0"/>
-                      </Group>
-                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                      <Component id="parcelTablePanel" pref="492" max="32767" attributes="0"/>
+                      <EmptySpace type="unrelated" max="32767" attributes="0"/>
+                      <Component id="parcelTablePanel" pref="497" max="32767" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -375,6 +382,19 @@
                 <Property name="text" type="java.lang.String" value="Resources:"/>
               </Properties>
             </Component>
+            <Component class="javax.swing.JLabel" name="parcelFilterLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Filter:"/>
+              </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="parcelDeleteButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Delete selected"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="parcelDeleteButtonActionPerformed"/>
+              </Events>
+            </Component>
           </SubComponents>
         </Container>
         <Container class="javax.swing.JPanel" name="Reservations">
@@ -394,12 +414,11 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="reservationsFromLabel" min="-2" pref="58" max="-2" attributes="0"/>
                                       <EmptySpace min="-2" max="-2" attributes="0"/>
-                                      <Component id="reservationsDateFromChooser" pref="236" max="32767" attributes="0"/>
+                                      <Component id="reservationsDateFromChooser" pref="239" max="32767" attributes="0"/>
                                   </Group>
                                   <Group type="102" alignment="0" attributes="0">
                                       <Component id="reservationsGuestLabel" min="-2" pref="58" max="-2" attributes="0"/>
@@ -414,10 +433,10 @@
                               </Group>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="reservationsDateToChooser" pref="237" max="32767" attributes="0"/>
+                                  <Component id="reservationsDateToChooser" pref="240" max="32767" attributes="0"/>
                                   <Group type="102" alignment="0" attributes="0">
                                       <EmptySpace min="-2" pref="1" max="-2" attributes="0"/>
-                                      <Component id="reservationsParcelField" pref="236" max="32767" attributes="0"/>
+                                      <Component id="reservationsParcelField" pref="239" max="32767" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -438,11 +457,11 @@
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Group type="102" alignment="0" attributes="0">
-                              <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="reservationsFromLabel" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="reservationsToLabel" alignment="0" min="-2" pref="32" max="-2" attributes="0"/>
                                   <Component id="reservationsDateToChooser" alignment="1" min="-2" pref="32" max="-2" attributes="0"/>
                                   <Component id="reservationsDateFromChooser" alignment="1" min="-2" pref="32" max="-2" attributes="0"/>
+                                  <Component id="reservationsFromLabel" min="-2" pref="32" max="-2" attributes="0"/>
                               </Group>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
