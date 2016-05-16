@@ -91,13 +91,13 @@ public class ReservationsTableModel extends AbstractTableModel {
             case 0:
                 return "ID";
             case 1:
-                return "From";
+                return LocalizationWizard.getString("From");
             case 2:
-                return "To";
+                return LocalizationWizard.getString("To");
             case 3:
-                return "Parcel";
+                return LocalizationWizard.getString("Parcel");
             case 4:
-                return "Guest";
+                return LocalizationWizard.getString("Guest");
             default:
                 throw new IllegalArgumentException("columnIndex");
         }

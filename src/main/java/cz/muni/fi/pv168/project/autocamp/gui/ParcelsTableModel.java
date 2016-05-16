@@ -73,11 +73,11 @@ public class ParcelsTableModel extends AbstractTableModel {
             case 0:
                 return "ID";
             case 1:
-                return "Location";
+                return LocalizationWizard.getString("Location");
             case 2:
-                return "Electricity";
+                return LocalizationWizard.getString("Electricity");
             case 3:
-                return "Water";
+                return LocalizationWizard.getString("Water");
             default:
                 throw new IllegalArgumentException("columnIndex");
         }

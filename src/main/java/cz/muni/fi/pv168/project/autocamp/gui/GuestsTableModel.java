@@ -8,7 +8,6 @@ package cz.muni.fi.pv168.project.autocamp.gui;
 import cz.muni.fi.pv168.project.autocamp.Guest;
 import cz.muni.fi.pv168.project.autocamp.GuestManager;
 import cz.muni.fi.pv168.project.autocamp.GuestManagerImpl;
-import java.util.ArrayList;
 
 import java.util.List;
 import javax.sql.DataSource;
@@ -88,9 +87,9 @@ public class GuestsTableModel extends AbstractTableModel {
             case 0:
                 return "ID";
             case 1:
-                return "Full Name";
+                return LocalizationWizard.getString("Full_name");
             case 2:
-                return "Phone Number";
+                return LocalizationWizard.getString("Phone_number");
             default:
                 throw new IllegalArgumentException("columnIndex");
         }

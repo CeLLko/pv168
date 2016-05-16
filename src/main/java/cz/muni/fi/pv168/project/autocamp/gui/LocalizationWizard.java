@@ -5,7 +5,7 @@
  */
 
 package cz.muni.fi.pv168.project.autocamp.gui;
-
+    
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -15,7 +15,7 @@ import java.util.ResourceBundle;
  * @version May 16, 2016
  */
 public class LocalizationWizard {
-    private static final String DEFAULT_SETTINGS = "Main/resources/default_locales_"+Locale.getDefault().toString();;
+    private static final String DEFAULT_SETTINGS = "default_locales_"+Locale.getDefault().toString();
 
     static public String getString(String key) {
         return ResourceBundle.getBundle(DEFAULT_SETTINGS).getString(key);
