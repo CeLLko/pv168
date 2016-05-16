@@ -12,12 +12,26 @@ import cz.muni.fi.pv168.project.autocamp.Reservation;
 import cz.muni.fi.pv168.project.autocamp.ReservationManager;
 import cz.muni.fi.pv168.project.autocamp.ReservationManagerImpl;
 import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 import javax.sql.DataSource;
+import javax.swing.AbstractCellEditor;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellEditor;
 import org.apache.derby.jdbc.ClientDataSource;
 
 /**
@@ -61,6 +75,24 @@ public class ReservationsTableModel extends AbstractTableModel {
     @Override
     public int getColumnCount() {
         return 5;
+    }
+
+    @Override
+    public Class<?> getColumnClass(int columnIndex) {
+        switch (columnIndex) {
+            case 0:
+                return Long.class;
+            case 1:
+                return Date.class;
+            case 2:
+                return Date.class;
+            case 3:
+                return new TextFieldCell().getClass();
+            case 4:
+                return new TextFieldCell().getClass();
+            default:
+                throw new IllegalArgumentException("columnIndex");
+        }
     }
 
     @Override
@@ -151,34 +183,36 @@ public class ReservationsTableModel extends AbstractTableModel {
         this.fireTableDataChanged();
     }
 
-    /*
-    public void createReservation(String fullName, String phone) {
-        CreateReservationWorker createReservationWorker = new CreateReservationWorker(fullName, phone, ReservationsTableModel.this);
+    public void createReservation(Date from, Date to, Long guest, Long parcel) {
+        CreateReservationWorker createReservationWorker = new CreateReservationWorker(from, to, guest, parcel, ReservationsTableModel.this);
         createReservationWorker.execute();
-    }*/
+    }
 
- /*private class CreateReservationWorker extends SwingWorker<List<Reservation>, Void> {
+    private class CreateReservationWorker extends SwingWorker<Reservation, Void> {
 
         private final Reservation reservation;
-        private final ReservationsTableModel tableModel;
-        public static List<Reservation> reservations;
 
-        public CreateReservationWorker(String dateFrom, String dateTo, ReservationsTableModel tableModel) {
-            this.reservation = new Reservation(, );
-            this.tableModel = tableModel;
+        public CreateReservationWorker(Date from, Date to, Long guestId, Long parcelId, ReservationsTableModel tableModel) {
+            Guest guest = new GuestManagerImpl(dataSource).findGuestByID(guestId);
+            Parcel parcel = new ParcelManagerImpl(dataSource).findParcelByID(parcelId);
+            LocalDate fromLocal = from.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            LocalDate toLocal = to.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+            this.reservation = new Reservation(fromLocal, toLocal, guest, parcel);
         }
 
         @Override
-        protected List<Reservation> doInBackground() throws Exception {
-            tableModel.getManager().createReservation(reservation);
-            reservations = tableModel.getManager().findAllReservations();
-            return reservations;
+        protected Reservation doInBackground() throws Exception {
+            ReservationsTableModel.this.manager.createReservation(reservation);
+            ReservationsTableModel.this.reservations.add(reservation);
+            return reservation;
         }
 
         protected void done() {
-            tableModel.setReservations(reservations);
+            int row = ReservationsTableModel.this.reservations.size() - 1;
+            ReservationsTableModel.this.fireTableRowsInserted(row, row);
         }
-    }*/
+    }
+
     public void updateReservation(Reservation reservation, int rowIndex, int columnIndex) {
         UpdateReservationWorker updateReservationWorker = new UpdateReservationWorker(reservation, rowIndex, columnIndex, ReservationsTableModel.this);
         updateReservationWorker.execute();
@@ -260,6 +294,56 @@ public class ReservationsTableModel extends AbstractTableModel {
         @Override
         protected void done() {
             ReservationsTableModel.this.fireTableDataChanged();
+        }
+    }
+
+    private class DialogStringEditor extends AbstractCellEditor
+            implements TableCellEditor,
+            ActionListener {
+
+        String newInput;
+        String oldValue;
+        JButton button;
+        JTextField field;
+        static final String EDIT = "edit";
+
+        public DialogStringEditor() {
+            button = new JButton();
+            button.setBackground(Color.WHITE);
+            button.setActionCommand(EDIT);
+            button.addActionListener(this);
+            button.setBorderPainted(false);
+            field = new JTextField();
+        }
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            if (EDIT.equals(e.getActionCommand())) {
+                ParcelSelectPopup parcelPopup = new ParcelSelectPopup(this, true,
+                        reservationsDateFromChooser.getDate(),
+                        reservationsDateToChooser.getDate(),
+                        field);
+                if (newInput == null) {
+                    newInput = oldValue;
+                }
+                fireEditingStopped();
+            }
+        }
+
+        @Override
+        public Object getCellEditorValue() {
+            return newInput;
+        }
+
+        @Override
+        public Component getTableCellEditorComponent(JTable table,
+                Object value,
+                boolean isSelected,
+                int row,
+                int column) {
+            newInput = (String) value;
+            oldValue = (String) value;
+            return button;
         }
     }
 }
