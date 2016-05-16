@@ -22,7 +22,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
         initComponents();
         GuestsTableModel guestsModel = (GuestsTableModel) guestTable.getModel();
         ParcelsTableModel parcelsModel = (ParcelsTableModel) parcelTable.getModel();
-        ReservationsTableModel reservationsModel = (ReservationsTableModel) reservationsTable.getModel();
+        ReservationsTableModel reservationsModel = (ReservationsTableModel) reservationTable.getModel();
     }
 
     /**
@@ -73,7 +73,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
         parcelDeleteButton = new javax.swing.JButton();
         Reservations = new javax.swing.JPanel();
         reservationsScrollPane = new javax.swing.JScrollPane();
-        reservationsTable = new javax.swing.JTable();
+        reservationTable = new javax.swing.JTable();
         reservationsCreateButton = new javax.swing.JButton();
         reservationsFromLabel = new javax.swing.JLabel();
         reservationsToLabel = new javax.swing.JLabel();
@@ -404,8 +404,8 @@ public class AutoCampMenu extends javax.swing.JFrame {
 
         autocampTabbedPane.addTab("Parcels", parcelsTab);
 
-        reservationsTable.setModel(new ReservationsTableModel());
-        reservationsScrollPane.setViewportView(reservationsTable);
+        reservationTable.setModel(new ReservationsTableModel());
+        reservationsScrollPane.setViewportView(reservationTable);
 
         reservationsCreateButton.setText("Create");
         reservationsCreateButton.addActionListener(new java.awt.event.ActionListener() {
@@ -569,7 +569,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_reservationDeleteButtonMouseClicked
 
     private void reservationFilterButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reservationFilterButtonMouseClicked
-        // TODO add your handling code here:
+        ((ReservationsTableModel) reservationTable.getModel()).filterReservations(reservationFilterField.getText());
     }//GEN-LAST:event_reservationFilterButtonMouseClicked
 
     private void reservationsCreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reservationsCreateButtonActionPerformed
@@ -677,13 +677,13 @@ public class AutoCampMenu extends javax.swing.JFrame {
     private javax.swing.JLabel reservationGuestLabel;
     private javax.swing.JTextField reservationParcelField;
     private javax.swing.JLabel reservationParcelLabel;
+    private javax.swing.JTable reservationTable;
     private javax.swing.JButton reservationsButton;
     private javax.swing.JButton reservationsCreateButton;
     private com.toedter.calendar.JDateChooser reservationsDateFromChooser;
     private com.toedter.calendar.JDateChooser reservationsDateToChooser;
     private javax.swing.JLabel reservationsFromLabel;
     private javax.swing.JScrollPane reservationsScrollPane;
-    private javax.swing.JTable reservationsTable;
     private javax.swing.JLabel reservationsToLabel;
     // End of variables declaration//GEN-END:variables
 }

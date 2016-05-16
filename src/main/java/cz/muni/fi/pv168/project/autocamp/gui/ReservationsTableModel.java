@@ -77,9 +77,27 @@ public class ReservationsTableModel extends AbstractTableModel {
             case 2:
                 return reservation.getTo();
             case 3:
-                return reservation.getGuest().getFullName();
-            case 4:
                 return reservation.getParcel().getLocation();
+            case 4:
+                return reservation.getGuest().getFullName();
+            default:
+                throw new IllegalArgumentException("columnIndex");
+        }
+    }
+    
+    @Override
+    public String getColumnName(int columnIndex) {
+        switch (columnIndex) {
+            case 0:
+                return "ID";
+            case 1:
+                return "From";
+            case 2:
+                return "To";
+            case 3:
+                return "Parcel";
+            case 4:
+                return "Guest";
             default:
                 throw new IllegalArgumentException("columnIndex");
         }

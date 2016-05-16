@@ -211,10 +211,9 @@ public class ReservationManagerImpl implements ReservationManager {
     @Override
     public List<Reservation> filterReservations(String filter) {
         try (Connection connection = dataSource.getConnection();
-             PreparedStatement st = connection.prepareStatement(
-                     "SELECT id, dateFrom, dateTo, parcel.location, guest.fullname "
-                             + "FROM (reservation INNER JOIN parcel ON reservation.parcel=parcel.id) INNER JOIN guest ON reservation.guest=guest.id "
-                             + "WHERE LOWER(datefrom) LIKE LOWER(?) OR LOWER(dateto) LIKE LOWER(?) OR LOWER(parcel.location) LIKE LOWER(?) OR LOWER(guest.fullname) LIKE LOWER(?) OR reservation.id = ?")) {
+             PreparedStatement st = connection.prepareStatement("SELECT reservation.id, dateFrom, dateTo, parcel.location, guest.fullname" +
+"FROM (reservation INNER JOIN parcel ON reservation.parcel=parcel.id) INNER JOIN guest ON reservation.guest=guest.id " +
+"WHERE LOWER(datefrom) LIKE LOWER(?) OR LOWER(dateto) LIKE LOWER(?) OR LOWER(parcel.location) LIKE LOWER(?) OR LOWER(guest.fullname) LIKE LOWER(?) OR reservation.id = ?")) {
             
             st.setString(1, "%"+filter+"%");
             st.setString(2, "%"+filter+"%");
