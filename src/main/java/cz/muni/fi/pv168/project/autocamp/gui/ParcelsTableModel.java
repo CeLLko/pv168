@@ -116,29 +116,29 @@ public class ParcelsTableModel extends AbstractTableModel {
         }
     }
 
-    public void createParcel(Parcel parcel) {
-        CreateParcelWorker createParcelWorker = new CreateParcelWorker(parcel);
+    public void createParcel(String location, Boolean withElectricity, Boolean withWater) {
+        CreateParcelWorker createParcelWorker = new CreateParcelWorker(location, withElectricity, withWater);
         createParcelWorker.execute();
     }
     
-    private class CreateParcelWorker extends SwingWorker<List<Parcel>, Void> {
+    private class CreateParcelWorker extends SwingWorker<Parcel, Void> {
         
         private final Parcel parcel;
-        public List<Parcel> parcels;
         
-        public CreateParcelWorker(Parcel parcel) {
-            this.parcel = parcel;
+        public CreateParcelWorker(String location, Boolean withElectricity, Boolean withWater) {
+            this.parcel = new Parcel(location, withElectricity, withWater);
         }
 
         @Override
-        protected List<Parcel> doInBackground() throws Exception {
+        protected Parcel doInBackground() throws Exception {
             ParcelsTableModel.this.manager.createParcel(parcel);
-            parcels = ParcelsTableModel.this.manager.findAllParcels();
-            return parcels;
+            ParcelsTableModel.this.parcels.add(parcel);
+            return parcel;
         }
         
         protected void done() {
-            ParcelsTableModel.this.setParcels(parcels);
+            int row = ParcelsTableModel.this.parcels.size() - 1;
+            ParcelsTableModel.this.fireTableRowsInserted(row, row);
         }
     }
 
@@ -181,7 +181,6 @@ public class ParcelsTableModel extends AbstractTableModel {
     public class FilterParcelWorker extends SwingWorker<List<Parcel>, Void> {
 
         private final String filter;
-        private List<Parcel> parcels = new ArrayList<>();
         
         public FilterParcelWorker(String filter) {
             this.filter = filter;
@@ -189,13 +188,13 @@ public class ParcelsTableModel extends AbstractTableModel {
         
         @Override
         protected List<Parcel> doInBackground() throws Exception {
-            parcels.addAll(ParcelsTableModel.this.manager.filterParcels(filter));
-            return parcels;
+            ParcelsTableModel.this.setParcels(ParcelsTableModel.this.manager.filterParcels(filter));
+            return ParcelsTableModel.this.parcels;
         }
 
         @Override
         protected void done() {
-            ParcelsTableModel.this.setParcels(this.parcels);
+            ParcelsTableModel.this.fireTableDataChanged();
         }
         
     }

@@ -114,7 +114,7 @@ public class ReservationsTableModel extends AbstractTableModel {
         createReservationWorker.execute();
     }*/
 
- /*private static class CreateReservationWorker extends SwingWorker<List<Reservation>, Void> {
+ /*private class CreateReservationWorker extends SwingWorker<List<Reservation>, Void> {
 
         private final Reservation reservation;
         private final ReservationsTableModel tableModel;
@@ -137,62 +137,59 @@ public class ReservationsTableModel extends AbstractTableModel {
         }
     }*/
     
-    public void deleteReservation(List<Reservation> reservations) {
-        DeleteReservationWorker deleteReservationWorker = new DeleteReservationWorker(reservations, ReservationsTableModel.this);
+    public void deleteReservation(int[] rows) {
+        DeleteReservationWorker deleteReservationWorker = new DeleteReservationWorker(rows);
         deleteReservationWorker.execute();
     }
 
+    private class DeleteReservationWorker extends SwingWorker<int[], Void> {
+
+        private int[] rows;
+
+        public DeleteReservationWorker(int[] rows) {
+            this.rows = rows;
+        }
+
+        @Override
+        protected int[] doInBackground() throws Exception {
+            for (int i = rows.length - 1; i >= 0 ; i--) {
+                Reservation reservation = ReservationsTableModel.this.reservations.get(rows[i]);
+                ReservationsTableModel.this.manager.deleteReservation(reservation);
+                ReservationsTableModel.this.reservations.remove(reservation);
+            }
+            return rows;
+        }
+
+        @Override
+        protected void done() {
+            for (int i = rows.length-1; i >= 0; i--) {
+                ReservationsTableModel.this.fireTableRowsDeleted(rows[i], rows[i]);
+            }
+        }
+    }
+
     public void filterReservations(String filter) {
-        FilterReservationWorker filterReservationWorker = new FilterReservationWorker(filter, ReservationsTableModel.this);
+        FilterReservationWorker filterReservationWorker = new FilterReservationWorker(filter);
         filterReservationWorker.execute();
     }
 
-    private static class DeleteReservationWorker extends SwingWorker<List<Reservation>, Void> {
+    private class FilterReservationWorker extends SwingWorker<List<Reservation>, Void> {
 
-        private final ReservationsTableModel tableModel;
-        private List<Reservation> reservations = new ArrayList<>();
-
-        public DeleteReservationWorker(List<Reservation> reservations, ReservationsTableModel tableModel) {
-            this.tableModel = tableModel;
-            this.reservations.addAll(reservations);
-        }
-
-        @Override
-        protected List<Reservation> doInBackground() throws Exception {
-            for (int i = 0; i < reservations.size(); i++) {
-                tableModel.getManager().deleteReservation(reservations.get(i));
-            }
-            reservations = tableModel.getManager().findAllReservations();
-            return reservations;
-        }
-
-        @Override
-        protected void done() {
-            tableModel.setReservations(reservations);
-        }
-    }
-
-    private static class FilterReservationWorker extends SwingWorker<List<Reservation>, Void> {
-
-        private final ReservationsTableModel tableModel;
         private final String filter;
-        private List<Reservation> reservations = new ArrayList<>();
 
-        public FilterReservationWorker(String filter, ReservationsTableModel tableModel) {
+        public FilterReservationWorker(String filter) {
             this.filter = filter;
-            this.tableModel = tableModel;
         }
 
         @Override
         protected List<Reservation> doInBackground() throws Exception {
-            reservations.addAll(tableModel.getManager().filterReservations(filter));
-            return reservations;
+            ReservationsTableModel.this.setReservations(ReservationsTableModel.this.manager.filterReservations(filter));
+            return ReservationsTableModel.this.reservations;
         }
 
         @Override
         protected void done() {
-            tableModel.clearReservationTable();
-            tableModel.setReservations(this.reservations);
+            ReservationsTableModel.this.fireTableDataChanged();
         }
     }
 }
