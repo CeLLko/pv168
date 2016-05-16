@@ -6,7 +6,7 @@
 
 package cz.muni.fi.pv168.project.autocamp.gui;
 
-import cz.muni.fi.pv168.project.autocamp.gui.AutoCampMenu;
+import cz.muni.fi.pv168.project.autocamp.AutoCampManager;
 import java.io.IOException;
 import java.util.Properties;
 import java.util.logging.Logger;
@@ -23,7 +23,7 @@ public class DBUtils {
         
         Properties myconf = new Properties();
         try {
-            myconf.load(AutoCampMenu.class.getResourceAsStream("myconf.properties"));
+            myconf.load(AutoCampMenu.class.getClassLoader().getResourceAsStream("myconfig.properties"));
         } catch (IOException ex) {
             Logger.getLogger(ex.toString());
         }

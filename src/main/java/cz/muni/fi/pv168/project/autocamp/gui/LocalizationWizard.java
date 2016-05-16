@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 public class LocalizationWizard {
     private static final String DEFAULT_SETTINGS = "default_locales";
 
-    static public String getString(String key) {
+    public static String getString(String key) {
         try{
             return ResourceBundle.getBundle(DEFAULT_SETTINGS+"_"+Locale.getDefault().toString()).getString(key);
         } catch(Exception ex){

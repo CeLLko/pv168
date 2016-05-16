@@ -6,8 +6,10 @@
 
 package cz.muni.fi.pv168.project.autocamp.gui;
 
+import cz.muni.fi.pv168.project.autocamp.AutoCampManagerImpl;
 import cz.muni.fi.pv168.project.autocamp.Parcel;
 import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
+import java.time.LocalDate;
 import java.util.List;
 import javax.sql.DataSource;
 import javax.swing.SwingWorker;
@@ -24,11 +26,13 @@ public class ParcelSelectPopupTableModel extends AbstractTableModel{
     private List<Parcel> parcels;
     private DataSource dataSource;
     private ParcelManagerImpl manager;
+    private AutoCampManagerImpl ACmanager;
 
-    public ParcelSelectPopupTableModel() {
+    public ParcelSelectPopupTableModel(LocalDate from, LocalDate to) {
         dataSource = DBUtils.setDataSource();
         manager = new ParcelManagerImpl(dataSource);
-        parcels = manager.findAllParcels();
+        ACmanager = new AutoCampManagerImpl(dataSource);
+        parcels = ACmanager.findEmptyParcelsForGivenDate(from, to);
     }
 
     public ParcelManagerImpl getManager() {

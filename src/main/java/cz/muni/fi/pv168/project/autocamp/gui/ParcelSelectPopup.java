@@ -5,11 +5,17 @@
  */
 package cz.muni.fi.pv168.project.autocamp.gui;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
 /**
  *
  * @author Administrator
  */
 public class ParcelSelectPopup extends javax.swing.JDialog {
+
+    private LocalDate from;
+    private LocalDate to;
 
     /**
      * Creates new form ParcelSelectPop
@@ -17,6 +23,16 @@ public class ParcelSelectPopup extends javax.swing.JDialog {
     public ParcelSelectPopup(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        this.from = LocalDate.MIN;
+        this.to = LocalDate.MAX;
+    }
+
+    public ParcelSelectPopup(java.awt.Frame parent, boolean modal, String from, String to) {
+        super(parent, modal);
+        initComponents();
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        this.from = LocalDate.parse((CharSequence) from, dtf);
+        this.to = LocalDate.parse((CharSequence) to, dtf);
     }
 
     /**
@@ -39,7 +55,7 @@ public class ParcelSelectPopup extends javax.swing.JDialog {
 
         parcelSelectFilterLabel.setText(LocalizationWizard.getString("Filter_label"));
 
-        parcelSelectTable.setModel(new ParcelsTableModel());
+        parcelSelectTable.setModel(new ParcelSelectPopupTableModel(from, to));
         parcelSelectTablePanel.setViewportView(parcelSelectTable);
 
         parcelSelectFilterButton.setText(LocalizationWizard.getString("Filter"));
