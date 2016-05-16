@@ -87,6 +87,7 @@ public class ParcelWorker {
 
         @Override
         protected void done() {
+            tableModel.clearParcelTable();
             tableModel.setParcels(this.parcels);
         }
         

@@ -211,6 +211,7 @@
                 <Property name="text" type="java.lang.String" value="Create"/>
               </Properties>
               <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="guestCreateButtonMouseClicked"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="guestCreateButtonActionPerformed"/>
               </Events>
             </Component>
@@ -269,15 +270,10 @@
                   <Group type="102" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="parcelLocationLabel" alignment="0" max="32767" attributes="0"/>
+                          <Component id="parcelResourcesLabel" alignment="0" pref="68" max="32767" attributes="0"/>
                           <Group type="102" attributes="0">
-                              <Group type="103" groupAlignment="0" attributes="0">
-                                  <Component id="parcelLocationLabel" alignment="0" max="32767" attributes="0"/>
-                                  <Component id="parcelResourcesLabel" alignment="0" pref="69" max="32767" attributes="0"/>
-                              </Group>
-                              <EmptySpace min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <Group type="102" attributes="0">
-                              <Component id="guestFilterLabel1" pref="42" max="32767" attributes="0"/>
+                              <Component id="parcelFilterLabel" pref="41" max="32767" attributes="0"/>
                               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -290,10 +286,10 @@
                               <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
-                              <EmptySpace min="0" pref="3" max="32767" attributes="0"/>
-                              <Component id="guestFilterField1" min="-2" pref="471" max="-2" attributes="0"/>
+                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                              <Component id="parcelFilterField" min="-2" pref="471" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="guestFilterButton1" min="-2" pref="141" max="-2" attributes="0"/>
+                              <Component id="parcelFilterButton" min="-2" pref="141" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" alignment="1" attributes="0">
                               <EmptySpace max="32767" attributes="0"/>
@@ -302,7 +298,7 @@
                       </Group>
                       <EmptySpace min="-2" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="guestDeleteButton1" max="32767" attributes="0"/>
+                          <Component id="parcelDeleteButton" max="32767" attributes="0"/>
                           <Component id="parcelCreateButton" pref="132" max="32767" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
@@ -330,11 +326,11 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="guestFilterLabel1" alignment="0" min="-2" pref="32" max="-2" attributes="0"/>
+                          <Component id="parcelFilterLabel" alignment="0" min="-2" pref="32" max="-2" attributes="0"/>
                           <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                              <Component id="guestDeleteButton1" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                              <Component id="guestFilterButton1" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                              <Component id="guestFilterField1" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                              <Component id="parcelDeleteButton" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                              <Component id="parcelFilterButton" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                              <Component id="parcelFilterField" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
@@ -390,27 +386,28 @@
                 <Property name="text" type="java.lang.String" value="Resources:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="guestFilterLabel1">
+            <Component class="javax.swing.JLabel" name="parcelFilterLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Filter:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="guestFilterField1">
+            <Component class="javax.swing.JTextField" name="parcelFilterField">
             </Component>
-            <Component class="javax.swing.JButton" name="guestFilterButton1">
+            <Component class="javax.swing.JButton" name="parcelFilterButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Filter"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="guestFilterButton1MouseClicked"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="parcelFilterButtonMouseClicked"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="parcelFilterButtonActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="guestDeleteButton1">
+            <Component class="javax.swing.JButton" name="parcelDeleteButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Delete selected"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="guestDeleteButton1MouseClicked"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="parcelDeleteButtonMouseClicked"/>
               </Events>
             </Component>
           </SubComponents>
@@ -431,37 +428,43 @@
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="1" attributes="0">
                           <Group type="102" attributes="0">
-                              <Component id="guestFilterLabel2" linkSize="3" max="32767" attributes="0"/>
+                              <Component id="reservationFilterLabel" linkSize="3" max="32767" attributes="0"/>
                               <EmptySpace type="separate" max="-2" attributes="0"/>
-                              <Component id="guestFilterField2" min="-2" pref="467" max="-2" attributes="0"/>
+                              <Component id="reservationFilterField" min="-2" pref="467" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="32767" attributes="0"/>
-                              <Component id="guestFilterButton2" min="-2" pref="141" max="-2" attributes="0"/>
+                              <Component id="reservationFilterButton" min="-2" pref="141" max="-2" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <Group type="103" groupAlignment="0" attributes="0">
                                   <Component id="reservationsFromLabel" linkSize="3" min="-2" pref="58" max="-2" attributes="0"/>
-                                  <Component id="guestPhoneLabel1" linkSize="3" alignment="0" min="-2" pref="58" max="-2" attributes="0"/>
+                                  <Component id="reservationGuestLabel" linkSize="3" alignment="0" min="-2" pref="58" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="103" groupAlignment="0" attributes="0">
+                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
                                   <Group type="102" attributes="0">
                                       <EmptySpace min="-2" pref="18" max="-2" attributes="0"/>
-                                      <Component id="reservationsDateFromChooser" min="-2" pref="261" max="-2" attributes="0"/>
-                                      <EmptySpace max="-2" attributes="0"/>
-                                      <Component id="reservationsToLabel" min="-2" pref="58" max="-2" attributes="0"/>
-                                      <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                                      <Component id="reservationsDateToChooser" max="32767" attributes="0"/>
+                                      <Component id="reservationsDateFromChooser" pref="261" max="32767" attributes="0"/>
                                   </Group>
                                   <Group type="102" attributes="0">
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="guestPhoneField1" max="32767" attributes="0"/>
+                                      <Component id="reservationGuestField" max="32767" attributes="0"/>
                                   </Group>
+                              </Group>
+                              <EmptySpace max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="reservationsToLabel" alignment="0" min="-2" pref="58" max="-2" attributes="0"/>
+                                  <Component id="reservationParcelLabel" alignment="0" min="-2" pref="58" max="-2" attributes="0"/>
+                              </Group>
+                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Component id="reservationParcelField" max="32767" attributes="0"/>
+                                  <Component id="reservationsDateToChooser" max="32767" attributes="0"/>
                               </Group>
                           </Group>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="reservationsCreateButton" min="-2" pref="132" max="-2" attributes="0"/>
-                          <Component id="guestDeleteButton2" alignment="0" min="-2" pref="132" max="-2" attributes="0"/>
+                          <Component id="reservationDeleteButton" alignment="0" min="-2" pref="132" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
@@ -481,8 +484,12 @@
                               </Group>
                               <EmptySpace min="-2" max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="3" attributes="0">
-                                  <Component id="guestPhoneField1" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                                  <Component id="guestPhoneLabel1" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                                  <Component id="reservationGuestField" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                                  <Component id="reservationGuestLabel" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                                  <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                                      <Component id="reservationParcelField" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                                      <Component id="reservationParcelLabel" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
                           <Component id="reservationsFromLabel" alignment="0" min="-2" pref="32" max="-2" attributes="0"/>
@@ -490,10 +497,10 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="guestFilterLabel2" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                          <Component id="guestFilterField2" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                          <Component id="guestFilterButton2" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                          <Component id="guestDeleteButton2" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                          <Component id="reservationFilterLabel" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                          <Component id="reservationFilterField" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                          <Component id="reservationFilterButton" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                          <Component id="reservationDeleteButton" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="reservationsScrollPane" min="-2" pref="533" max="-2" attributes="0"/>
@@ -550,35 +557,42 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JLabel" name="guestPhoneLabel1">
+            <Component class="javax.swing.JLabel" name="reservationGuestLabel">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Phone:"/>
+                <Property name="text" type="java.lang.String" value="Guest:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="guestPhoneField1">
+            <Component class="javax.swing.JTextField" name="reservationGuestField">
             </Component>
-            <Component class="javax.swing.JLabel" name="guestFilterLabel2">
+            <Component class="javax.swing.JLabel" name="reservationFilterLabel">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Filter:"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="guestFilterField2">
+            <Component class="javax.swing.JTextField" name="reservationFilterField">
             </Component>
-            <Component class="javax.swing.JButton" name="guestFilterButton2">
+            <Component class="javax.swing.JButton" name="reservationFilterButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Filter"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="guestFilterButton2MouseClicked"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="reservationFilterButtonMouseClicked"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="guestDeleteButton2">
+            <Component class="javax.swing.JButton" name="reservationDeleteButton">
               <Properties>
                 <Property name="text" type="java.lang.String" value="Delete selected"/>
               </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="guestDeleteButton2MouseClicked"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="reservationDeleteButtonMouseClicked"/>
               </Events>
+            </Component>
+            <Component class="javax.swing.JTextField" name="reservationParcelField">
+            </Component>
+            <Component class="javax.swing.JLabel" name="reservationParcelLabel">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Parcel:"/>
+              </Properties>
             </Component>
           </SubComponents>
         </Container>

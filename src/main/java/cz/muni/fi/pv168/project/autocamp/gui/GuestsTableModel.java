@@ -8,11 +8,11 @@ package cz.muni.fi.pv168.project.autocamp.gui;
 import cz.muni.fi.pv168.project.autocamp.Guest;
 import cz.muni.fi.pv168.project.autocamp.GuestManager;
 import cz.muni.fi.pv168.project.autocamp.GuestManagerImpl;
-import java.util.ArrayList;
+import cz.muni.fi.pv168.project.autocamp.Parcel;
+import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
+
 import java.util.List;
 import javax.sql.DataSource;
-import javax.swing.JTable;
-import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
 import org.apache.derby.jdbc.ClientDataSource;
 
@@ -24,19 +24,37 @@ import org.apache.derby.jdbc.ClientDataSource;
  */
 public class GuestsTableModel extends AbstractTableModel {
 
-    private List<Guest> guests = new ArrayList<Guest>();
-
-    DataSource dataSource;
-    GuestManager guestManager;
+    private List<Guest> guests;
+    private DataSource dataSource;
+    private GuestManager manager;
 
     public GuestsTableModel() {
         dataSource = prepareDataSource();
-        guestManager = new GuestManagerImpl(dataSource);
-        fillTable("");
+        manager = new GuestManagerImpl(dataSource);
+        guests = manager.findAllGuests();
     }
 
-    public void filterTable(String filter) {
-        fillTable(filter);
+    private DataSource prepareDataSource() {
+        ClientDataSource ds = new ClientDataSource();
+        ds.setDatabaseName("pv168");
+        ds.setUser("pv168");
+        ds.setPassword("pv168");
+        return ds;
+    }
+
+    public GuestManager getManager() {
+        return manager;
+    }
+
+    public List<Guest> getGuests() {
+        return guests;
+    }
+
+    public void setGuests(List<Guest> guests) {
+        clearGuestTable();
+        guests.stream().forEach((guest) -> {
+            this.guests.add(guest);
+        });
     }
 
     @Override
@@ -108,7 +126,7 @@ public class GuestsTableModel extends AbstractTableModel {
             default:
                 throw new IllegalArgumentException("columnIndex");
         }
-        guestManager.updateGuest(guest);
+        manager.updateGuest(guest);
         fireTableCellUpdated(rowIndex, columnIndex);
     }
 
@@ -125,51 +143,35 @@ public class GuestsTableModel extends AbstractTableModel {
                 throw new IllegalArgumentException("columnIndex");
         }
     }
-    public void addGuest(Guest guest) {
-        this.guests.add(guest);
-        int lastRow = this.guests.size() - 1;
-        this.fireTableRowsInserted(lastRow, lastRow);
-    }
 
-    public void fillTable() {
-        GuestsTableModel.fillingWorker mySwingWorker = new GuestsTableModel.fillingWorker();
-        mySwingWorker.execute();
-    }
-
-    public void fillTable(String param) {
-        GuestsTableModel.fillingWorker mySwingWorker = new GuestsTableModel.fillingWorker(param);
-        mySwingWorker.execute();
-    }
-    
-    public void clearTable(){
+    public void clearGuestTable() {
         this.guests.clear();
+        this.fireTableDataChanged();
     }
 
-    public void removeGuest(long ID, int row, JTable myTable) {
-        GuestManagerImpl manager = new GuestManagerImpl(this.dataSource);
-        Guest guest = manager.findGuestByID(ID);
-        if(guest == null) {
-            throw new UnsupportedOperationException("guest already deleted");
-        } else {
-            manager.deleteGuest(guest);
-            this.guests.remove(guest);
-        }
+    public void createGuest(String fullName, String phone) {
+        GuestWorker.CreateGuestWorker createGuestWorker = new GuestWorker.CreateGuestWorker(fullName, phone, GuestsTableModel.this);
+        createGuestWorker.execute();
     }
-    
-    private DataSource prepareDataSource() {
-        ClientDataSource ds = new ClientDataSource();
-        ds.setDatabaseName("pv168");
-        ds.setUser("pv168");
-        ds.setPassword("pv168");
-        return ds;
+
+    public void deleteGuest(List<Guest> guests) {
+        GuestWorker.DeleteGuestWorker deleteGuestWorker = new GuestWorker.DeleteGuestWorker(guests, GuestsTableModel.this);
+        deleteGuestWorker.execute();
     }
-    
+
+    public void filterGuests(String filter) {
+        GuestWorker.FilterGuestWorker filterGuestWorker = new GuestWorker.FilterGuestWorker(filter, GuestsTableModel.this);
+        filterGuestWorker.execute();
+    }
+    /*
     private class fillingWorker extends SwingWorker<List<Guest>, Void> {
+
         private List<Guest> filteredGuests;
         private String filter = "";
 
         private fillingWorker() {
         }
+
         private fillingWorker(String param) {
             filter = param;
         }
@@ -183,9 +185,9 @@ public class GuestsTableModel extends AbstractTableModel {
 
         protected void done() {
             GuestsTableModel.this.clearTable();
-            for(int i = 0; i < this.filteredGuests.size(); ++i) {
-                GuestsTableModel.this.addGuest((Guest)this.filteredGuests.get(i));
+            for (int i = 0; i < this.filteredGuests.size(); ++i) {
+                GuestsTableModel.this.addGuest((Guest) this.filteredGuests.get(i));
             }
         }
-    }
+    }*/
 }

@@ -55,5 +55,5 @@ public interface GuestManager {
      * @param param filter
      * @return list of guests whose attributes contain given param
      */
-    List<Guest> filterGuestsWithGivenParamter(String param);
+    List<Guest> filterGuests(String param);
 }

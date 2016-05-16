@@ -3,7 +3,6 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cz.muni.fi.pv168.project.autocamp.gui;
 
 import cz.muni.fi.pv168.project.autocamp.Parcel;
@@ -19,7 +18,7 @@ import org.apache.derby.jdbc.ClientDataSource;
  *
  * @author Adam Gdovin, 433305
  * @author Lenka Smitalova, 410198
- * 
+ *
  * @version May 3, 2016
  */
 public class ParcelsTableModel extends AbstractTableModel {
@@ -27,7 +26,7 @@ public class ParcelsTableModel extends AbstractTableModel {
     private List<Parcel> parcels;
     private DataSource dataSource;
     private ParcelManagerImpl manager;
-    
+
     public ParcelsTableModel() {
         dataSource = prepareDataSource();
         manager = new ParcelManagerImpl(dataSource);
@@ -55,7 +54,7 @@ public class ParcelsTableModel extends AbstractTableModel {
         parcels.stream().forEach((parcel) -> {
             this.parcels.add(parcel);
         });
-    }   
+    }
 
     @Override
     public int getRowCount() {
@@ -81,7 +80,7 @@ public class ParcelsTableModel extends AbstractTableModel {
             default:
                 throw new IllegalArgumentException("columnIndex");
         }
-    }    
+    }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -115,23 +114,24 @@ public class ParcelsTableModel extends AbstractTableModel {
                 throw new IllegalArgumentException("columnIndex");
         }
     }
-    
+
     public void createParcel(Parcel parcel) {
         CreateParcelWorker createParcelWorker = new CreateParcelWorker(parcel, ParcelsTableModel.this);
         createParcelWorker.execute();
     }
-    
+
     public void deleteParcel(List<Parcel> parcels) {
         DeleteParcelWorker deleteParcelWorker = new DeleteParcelWorker(parcels, ParcelsTableModel.this);
         deleteParcelWorker.execute();
     }
-    
+
     public void filterParcels(String filter) {
         FilterParcelWorker filterParcelWorker = new FilterParcelWorker(filter, ParcelsTableModel.this);
         filterParcelWorker.execute();
     }
-             
-    private void clearParcelTable() {
+
+    public void clearParcelTable() {
         this.parcels.clear();
+        this.fireTableDataChanged();
     }
 }

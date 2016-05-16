@@ -186,7 +186,7 @@ public class GuestManagerImpl implements GuestManager {
     }
 
     @Override
-    public List<Guest> filterGuestsWithGivenParamter(String param) {
+    public List<Guest> filterGuests(String param) {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement st = connection.prepareStatement(
                         "SELECT id,fullname,phone FROM GUEST WHERE LOWER(fullname) LIKE LOWER(?) OR LOWER(phone) LIKE LOWER(?) OR id = ?")) {
