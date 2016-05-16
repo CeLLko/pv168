@@ -153,85 +153,81 @@ public class GuestsTableModel extends AbstractTableModel {
         CreateGuestWorker createGuestWorker = new CreateGuestWorker(fullName, phone, GuestsTableModel.this);
         createGuestWorker.execute();
     }
-    private static class CreateGuestWorker extends SwingWorker<List<Guest>, Void> {
+    private class CreateGuestWorker extends SwingWorker<Guest, Void> {
         
         private final Guest guest;
-        private final GuestsTableModel tableModel;
-        public static List<Guest> guests;
         
         public CreateGuestWorker(String fullName, String phone, GuestsTableModel tableModel) {
             this.guest = new Guest(fullName, phone);
-            this.tableModel = tableModel;
         }
 
         @Override
-        protected List<Guest> doInBackground() throws Exception {
-            tableModel.getManager().createGuest(guest);
-            guests = tableModel.getManager().findAllGuests();
-            return guests;
+        protected Guest doInBackground() throws Exception {
+            GuestsTableModel.this.manager.createGuest(guest);
+            GuestsTableModel.this.guests.add(guest);
+            return guest;
         }
         
         protected void done() {
-            tableModel.setGuests(guests);
+            int row = GuestsTableModel.this.guests.size() - 1;
+            GuestsTableModel.this.fireTableRowsInserted(row , row);
         }
     }
     
 
     public void deleteGuest(int[] rows) {
-        DeleteGuestWorker deleteGuestWorker = new DeleteGuestWorker(guests, GuestsTableModel.this);
+        DeleteGuestWorker deleteGuestWorker = new DeleteGuestWorker(rows);
         deleteGuestWorker.execute();
+    }
+    
+    private class DeleteGuestWorker extends SwingWorker<int[], Void> {
+
+        private int[] rows;
+        
+        public DeleteGuestWorker(int[] rows) {
+            this.rows = rows;
+        }
+        
+        @Override
+        protected int[] doInBackground() throws Exception {
+            for (int i = rows.length - 1; i >= 0 ; i--) {
+                Guest guest = GuestsTableModel.this.guests.get(rows[i]);
+                GuestsTableModel.this.manager.deleteGuest(guest);
+                GuestsTableModel.this.guests.remove(guest);
+            }
+            return rows;
+        }
+
+        @Override
+        protected void done() {
+            for (int i = rows.length-1; i >= 0; i--) {
+                GuestsTableModel.this.fireTableRowsDeleted(rows[i], rows[i]);
+            }
+        }
     }
 
     public void filterGuests(String filter) {
-        FilterGuestWorker filterGuestWorker = new FilterGuestWorker(filter, GuestsTableModel.this);
+        FilterGuestWorker filterGuestWorker = new FilterGuestWorker(filter);
         filterGuestWorker.execute();
     }
-    private static class DeleteGuestWorker extends SwingWorker<List<Guest>, Void> {
-
-        private final GuestsTableModel tableModel;
-        private List<Guest> guests = new ArrayList<>();
-        
-        public DeleteGuestWorker(List<Guest> guests, GuestsTableModel tableModel) {
-            this.tableModel = tableModel;
-            this.guests.addAll(guests);
-        }
-        
-        @Override
-        protected List<Guest> doInBackground() throws Exception {
-            for (int i = 0; i < guests.size(); i++) {
-                tableModel.getManager().deleteGuest(guests.get(i));
-            }
-            guests = tableModel.getManager().findAllGuests();
-            return guests;
-        }
-
-        @Override
-        protected void done() {
-            tableModel.setGuests(guests);
-        }
-    }
     
-    private static class FilterGuestWorker extends SwingWorker<List<Guest>, Void> {
+    private class FilterGuestWorker extends SwingWorker<List<Guest>, Void> {
 
-        private final GuestsTableModel tableModel;
         private final String filter;
-        private List<Guest> guests = new ArrayList<>();
         
-        public FilterGuestWorker(String filter, GuestsTableModel tableModel) {
+        public FilterGuestWorker(String filter) {
             this.filter = filter;
-            this.tableModel = tableModel;
         }
         
         @Override
         protected List<Guest> doInBackground() throws Exception {
-            guests.addAll(tableModel.getManager().filterGuests(filter));
-            return guests;
+            GuestsTableModel.this.setGuests(GuestsTableModel.this.manager.filterGuests(filter));
+            return GuestsTableModel.this.guests;
         }
 
         @Override
         protected void done() {
-            tableModel.clearGuestTable();
-            tableModel.setGuests(this.guests);
+            GuestsTableModel.this.fireTableDataChanged();
         }
     }
 }
