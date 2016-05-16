@@ -475,8 +475,10 @@
                                   <Group type="102" attributes="0">
                                       <Component id="reservationParcelLabel" linkSize="3" min="-2" pref="58" max="-2" attributes="0"/>
                                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                                      <Component id="reservationGuestField" min="-2" pref="264" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="reservationParcelField" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="reservationParcelButton" min="-2" pref="21" max="-2" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
                                       <Component id="reservationGuestLabel" min="-2" pref="58" max="-2" attributes="0"/>
                                   </Group>
                                   <Group type="102" attributes="0">
@@ -489,8 +491,12 @@
                               </Group>
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="reservationParcelField" max="32767" attributes="0"/>
-                                  <Component id="reservationsDateToChooser" pref="283" max="32767" attributes="0"/>
+                                  <Component id="reservationsDateToChooser" min="-2" pref="283" max="-2" attributes="0"/>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <Component id="reservationGuestField" max="32767" attributes="0"/>
+                                      <EmptySpace max="-2" attributes="0"/>
+                                      <Component id="reservationGuestButton" min="-2" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
                       </Group>
@@ -501,7 +507,7 @@
                       </Group>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
-                  <Component id="reservationsScrollPane" alignment="0" pref="877" max="32767" attributes="0"/>
+                  <Component id="reservationsScrollPane" alignment="0" max="32767" attributes="0"/>
               </Group>
             </DimensionLayout>
             <DimensionLayout dim="1">
@@ -515,14 +521,22 @@
                                   <Component id="reservationsDateToChooser" alignment="0" min="-2" pref="32" max="-2" attributes="0"/>
                                   <Component id="reservationsToLabel" alignment="0" min="-2" pref="32" max="-2" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" max="-2" attributes="0"/>
+                              <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="103" alignment="0" groupAlignment="3" attributes="0">
-                                      <Component id="reservationParcelField" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                                      <Component id="reservationGuestLabel" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
-                                      <Component id="reservationGuestField" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="3" attributes="0">
+                                          <Component id="reservationGuestField" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                                          <Component id="reservationGuestLabel" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                                          <Component id="reservationParcelField" alignment="3" min="-2" pref="32" max="-2" attributes="0"/>
+                                          <Component id="reservationParcelLabel" alignment="3" max="-2" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
-                                  <Component id="reservationParcelLabel" min="-2" pref="32" max="-2" attributes="0"/>
+                                  <Component id="reservationParcelButton" max="32767" attributes="0"/>
+                                  <Group type="102" alignment="1" attributes="0">
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                                      <Component id="reservationGuestButton" min="-2" pref="32" max="-2" attributes="0"/>
+                                  </Group>
                               </Group>
                           </Group>
                           <Component id="reservationsFromLabel" alignment="0" min="-2" pref="32" max="-2" attributes="0"/>
@@ -565,6 +579,7 @@
                 </Property>
               </Properties>
               <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="reservationsCreateButtonMouseClicked"/>
                 <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="reservationsCreateButtonActionPerformed"/>
               </Events>
             </Component>
@@ -603,9 +618,12 @@
                 </Property>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="reservationGuestField">
+            <Component class="javax.swing.JTextField" name="reservationParcelField">
+              <Properties>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
               <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="reservationGuestFieldMouseClicked"/>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="reservationParcelFieldMouseClicked"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="reservationFilterLabel">
@@ -637,7 +655,10 @@
                 <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="reservationDeleteButtonMouseClicked"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JTextField" name="reservationParcelField">
+            <Component class="javax.swing.JTextField" name="reservationGuestField">
+              <Properties>
+                <Property name="enabled" type="boolean" value="false"/>
+              </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="reservationGuestLabel">
               <Properties>
@@ -645,6 +666,48 @@
                   <Connection code="LocalizationWizard.getString(&quot;Guest&quot;)+&quot;:&quot;" type="code"/>
                 </Property>
               </Properties>
+            </Component>
+            <Component class="javax.swing.JButton" name="reservationParcelButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="..."/>
+                <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                  <Insets value="[0, 0, 0, 0]"/>
+                </Property>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[25, 19]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[25, 19]"/>
+                </Property>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[25, 19]"/>
+                </Property>
+                <Property name="verticalAlignment" type="int" value="1"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="reservationParcelButtonMouseClicked"/>
+              </Events>
+            </Component>
+            <Component class="javax.swing.JButton" name="reservationGuestButton">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="..."/>
+                <Property name="margin" type="java.awt.Insets" editor="org.netbeans.beaninfo.editors.InsetsEditor">
+                  <Insets value="[0, 0, 0, 0]"/>
+                </Property>
+                <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[20, 19]"/>
+                </Property>
+                <Property name="minimumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[20, 19]"/>
+                </Property>
+                <Property name="preferredSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
+                  <Dimension value="[20, 19]"/>
+                </Property>
+                <Property name="verticalAlignment" type="int" value="1"/>
+              </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="reservationGuestButtonMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>

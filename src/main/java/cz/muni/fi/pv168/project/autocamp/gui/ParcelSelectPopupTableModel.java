@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cz.muni.fi.pv168.project.autocamp.gui;
 
 import cz.muni.fi.pv168.project.autocamp.AutoCampManagerImpl;
 import cz.muni.fi.pv168.project.autocamp.Parcel;
 import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
 import javax.swing.SwingWorker;
@@ -19,11 +19,13 @@ import org.apache.derby.jdbc.ClientDataSource;
 /**
  *
  * Adam Gdovin, 433305
+ *
  * @version May 16, 2016
  */
-public class ParcelSelectPopupTableModel extends AbstractTableModel{
+public class ParcelSelectPopupTableModel extends AbstractTableModel {
 
     private List<Parcel> parcels;
+    private List<Parcel> emptyParcels;
     private DataSource dataSource;
     private ParcelManagerImpl manager;
     private AutoCampManagerImpl ACmanager;
@@ -33,6 +35,7 @@ public class ParcelSelectPopupTableModel extends AbstractTableModel{
         manager = new ParcelManagerImpl(dataSource);
         ACmanager = new AutoCampManagerImpl(dataSource);
         parcels = ACmanager.findEmptyParcelsForGivenDate(from, to);
+        emptyParcels = new ArrayList<>(parcels);
     }
 
     public ParcelManagerImpl getManager() {
@@ -45,9 +48,11 @@ public class ParcelSelectPopupTableModel extends AbstractTableModel{
 
     public void setParcels(List<Parcel> parcels) {
         clearParcelTable();
-        parcels.stream().forEach((parcel) -> {
-            this.parcels.add(parcel);
-        });
+        for (Parcel parcel : parcels) {
+            if (this.emptyParcels.contains(parcel)) {
+                this.parcels.add(parcel);
+            }
+        }
     }
 
     @Override
@@ -107,21 +112,25 @@ public class ParcelSelectPopupTableModel extends AbstractTableModel{
             default:
                 throw new IllegalArgumentException("columnIndex");
         }
-    }    
+    }
+
+    public Parcel selectParcel(int row) {
+        return this.parcels.get(row);
+    }
 
     public void filterParcels(String filter) {
         FilterParcelWorker filterParcelWorker = new FilterParcelWorker(filter);
         filterParcelWorker.execute();
     }
-    
+
     public class FilterParcelWorker extends SwingWorker<List<Parcel>, Void> {
 
         private final String filter;
-        
+
         public FilterParcelWorker(String filter) {
             this.filter = filter;
         }
-        
+
         @Override
         protected List<Parcel> doInBackground() throws Exception {
             ParcelSelectPopupTableModel.this.setParcels(ParcelSelectPopupTableModel.this.manager.filterParcels(filter));
@@ -132,7 +141,7 @@ public class ParcelSelectPopupTableModel extends AbstractTableModel{
         protected void done() {
             ParcelSelectPopupTableModel.this.fireTableDataChanged();
         }
-        
+
     }
 
     public void clearParcelTable() {
