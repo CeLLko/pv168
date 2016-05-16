@@ -1,7 +1,7 @@
 ----------------------------------------------------------------
-Mon May 16 12:54:14 CEST 2016:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0154-b933-b525-0000065b7740 
-on database directory memory:C:\Users\Lenka\Documents\MUNI\PV168-SeminarJava\AutoCampManager\reservationmgr-test with class loader sun.misc.Launcher$AppClassLoader@14dad5dc 
+Mon May 16 15:01:38 CEST 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0154-b9a8-5783-000006708128 
+on database directory memory:C:\Users\Lenka\Documents\MUNI\PV168-SeminarJava\AutoCampManager\reservationmgr-test with class loader sun.misc.Launcher$AppClassLoader@75b84c92 
 Loaded from file:/C:/Users/Lenka/.m2/repository/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
 java.vendor=Oracle Corporation
 java.runtime.version=1.8.0_60-b27
