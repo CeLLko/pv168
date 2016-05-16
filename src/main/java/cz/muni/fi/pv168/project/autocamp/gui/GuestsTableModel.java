@@ -153,16 +153,6 @@ public class GuestsTableModel extends AbstractTableModel {
         CreateGuestWorker createGuestWorker = new CreateGuestWorker(fullName, phone, GuestsTableModel.this);
         createGuestWorker.execute();
     }
-
-    public void deleteGuest(List<Guest> guests) {
-        DeleteGuestWorker deleteGuestWorker = new DeleteGuestWorker(guests, GuestsTableModel.this);
-        deleteGuestWorker.execute();
-    }
-
-    public void filterGuests(String filter) {
-        FilterGuestWorker filterGuestWorker = new FilterGuestWorker(filter, GuestsTableModel.this);
-        filterGuestWorker.execute();
-    }
     private static class CreateGuestWorker extends SwingWorker<List<Guest>, Void> {
         
         private final Guest guest;
@@ -186,6 +176,16 @@ public class GuestsTableModel extends AbstractTableModel {
         }
     }
     
+
+    public void deleteGuest(int[] rows) {
+        DeleteGuestWorker deleteGuestWorker = new DeleteGuestWorker(guests, GuestsTableModel.this);
+        deleteGuestWorker.execute();
+    }
+
+    public void filterGuests(String filter) {
+        FilterGuestWorker filterGuestWorker = new FilterGuestWorker(filter, GuestsTableModel.this);
+        filterGuestWorker.execute();
+    }
     private static class DeleteGuestWorker extends SwingWorker<List<Guest>, Void> {
 
         private final GuestsTableModel tableModel;

@@ -134,7 +134,8 @@ public class ParcelManagerImpl implements ParcelManager {
         
         try (Connection connection = dataSource.getConnection();
              PreparedStatement st = connection.prepareStatement(
-                     "DELETE FROM parcel WHERE id = ?")) {
+                     "DELETE FROM parcel WHERE id = ? AND id NOT IN "
+                             + "(SELECT parcel FROM reservation)")) {
             
             st.setLong(1, parcel.getId());
             

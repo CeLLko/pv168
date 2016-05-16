@@ -549,7 +549,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_guestFilterButtonMouseClicked
 
     private void guestDeleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guestDeleteButtonMouseClicked
-        // TODO add your handling code here:
+        ((GuestsTableModel) guestTable.getModel()).deleteGuest(guestTable.getSelectedRows());
     }//GEN-LAST:event_guestDeleteButtonMouseClicked
 
     private void guestCreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guestCreateButtonActionPerformed
@@ -565,7 +565,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_parcelDeleteButtonMouseClicked
 
     private void reservationDeleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reservationDeleteButtonMouseClicked
-        // TODO add your handling code here:
+        ((ReservationsTableModel) reservationTable.getModel()).deleteReservation(reservationTable.getSelectedRows());
     }//GEN-LAST:event_reservationDeleteButtonMouseClicked
 
     private void reservationFilterButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reservationFilterButtonMouseClicked

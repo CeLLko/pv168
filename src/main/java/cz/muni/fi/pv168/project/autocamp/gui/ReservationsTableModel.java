@@ -137,8 +137,8 @@ public class ReservationsTableModel extends AbstractTableModel {
         }
     }*/
     
-    public void deleteReservation(List<Reservation> reservations) {
-        DeleteReservationWorker deleteReservationWorker = new DeleteReservationWorker(reservations, ReservationsTableModel.this);
+    public void deleteReservation(int[] rows) {
+        DeleteReservationWorker deleteReservationWorker = new DeleteReservationWorker(rows, ReservationsTableModel.this);
         deleteReservationWorker.execute();
     }
 
@@ -150,25 +150,26 @@ public class ReservationsTableModel extends AbstractTableModel {
     private static class DeleteReservationWorker extends SwingWorker<List<Reservation>, Void> {
 
         private final ReservationsTableModel tableModel;
-        private List<Reservation> reservations = new ArrayList<>();
+        private int[] rows;
 
-        public DeleteReservationWorker(List<Reservation> reservations, ReservationsTableModel tableModel) {
+        public DeleteReservationWorker(int[] rows, ReservationsTableModel tableModel) {
             this.tableModel = tableModel;
-            this.reservations.addAll(reservations);
+            this.rows = rows;
         }
 
         @Override
         protected List<Reservation> doInBackground() throws Exception {
-            for (int i = 0; i < reservations.size(); i++) {
-                tableModel.getManager().deleteReservation(reservations.get(i));
-            }
-            reservations = tableModel.getManager().findAllReservations();
-            return reservations;
+            //for (int i = 0; i < reservations.size(); i++) {
+            //    tableModel.getManager().deleteReservation(reservations.get(i));
+            //}
+            //reservations = tableModel.getManager().findAllReservations();
+            //return reservations;
+            return null;
         }
 
         @Override
         protected void done() {
-            tableModel.setReservations(reservations);
+            //tableModel.setReservations(reservations);
         }
     }
 
