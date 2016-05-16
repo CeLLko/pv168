@@ -5,6 +5,8 @@
  */
 package cz.muni.fi.pv168.project.autocamp.gui;
 
+import javax.swing.JDialog;
+
 /**
  *
  * @author Administrator
@@ -523,7 +525,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_guestCreateButtonMouseClicked
 
     private void reservationGuestFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reservationGuestFieldMouseClicked
-        new ParcelSelectPopup().setVisible(true);
+        JDialog parcelPopup = new ParcelSelectPopup(this, rootPaneCheckingEnabled);
     }//GEN-LAST:event_reservationGuestFieldMouseClicked
 
     private void parcelFilterFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parcelFilterFieldActionPerformed

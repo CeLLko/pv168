@@ -28,17 +28,9 @@ public class GuestsTableModel extends AbstractTableModel {
     private GuestManager manager;
 
     public GuestsTableModel() {
-        dataSource = prepareDataSource();
+        dataSource = DBUtils.setDataSource();
         manager = new GuestManagerImpl(dataSource);
         guests = manager.findAllGuests();
-    }
-
-    private DataSource prepareDataSource() {
-        ClientDataSource ds = new ClientDataSource();
-        ds.setDatabaseName("pv168");
-        ds.setUser("pv168");
-        ds.setPassword("pv168");
-        return ds;
     }
 
     public GuestManager getManager() {

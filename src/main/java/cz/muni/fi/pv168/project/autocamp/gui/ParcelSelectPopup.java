@@ -9,12 +9,13 @@ package cz.muni.fi.pv168.project.autocamp.gui;
  *
  * @author Administrator
  */
-public class ParcelSelectPopup extends javax.swing.JFrame {
+public class ParcelSelectPopup extends javax.swing.JDialog {
 
     /**
-     * Creates new form ParcelSelectPopup
+     * Creates new form ParcelSelectPop
      */
-    public ParcelSelectPopup() {
+    public ParcelSelectPopup(java.awt.Frame parent, boolean modal) {
+        super(parent, modal);
         initComponents();
     }
 
@@ -27,16 +28,19 @@ public class ParcelSelectPopup extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        parcelSelectFilterLabel = new javax.swing.JLabel();
         parcelSelectFilterField = new javax.swing.JTextField();
-        parcelSelectFilterButton = new javax.swing.JButton();
-        parceSelectDeleteButton = new javax.swing.JButton();
+        parcelSelectFilterLabel = new javax.swing.JLabel();
         parcelSelectTablePanel = new javax.swing.JScrollPane();
         parcelSelectTable = new javax.swing.JTable();
+        parcelSelectFilterButton = new javax.swing.JButton();
+        parceSelectDeleteButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         parcelSelectFilterLabel.setText(LocalizationWizard.getString("Filter_label"));
+
+        parcelSelectTable.setModel(new ParcelsTableModel());
+        parcelSelectTablePanel.setViewportView(parcelSelectTable);
 
         parcelSelectFilterButton.setText(LocalizationWizard.getString("Filter"));
         parcelSelectFilterButton.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -57,14 +61,11 @@ public class ParcelSelectPopup extends javax.swing.JFrame {
             }
         });
 
-        parcelSelectTable.setModel(new ParcelsTableModel());
-        parcelSelectTablePanel.setViewportView(parcelSelectTable);
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 833, Short.MAX_VALUE)
+            .addGap(0, 832, Short.MAX_VALUE)
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addContainerGap()
@@ -138,11 +139,19 @@ public class ParcelSelectPopup extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(ParcelSelectPopup.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
-        /* Create and display the form */
+        /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ParcelSelectPopup().setVisible(true);
+                ParcelSelectPopup dialog = new ParcelSelectPopup(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
             }
         });
     }

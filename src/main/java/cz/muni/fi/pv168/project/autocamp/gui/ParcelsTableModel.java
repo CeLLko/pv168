@@ -5,16 +5,13 @@
  */
 package cz.muni.fi.pv168.project.autocamp.gui;
 
-import cz.muni.fi.pv168.project.autocamp.Guest;
 import cz.muni.fi.pv168.project.autocamp.Parcel;
 import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
-import java.util.ArrayList;
 
 import java.util.List;
 import javax.sql.DataSource;
 import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
-import org.apache.derby.jdbc.ClientDataSource;
 
 /**
  *
@@ -30,17 +27,9 @@ public class ParcelsTableModel extends AbstractTableModel {
     private ParcelManagerImpl manager;
 
     public ParcelsTableModel() {
-        dataSource = prepareDataSource();
+        dataSource = DBUtils.setDataSource();
         manager = new ParcelManagerImpl(dataSource);
         parcels = manager.findAllParcels();
-    }
-
-    private DataSource prepareDataSource() {
-        ClientDataSource ds = new ClientDataSource();
-        ds.setDatabaseName("pv168");
-        ds.setUser("pv168");
-        ds.setPassword("pv168");
-        return ds;
     }
 
     public ParcelManagerImpl getManager() {
