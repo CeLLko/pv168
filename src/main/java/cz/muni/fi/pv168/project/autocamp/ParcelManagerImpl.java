@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.project.autocamp;
 
+import cz.muni.fi.pv168.project.autocamp.gui.AutoCampMenu;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,6 +8,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.sql.DataSource;
 
@@ -29,7 +32,7 @@ public class ParcelManagerImpl implements ParcelManager {
         validate(parcel);
         
         if (parcel.getId() != null) {
-            throw new IllegalArgumentException("ID of the parcel is already set.");
+            throw new DBInteractionException("ID of the parcel is already set.");
         }
         
         try (Connection connection = dataSource.getConnection();
@@ -51,8 +54,9 @@ public class ParcelManagerImpl implements ParcelManager {
             parcel.setId(getKey(keyRS, parcel));
             
         } catch (SQLException ex) {
+            Logger.getLogger(ParcelManagerImpl.class.getName()).log(Level.SEVERE, "Error while inserting parcel " + parcel, ex);
             throw new DBInteractionException("Error while inserting parcel " + parcel, ex);
-        }
+        } 
     }
 
     private void validate(Parcel parcel) throws IllegalArgumentException{
@@ -63,6 +67,7 @@ public class ParcelManagerImpl implements ParcelManager {
             throw new IllegalArgumentException("Location is null");
         }
         if (!Pattern.matches("\\w+:\\d+", parcel.getLocation())) {
+            AutoCampMenu.logger.error("Location of given parcel has wrong format.");
             throw new IllegalArgumentException("Location has wrong format");
         }
     }
@@ -90,13 +95,13 @@ public class ParcelManagerImpl implements ParcelManager {
     
     
     @Override
-    public void updateParcel(Parcel parcel) {
+    public void updateParcel(Parcel parcel) throws DBInteractionException{
         if (parcel == null) {
-            throw new IllegalArgumentException("Parcel is null.");
+            throw new DBInteractionException("Parcel is null.");
         }
         
         if (parcel.getId() == null) {
-            throw new IllegalArgumentException("Parcel's id is null.");
+            throw new DBInteractionException("Parcel's id is null.");
         }
         
         validate(parcel);
@@ -123,13 +128,13 @@ public class ParcelManagerImpl implements ParcelManager {
     }
 
     @Override
-    public void deleteParcel(Parcel parcel) {
+    public void deleteParcel(Parcel parcel)  throws DBInteractionException{
         if (parcel == null) {
-            throw new IllegalArgumentException("Parcel is null.");
+            throw new DBInteractionException("Parcel is null.");
         }
         
         if (parcel.getId() == null) {
-            throw new IllegalArgumentException("Parcel's id is null.");
+            throw new DBInteractionException("Parcel's id is null.");
         }
         
         try (Connection connection = dataSource.getConnection();
@@ -183,7 +188,7 @@ public class ParcelManagerImpl implements ParcelManager {
         }
     }
     @Override
-    public Parcel findParcelByLocation(String location) {
+    public Parcel findParcelByLocation(String location) throws DBInteractionException{
         try (Connection connection = dataSource.getConnection();
              PreparedStatement st = connection.prepareStatement(
                         "SELECT * FROM PARCEL WHERE location = ?")) {
@@ -213,7 +218,7 @@ public class ParcelManagerImpl implements ParcelManager {
     }
 
     @Override
-    public List<Parcel> findAllParcels() {
+    public List<Parcel> findAllParcels() throws DBInteractionException{
         try (Connection connection = dataSource.getConnection();
              PreparedStatement st = connection.prepareStatement(
                      "SELECT id,location,electricity,water FROM parcel")) {
@@ -249,7 +254,7 @@ public class ParcelManagerImpl implements ParcelManager {
     }
 
     @Override
-    public List<Parcel> filterParcels(String filter) {
+    public List<Parcel> filterParcels(String filter) throws DBInteractionException{
         try (Connection connection = dataSource.getConnection();
              PreparedStatement st = connection.prepareStatement(
                      "SELECT id,location,electricity,water FROM PARCEL WHERE LOWER(location) LIKE LOWER(?) OR id = ?")) {

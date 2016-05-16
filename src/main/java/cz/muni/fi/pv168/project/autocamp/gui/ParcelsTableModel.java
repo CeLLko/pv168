@@ -194,7 +194,7 @@ public class ParcelsTableModel extends AbstractTableModel {
 
         protected void done() {
             int row = ParcelsTableModel.this.parcels.size() - 1;
-            ParcelsTableModel.this.fireTableRowsInserted(row, row);
+            ParcelsTableModel.this.fireTableRowsInserted(row, row); 
         }
     }
 

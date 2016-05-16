@@ -5,11 +5,17 @@
  */
 package cz.muni.fi.pv168.project.autocamp.gui;
 
+import com.toedter.calendar.JDateChooser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 /**
  *
  * @author Administrator
  */
 public class AutoCampMenu extends javax.swing.JFrame {
+    
+    public static final Logger logger = LoggerFactory.getLogger(AutoCampMenu.class);
 
     /**
      * Creates new form AutoCampMenu
@@ -686,4 +692,13 @@ public class AutoCampMenu extends javax.swing.JFrame {
     private javax.swing.JScrollPane reservationsScrollPane;
     private javax.swing.JLabel reservationsToLabel;
     // End of variables declaration//GEN-END:variables
+
+    public JDateChooser getReservationsDateFromChooser() {
+        return reservationsDateFromChooser;
+    }
+
+    public JDateChooser getReservationsDateToChooser() {
+        return reservationsDateToChooser;
+    }  
+
 }

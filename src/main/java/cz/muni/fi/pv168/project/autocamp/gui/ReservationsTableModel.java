@@ -42,9 +42,9 @@ import org.apache.derby.jdbc.ClientDataSource;
  */
 public class ReservationsTableModel extends AbstractTableModel {
 
-    private List<Reservation> reservations;
-    private DataSource dataSource;
-    private ReservationManager manager;
+    private final List<Reservation> reservations;
+    private final DataSource dataSource;
+    private final ReservationManager manager;
 
     public ReservationsTableModel() {
         dataSource = DBUtils.setDataSource();
@@ -87,9 +87,9 @@ public class ReservationsTableModel extends AbstractTableModel {
             case 2:
                 return Date.class;
             case 3:
-                return new TextFieldCell().getClass();
-            case 4:
-                return new TextFieldCell().getClass();
+                return String.class;
+            case 4:        
+                return String.class;
             default:
                 throw new IllegalArgumentException("columnIndex");
         }
@@ -224,10 +224,10 @@ public class ReservationsTableModel extends AbstractTableModel {
         private int rowIndex;
         private int coulmnIndex;
 
-        public UpdateReservationWorker(Reservation reservation, int rowIndex, int ColumnIndex, ReservationsTableModel tableModel) {
+        public UpdateReservationWorker(Reservation reservation, int rowIndex, int columnIndex, ReservationsTableModel tableModel) {
             this.reservation = reservation;
             this.rowIndex = rowIndex;
-            this.coulmnIndex = coulmnIndex;
+            this.coulmnIndex = columnIndex;
         }
 
         @Override
@@ -297,7 +297,7 @@ public class ReservationsTableModel extends AbstractTableModel {
         }
     }
 
-    private class DialogStringEditor extends AbstractCellEditor
+    /*private class DialogStringEditor extends AbstractCellEditor
             implements TableCellEditor,
             ActionListener {
 
@@ -320,7 +320,7 @@ public class ReservationsTableModel extends AbstractTableModel {
         public void actionPerformed(ActionEvent e) {
             if (EDIT.equals(e.getActionCommand())) {
                 ParcelSelectPopup parcelPopup = new ParcelSelectPopup(this, true,
-                        reservationsDateFromChooser.getDate(),
+                        reservationsDateFromChooser().getDate(),
                         reservationsDateToChooser.getDate(),
                         field);
                 if (newInput == null) {
@@ -345,5 +345,5 @@ public class ReservationsTableModel extends AbstractTableModel {
             oldValue = (String) value;
             return button;
         }
-    }
+    }*/
 }

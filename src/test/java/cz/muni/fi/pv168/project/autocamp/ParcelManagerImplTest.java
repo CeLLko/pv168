@@ -116,7 +116,7 @@ public class ParcelManagerImplTest {
     public void testCreateParcelWithExistingId() {
         correctParcel1.setId(1L);
         
-        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expect(DBInteractionException.class);
         manager.createParcel(correctParcel1);
     }
     
@@ -162,7 +162,7 @@ public class ParcelManagerImplTest {
                 .isEqualToComparingFieldByField(correctParcel1);
     }
     
-    @Test (expected = IllegalArgumentException.class)
+    @Test (expected = DBInteractionException.class)
     public void testUpdateNullParcel() {
         manager.updateParcel(null);
     }
@@ -172,7 +172,7 @@ public class ParcelManagerImplTest {
         manager.createParcel(correctParcel1);
         
         correctParcel1.setId(null);
-        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expect(DBInteractionException.class);
         manager.updateParcel(correctParcel1);
     }
     
@@ -217,7 +217,7 @@ public class ParcelManagerImplTest {
         assertThat(manager.findParcelByID(correctParcel2.getId())).isNotNull();
     }
     
-    @Test (expected = IllegalArgumentException.class)
+    @Test (expected = DBInteractionException.class)
     public void testDeleteNullParcel() {
         manager.deleteParcel(null);
     }
@@ -227,7 +227,7 @@ public class ParcelManagerImplTest {
         manager.createParcel(correctParcel1);
         
         correctParcel1.setId(null);
-        expectedException.expect(IllegalArgumentException.class);
+        expectedException.expect(DBInteractionException.class);
         manager.updateParcel(correctParcel1);
     }
     
