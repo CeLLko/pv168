@@ -98,7 +98,7 @@ public class GuestManagerImpl implements GuestManager {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement st = connection.prepareStatement(
                      "DELETE FROM GUEST WHERE id = ? AND id NOT IN "
-                             + "(SELECT parcel FROM reservation)")) {
+                             + "(SELECT guest FROM reservation)")) {
             
             st.setLong(1, guest.getId());
             

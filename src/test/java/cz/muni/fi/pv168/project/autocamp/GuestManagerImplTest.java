@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.assertj.core.api.Assertions.*;
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 
@@ -28,7 +29,7 @@ public class GuestManagerImplTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
-
+    
     @Before
     public void setUp() throws SQLException{
         dataSource = prepareDataSource();
@@ -37,6 +38,10 @@ public class GuestManagerImplTest {
                     + "id bigint primary key generated always as identity,"
                     + "fullname varchar(50),"
                     + "phone varchar(20))").executeUpdate();
+            
+            connection.prepareStatement("CREATE TABLE RESERVATION("
+                    + "id bigint primary key generated always as identity,"
+                    + "guest bigint)").executeUpdate();
         }
         manager = new GuestManagerImpl(dataSource);
     }
@@ -45,6 +50,7 @@ public class GuestManagerImplTest {
     public void tearDown() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             connection.prepareStatement("DROP TABLE GUEST").executeUpdate();
+            connection.prepareStatement("DROP TABLE RESERVATION").executeUpdate();
         }
     }
 
