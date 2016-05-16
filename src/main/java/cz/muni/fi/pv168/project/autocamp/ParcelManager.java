@@ -51,7 +51,7 @@ public interface ParcelManager {
      * ID or location.
      *
      * @param filter wanted value
-     * @return list of guests whose attributes contain given filter, 
+     * @return list of parcels whose attributes contain given filter, 
      *         in case of id values must be the same
      */
     List<Parcel> filterParcels(String filter);

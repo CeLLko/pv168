@@ -208,6 +208,38 @@ public class ReservationManagerImpl implements ReservationManager {
         }
     }
 
+    @Override
+    public List<Reservation> filterReservations(String filter) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement st = connection.prepareStatement(
+                     "SELECT id, dateFrom, dateTo, parcel.location, guest.fullname "
+                             + "FROM (reservation INNER JOIN parcel ON reservation.parcel=parcel.id) INNER JOIN guest ON reservation.guest=guest.id "
+                             + "WHERE LOWER(datefrom) LIKE LOWER(?) OR LOWER(dateto) LIKE LOWER(?) OR LOWER(parcel.location) LIKE LOWER(?) OR LOWER(guest.fullname) LIKE LOWER(?) OR reservation.id = ?")) {
+            
+            st.setString(1, "%"+filter+"%");
+            st.setString(2, "%"+filter+"%");
+            st.setString(3, "%"+filter+"%");
+            st.setString(4, "%"+filter+"%");
+            try {
+                st.setLong(5, Long.valueOf(filter));
+            } catch (NumberFormatException ex) {
+                st.setLong(5, (long) -1);
+            }
+            
+            ResultSet rs = st.executeQuery();
+            
+            List<Reservation> result = new ArrayList<>();
+            while (rs.next()) {
+                Reservation reservation = resultSetToReservation(rs);
+                result.add(reservation);
+            }
+            return result;
+            
+        } catch (SQLException ex) {
+            throw new DBInteractionException("Error while retrieving all reservations.", ex);
+        }
+    }
+
     private Reservation resultSetToReservation(ResultSet rs) throws SQLException {
         Reservation reservation = new Reservation();
         ParcelManager parcelManager = new ParcelManagerImpl(dataSource);

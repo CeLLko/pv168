@@ -3,30 +3,34 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cz.muni.fi.pv168.project.autocamp.gui;
 
 import cz.muni.fi.pv168.project.autocamp.Reservation;
+import cz.muni.fi.pv168.project.autocamp.ReservationManager;
 import cz.muni.fi.pv168.project.autocamp.ReservationManagerImpl;
 import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
+import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
 import org.apache.derby.jdbc.ClientDataSource;
 
 /**
  *
  * Adam Gdovin, 433305
+ *
  * @version May 3, 2016
  */
 public class ReservationsTableModel extends AbstractTableModel {
 
     private List<Reservation> reservations;
     private DataSource dataSource;
+    private ReservationManager manager;
 
     public ReservationsTableModel() {
         dataSource = prepareDataSource();
-        reservations = new ReservationManagerImpl(dataSource).findAllReservations();
+        manager = new ReservationManagerImpl(dataSource);
+        reservations = manager.findAllReservations();
     }
 
     private DataSource prepareDataSource() {
@@ -36,7 +40,22 @@ public class ReservationsTableModel extends AbstractTableModel {
         ds.setPassword("pv168");
         return ds;
     }
-    
+
+    public ReservationManager getManager() {
+        return manager;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        clearReservationTable();
+        reservations.stream().forEach((reservation) -> {
+            this.reservations.add(reservation);
+        });
+    }
+
     @Override
     public int getRowCount() {
         return reservations.size();
@@ -63,6 +82,99 @@ public class ReservationsTableModel extends AbstractTableModel {
                 return reservation.getParcel().getLocation();
             default:
                 throw new IllegalArgumentException("columnIndex");
+        }
+    }
+
+    public void clearReservationTable() {
+        this.reservations.clear();
+        this.fireTableDataChanged();
+    }
+
+    /*
+    public void createReservation(String fullName, String phone) {
+        CreateReservationWorker createReservationWorker = new CreateReservationWorker(fullName, phone, ReservationsTableModel.this);
+        createReservationWorker.execute();
+    }*/
+
+ /*private static class CreateReservationWorker extends SwingWorker<List<Reservation>, Void> {
+
+        private final Reservation reservation;
+        private final ReservationsTableModel tableModel;
+        public static List<Reservation> reservations;
+
+        public CreateReservationWorker(String dateFrom, String dateTo, ReservationsTableModel tableModel) {
+            this.reservation = new Reservation(, );
+            this.tableModel = tableModel;
+        }
+
+        @Override
+        protected List<Reservation> doInBackground() throws Exception {
+            tableModel.getManager().createReservation(reservation);
+            reservations = tableModel.getManager().findAllReservations();
+            return reservations;
+        }
+
+        protected void done() {
+            tableModel.setReservations(reservations);
+        }
+    }*/
+    
+    public void deleteReservation(List<Reservation> reservations) {
+        DeleteReservationWorker deleteReservationWorker = new DeleteReservationWorker(reservations, ReservationsTableModel.this);
+        deleteReservationWorker.execute();
+    }
+
+    public void filterReservations(String filter) {
+        FilterReservationWorker filterReservationWorker = new FilterReservationWorker(filter, ReservationsTableModel.this);
+        filterReservationWorker.execute();
+    }
+
+    private static class DeleteReservationWorker extends SwingWorker<List<Reservation>, Void> {
+
+        private final ReservationsTableModel tableModel;
+        private List<Reservation> reservations = new ArrayList<>();
+
+        public DeleteReservationWorker(List<Reservation> reservations, ReservationsTableModel tableModel) {
+            this.tableModel = tableModel;
+            this.reservations.addAll(reservations);
+        }
+
+        @Override
+        protected List<Reservation> doInBackground() throws Exception {
+            for (int i = 0; i < reservations.size(); i++) {
+                tableModel.getManager().deleteReservation(reservations.get(i));
+            }
+            reservations = tableModel.getManager().findAllReservations();
+            return reservations;
+        }
+
+        @Override
+        protected void done() {
+            tableModel.setReservations(reservations);
+        }
+    }
+
+    private static class FilterReservationWorker extends SwingWorker<List<Reservation>, Void> {
+
+        private final ReservationsTableModel tableModel;
+        private final String filter;
+        private List<Reservation> reservations = new ArrayList<>();
+
+        public FilterReservationWorker(String filter, ReservationsTableModel tableModel) {
+            this.filter = filter;
+            this.tableModel = tableModel;
+        }
+
+        @Override
+        protected List<Reservation> doInBackground() throws Exception {
+            reservations.addAll(tableModel.getManager().filterReservations(filter));
+            return reservations;
+        }
+
+        @Override
+        protected void done() {
+            tableModel.clearReservationTable();
+            tableModel.setReservations(this.reservations);
         }
     }
 }
