@@ -48,6 +48,10 @@ public class ParcelManagerImplTest {
                     + "location varchar(10),"
                     + "electricity boolean,"
                     + "water boolean)").executeUpdate();
+            
+            connection.prepareStatement("CREATE TABLE RESERVATION("
+                    + "id bigint primary key generated always as identity,"
+                    + "parcel bigint)").executeUpdate();
         }
         manager = new ParcelManagerImpl(dataSource);
         
@@ -67,6 +71,7 @@ public class ParcelManagerImplTest {
     public void tearDown() throws SQLException {
         try (Connection connection = dataSource.getConnection()) {
             connection.prepareStatement("DROP TABLE PARCEL").executeUpdate();
+            connection.prepareStatement("DROP TABLE RESERVATION").executeUpdate();
         }
     }
     
