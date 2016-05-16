@@ -10,7 +10,6 @@ import cz.muni.fi.pv168.project.autocamp.Parcel;
 import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
 import java.util.List;
 import javax.sql.DataSource;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
 import org.apache.derby.jdbc.ClientDataSource;
@@ -27,17 +26,9 @@ public class ParcelSelectPopupTableModel extends AbstractTableModel{
     private ParcelManagerImpl manager;
 
     public ParcelSelectPopupTableModel() {
-        dataSource = prepareDataSource();
+        dataSource = DBUtils.setDataSource();
         manager = new ParcelManagerImpl(dataSource);
         parcels = manager.findAllParcels();
-    }
-
-    private DataSource prepareDataSource() {
-        ClientDataSource ds = new ClientDataSource();
-        ds.setDatabaseName("pv168");
-        ds.setUser("pv168");
-        ds.setPassword("pv168");
-        return ds;
     }
 
     public ParcelManagerImpl getManager() {
