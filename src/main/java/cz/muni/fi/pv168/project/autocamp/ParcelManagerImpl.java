@@ -8,8 +8,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.sql.DataSource;
 
@@ -28,11 +26,11 @@ public class ParcelManagerImpl implements ParcelManager {
     }
 
     @Override
-    public void createParcel(Parcel parcel) throws DBInteractionException {
+    public void createParcel(Parcel parcel) {
         validate(parcel);
         
         if (parcel.getId() != null) {
-            throw new DBInteractionException("ID of the parcel is already set.");
+            throw new IllegalArgumentException("ID of the parcel is already set.");
         }
         
         try (Connection connection = dataSource.getConnection();
@@ -54,16 +52,17 @@ public class ParcelManagerImpl implements ParcelManager {
             parcel.setId(getKey(keyRS, parcel));
             
         } catch (SQLException ex) {
-            Logger.getLogger(ParcelManagerImpl.class.getName()).log(Level.SEVERE, "Error while inserting parcel " + parcel, ex);
             throw new DBInteractionException("Error while inserting parcel " + parcel, ex);
         } 
     }
 
     private void validate(Parcel parcel) throws IllegalArgumentException{
         if(parcel == null) {
+            AutoCampMenu.logger.error("Parcel is not initialized.");
             throw new IllegalArgumentException("Parcel is null");
         }
         if(parcel.getLocation() == null) {
+            AutoCampMenu.logger.error("Parcel does not have a location set.");
             throw new IllegalArgumentException("Location is null");
         }
         if (!Pattern.matches("\\w+:\\d+", parcel.getLocation())) {
@@ -95,13 +94,13 @@ public class ParcelManagerImpl implements ParcelManager {
     
     
     @Override
-    public void updateParcel(Parcel parcel) throws DBInteractionException{
+    public void updateParcel(Parcel parcel) {
         if (parcel == null) {
-            throw new DBInteractionException("Parcel is null.");
+            throw new IllegalArgumentException("Parcel is null.");
         }
         
         if (parcel.getId() == null) {
-            throw new DBInteractionException("Parcel's id is null.");
+            throw new IllegalArgumentException("Parcel's id is null.");
         }
         
         validate(parcel);
@@ -128,7 +127,7 @@ public class ParcelManagerImpl implements ParcelManager {
     }
 
     @Override
-    public void deleteParcel(Parcel parcel)  throws DBInteractionException{
+    public void deleteParcel(Parcel parcel) {
         if (parcel == null) {
             throw new DBInteractionException("Parcel is null.");
         }
@@ -147,7 +146,7 @@ public class ParcelManagerImpl implements ParcelManager {
             int count = st.executeUpdate();
             if (count == 0) {
                 throw new DBInteractionException(
-                        "Given parcel " + parcel + " does not exist within the database.");
+                        "Given parcel " + parcel + " does not exist within the database or there is a reservation for this parcel.");
             }
             else if(count != 1) {
                 throw new DBInteractionException(
@@ -276,7 +275,7 @@ public class ParcelManagerImpl implements ParcelManager {
             return result;
             
         } catch (SQLException ex) {
-            throw new DBInteractionException("Error while retrieving all parcels.", ex);
+            throw new DBInteractionException("Error while retrieving filtered parcels.", ex);
         }
     }
 }

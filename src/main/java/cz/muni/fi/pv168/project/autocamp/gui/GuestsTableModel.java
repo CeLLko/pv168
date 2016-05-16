@@ -5,11 +5,15 @@
  */
 package cz.muni.fi.pv168.project.autocamp.gui;
 
+import cz.muni.fi.pv168.project.autocamp.DBInteractionException;
 import cz.muni.fi.pv168.project.autocamp.Guest;
 import cz.muni.fi.pv168.project.autocamp.GuestManager;
 import cz.muni.fi.pv168.project.autocamp.GuestManagerImpl;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sql.DataSource;
 import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
@@ -117,7 +121,11 @@ public class GuestsTableModel extends AbstractTableModel {
             default:
                 throw new IllegalArgumentException("columnIndex");
         }
-        updateGuest(guest, rowIndex, columnIndex);
+        try {
+            updateGuest(guest, rowIndex, columnIndex);
+        } catch (InterruptedException | ExecutionException ex) {
+            AutoCampMenu.logger.error(ex.getMessage());
+        }
     }
 
     @Override
@@ -139,9 +147,10 @@ public class GuestsTableModel extends AbstractTableModel {
         this.fireTableDataChanged();
     }
 
-    public void updateGuest(Guest guest, int rowIndex, int columnIndex) {
+    public void updateGuest(Guest guest, int rowIndex, int columnIndex) throws InterruptedException, ExecutionException {
         UpdateGuestWorker updateGuestWorker = new UpdateGuestWorker(guest, rowIndex, columnIndex, GuestsTableModel.this);
         updateGuestWorker.execute();
+        updateGuestWorker.get();
     }
 
     private class UpdateGuestWorker extends SwingWorker<Guest, Void> {
@@ -159,6 +168,7 @@ public class GuestsTableModel extends AbstractTableModel {
         @Override
         protected Guest doInBackground() throws Exception {
             GuestsTableModel.this.manager.updateGuest(guest);
+            AutoCampMenu.logger.info("UPDATE:" + guest.toString() + " was succesfully updated.");
             return guest;
         }
 
@@ -167,9 +177,10 @@ public class GuestsTableModel extends AbstractTableModel {
         }
     }
 
-    public void createGuest(String fullName, String phone) {
+    public void createGuest(String fullName, String phone) throws InterruptedException, ExecutionException {
         CreateGuestWorker createGuestWorker = new CreateGuestWorker(fullName, phone, GuestsTableModel.this);
         createGuestWorker.execute();
+        createGuestWorker.get();
     }
 
     private class CreateGuestWorker extends SwingWorker<Guest, Void> {
@@ -184,6 +195,7 @@ public class GuestsTableModel extends AbstractTableModel {
         protected Guest doInBackground() throws Exception {
             GuestsTableModel.this.manager.createGuest(guest);
             GuestsTableModel.this.guests.add(guest);
+            AutoCampMenu.logger.info("CREATE:" + guest.toString() + " was succesfully created.");
             return guest;
         }
 
@@ -193,27 +205,38 @@ public class GuestsTableModel extends AbstractTableModel {
         }
     }
 
-    public void deleteGuest(int[] rows) {
+    public void deleteGuest(int[] rows) 
+            throws InterruptedException, ExecutionException, DBInteractionException {
         DeleteGuestWorker deleteGuestWorker = new DeleteGuestWorker(rows);
         deleteGuestWorker.execute();
+        if (!deleteGuestWorker.get()) {
+            throw new DBInteractionException("Some parcels could not be deleted.");
+        }
     }
 
-    private class DeleteGuestWorker extends SwingWorker<int[], Void> {
+    private class DeleteGuestWorker extends SwingWorker<Boolean, Void> {
 
         private int[] rows;
+        private boolean result = true;
 
         public DeleteGuestWorker(int[] rows) {
             this.rows = rows;
         }
 
         @Override
-        protected int[] doInBackground() throws Exception {
+        protected Boolean doInBackground() throws Exception {
             for (int i = rows.length - 1; i >= 0; i--) {
                 Guest guest = GuestsTableModel.this.guests.get(rows[i]);
-                GuestsTableModel.this.manager.deleteGuest(guest);
-                GuestsTableModel.this.guests.remove(guest);
+                try {
+                    GuestsTableModel.this.manager.deleteGuest(guest);
+                    GuestsTableModel.this.guests.remove(guest);
+                    AutoCampMenu.logger.info("DELETE: " + guest.toString() + " was succesfully deleted.");
+                } catch (DBInteractionException e) {
+                    AutoCampMenu.logger.error("Could not delete " + guest.toString() + "; Exception: " + e.getMessage());
+                    result = false;
+                }
             }
-            return rows;
+            return result;
         }
 
         @Override
@@ -240,6 +263,7 @@ public class GuestsTableModel extends AbstractTableModel {
         @Override
         protected List<Guest> doInBackground() throws Exception {
             GuestsTableModel.this.setGuests(GuestsTableModel.this.manager.filterGuests(filter));
+            AutoCampMenu.logger.info("FILTER: Guests were succesfully filtered, filter: " + filter + ".");
             return GuestsTableModel.this.guests;
         }
 

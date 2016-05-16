@@ -5,11 +5,19 @@
  */
 package cz.muni.fi.pv168.project.autocamp.gui;
 
+import cz.muni.fi.pv168.project.autocamp.DBInteractionException;
 import cz.muni.fi.pv168.project.autocamp.Parcel;
 import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sql.DataSource;
+import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
 
@@ -92,24 +100,28 @@ public class ParcelsTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        Parcel parcel = parcels.get(rowIndex);
-        switch (columnIndex) {
-            case 0:
-                parcel.setId((Long) aValue);
-                break;
-            case 1:
-                parcel.setLocation((String) aValue);
-                break;
-            case 2:
-                parcel.setWithElectricity((boolean) aValue);
-                break;
-            case 3:
-                parcel.setWithElectricity((boolean) aValue);
-                break;
-            default:
-                throw new IllegalArgumentException("columnIndex");
+        try {
+            Parcel parcel = parcels.get(rowIndex);
+            switch (columnIndex) {
+                case 0:
+                    parcel.setId((Long) aValue);
+                    break;
+                case 1:
+                    parcel.setLocation((String) aValue);
+                    break;
+                case 2:
+                    parcel.setWithElectricity((boolean) aValue);
+                    break;
+                case 3:
+                    parcel.setWithElectricity((boolean) aValue);
+                    break;
+                default:
+                    throw new IllegalArgumentException("columnIndex");
+            }
+            updateParcel(parcel, rowIndex, columnIndex);
+        } catch (InterruptedException | ExecutionException ex) {
+            AutoCampMenu.logger.error(ex.getMessage());
         }
-        updateParcel(parcel, rowIndex, columnIndex);
     }
 
     @Override
@@ -144,9 +156,10 @@ public class ParcelsTableModel extends AbstractTableModel {
         }
     }
 
-    public void updateParcel(Parcel parcel, int rowIndex, int columnIndex) {
+    public void updateParcel(Parcel parcel, int rowIndex, int columnIndex) throws InterruptedException, ExecutionException {
         UpdateParcelWorker updateParcelWorker = new UpdateParcelWorker(parcel, rowIndex, columnIndex, ParcelsTableModel.this);
         updateParcelWorker.execute();
+        updateParcelWorker.get();
     }
 
     private class UpdateParcelWorker extends SwingWorker<Parcel, Void> {
@@ -164,6 +177,7 @@ public class ParcelsTableModel extends AbstractTableModel {
         @Override
         protected Parcel doInBackground() throws Exception {
             ParcelsTableModel.this.manager.updateParcel(parcel);
+            AutoCampMenu.logger.info("UPDATE:" + parcel.toString() + " was succesfully updated.");
             return parcel;
         }
 
@@ -172,9 +186,11 @@ public class ParcelsTableModel extends AbstractTableModel {
         }
     }
 
-    public void createParcel(String location, Boolean withElectricity, Boolean withWater) {
+    public void createParcel(String location, Boolean withElectricity, Boolean withWater)
+            throws ExecutionException, InterruptedException {
         CreateParcelWorker createParcelWorker = new CreateParcelWorker(location, withElectricity, withWater);
         createParcelWorker.execute();
+        createParcelWorker.get();
     }
 
     private class CreateParcelWorker extends SwingWorker<Parcel, Void> {
@@ -186,39 +202,51 @@ public class ParcelsTableModel extends AbstractTableModel {
         }
 
         @Override
-        protected Parcel doInBackground() throws Exception {
+        protected Parcel doInBackground() throws Exception{
             ParcelsTableModel.this.manager.createParcel(parcel);
             ParcelsTableModel.this.parcels.add(parcel);
+            AutoCampMenu.logger.info("CREATE:" + parcel.toString() + " was succesfully created.");
             return parcel;
         }
 
         protected void done() {
             int row = ParcelsTableModel.this.parcels.size() - 1;
-            ParcelsTableModel.this.fireTableRowsInserted(row, row); 
+            ParcelsTableModel.this.fireTableRowsInserted(row, row);
         }
     }
 
-    public void deleteParcel(int[] rows) {
+    public void deleteParcel(int[] rows)
+            throws InterruptedException, ExecutionException, DBInteractionException {
         DeleteParcelWorker deleteParcelWorker = new DeleteParcelWorker(rows);
         deleteParcelWorker.execute();
+        if (!deleteParcelWorker.get()) {
+            throw new DBInteractionException("Some parcels could not be deleted.");
+        }
     }
 
-    public class DeleteParcelWorker extends SwingWorker<int[], Void> {
+    public class DeleteParcelWorker extends SwingWorker<Boolean, Void> {
 
         private int[] rows;
+        private boolean result = true;
 
         public DeleteParcelWorker(int[] rows) {
             this.rows = rows;
         }
 
         @Override
-        protected int[] doInBackground() throws Exception {
+        protected Boolean doInBackground() throws Exception {
             for (int i = rows.length - 1; i >= 0; i--) {
                 Parcel parcel = ParcelsTableModel.this.parcels.get(rows[i]);
-                ParcelsTableModel.this.manager.deleteParcel(parcel);
-                ParcelsTableModel.this.parcels.remove(parcel);
+                try {
+                    ParcelsTableModel.this.manager.deleteParcel(parcel);
+                    ParcelsTableModel.this.parcels.remove(parcel);
+                    AutoCampMenu.logger.info("DELETE: " + parcel.toString() + " was succesfully deleted.");
+                } catch (DBInteractionException e) {
+                    AutoCampMenu.logger.error("Could not delete " + parcel.toString() + "; Exception: " + e.getMessage());
+                    result = false;
+                }
             }
-            return rows;
+            return result;
         }
 
         @Override
@@ -245,6 +273,7 @@ public class ParcelsTableModel extends AbstractTableModel {
         @Override
         protected List<Parcel> doInBackground() throws Exception {
             ParcelsTableModel.this.setParcels(ParcelsTableModel.this.manager.filterParcels(filter));
+            AutoCampMenu.logger.info("FILTER: Parcels were succesfully filtered, filter: " + filter + ".");
             return ParcelsTableModel.this.parcels;
         }
 

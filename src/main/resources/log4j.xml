@@ -15,20 +15,25 @@
         <param name="MaxBackupIndex" value="3"/>
         <param name="Encoding" value="UTF-8"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d [%t] %-5p (%F [%M]:%L) - %m %n"/>
+            <param name="ConversionPattern" value="%d %-5p (%F [%M]:%L) - %m %n"/>
         </layout>
     </appender>
     
     <!--null appender-->
     <appender name="null" class="org.apache.log4j.varia.NullAppender">
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d [%t] %-5p (%F [%M]:%L) - %m %n"/>
+            <param name="ConversionPattern" value="%d %-5p (%F [%M]:%L) - %m %n"/>
         </layout>
     </appender>
     
     <!--Logging categories-->
-    <category name="cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl" additivity="false">
+    <category name="cz.muni.fi.pv168.project.autocamp" additivity="false">
         <priority value="error"/>
+        <appender-ref ref="autocamp"/>
+    </category>
+    
+    <category name="cz.muni.fi.pv168.project.autocamp.gui" additivity="false">
+        <priority value="info"/>
         <appender-ref ref="autocamp"/>
     </category>
     

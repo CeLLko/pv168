@@ -6,6 +6,10 @@
 package cz.muni.fi.pv168.project.autocamp.gui;
 
 import com.toedter.calendar.JDateChooser;
+import cz.muni.fi.pv168.project.autocamp.DBInteractionException;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import javax.swing.JOptionPane;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -14,7 +18,8 @@ import org.slf4j.LoggerFactory;
  * @author Administrator
  */
 public class AutoCampMenu extends javax.swing.JFrame {
-    
+
+    public static JOptionPane jOptionPane;
     public static final Logger logger = LoggerFactory.getLogger(AutoCampMenu.class);
 
     /**
@@ -304,7 +309,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
                         .addComponent(parcelWaterCheckBox)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, parcelsTabLayout.createSequentialGroup()
-                        .addGap(0, 1, Short.MAX_VALUE)
+                        .addGap(0, 0, Short.MAX_VALUE)
                         .addGroup(parcelsTabLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(parcelLocationField, javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, parcelsTabLayout.createSequentialGroup()
@@ -510,13 +515,19 @@ public class AutoCampMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void parcelCreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parcelCreateButtonActionPerformed
-        ((ParcelsTableModel) parcelTable.getModel()).createParcel(
-                parcelLocationField.getText(),
-                parcelElectricityCheckBox.isSelected(),
-                parcelWaterCheckBox.isSelected());
-        parcelLocationField.setText(null);
-        parcelElectricityCheckBox.setSelected(false);
-        parcelWaterCheckBox.setSelected(false);
+        try {
+            ((ParcelsTableModel) parcelTable.getModel()).createParcel(
+                    parcelLocationField.getText(),
+                    parcelElectricityCheckBox.isSelected(),
+                    parcelWaterCheckBox.isSelected());
+            parcelLocationField.setText(null);
+            parcelElectricityCheckBox.setSelected(false);
+            parcelWaterCheckBox.setSelected(false);
+        } catch (ExecutionException | InterruptedException ex) {
+            AutoCampMenu.jOptionPane.showMessageDialog(this, LocalizationWizard.getString("Create_parcel")
+                    + LocalizationWizard.getString("Log_file_info"));
+            logger.error(ex.getMessage());
+        }
     }//GEN-LAST:event_parcelCreateButtonActionPerformed
 
     private void guestsButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guestsButtonMouseClicked
@@ -536,7 +547,13 @@ public class AutoCampMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_guestFilterButtonMouseClicked
 
     private void guestDeleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guestDeleteButtonMouseClicked
-        ((GuestsTableModel) guestTable.getModel()).deleteGuest(guestTable.getSelectedRows());
+        try {
+            ((GuestsTableModel) guestTable.getModel()).deleteGuest(guestTable.getSelectedRows());
+        } catch (InterruptedException | ExecutionException | DBInteractionException ex) {
+            JOptionPane.showMessageDialog(this, LocalizationWizard.getString("Delete_guest")
+                    + LocalizationWizard.getString("Log_file_info"));
+            logger.error(ex.getMessage());
+        }
     }//GEN-LAST:event_guestDeleteButtonMouseClicked
 
     private void guestCreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_guestCreateButtonActionPerformed
@@ -548,11 +565,23 @@ public class AutoCampMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_parcelFilterButtonMouseClicked
 
     private void parcelDeleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_parcelDeleteButtonMouseClicked
-        ((ParcelsTableModel) parcelTable.getModel()).deleteParcel(parcelTable.getSelectedRows());
+        try {
+            ((ParcelsTableModel) parcelTable.getModel()).deleteParcel(parcelTable.getSelectedRows());
+        } catch (InterruptedException | ExecutionException | DBInteractionException ex) {
+            JOptionPane.showMessageDialog(this, LocalizationWizard.getString("Delete_parcel")
+                    + LocalizationWizard.getString("Log_file_info"));
+            logger.error(ex.getMessage());
+        }
     }//GEN-LAST:event_parcelDeleteButtonMouseClicked
 
     private void reservationDeleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reservationDeleteButtonMouseClicked
-        ((ReservationsTableModel) reservationTable.getModel()).deleteReservation(reservationTable.getSelectedRows());
+        try {
+            ((ReservationsTableModel) reservationTable.getModel()).deleteReservation(reservationTable.getSelectedRows());
+        } catch (InterruptedException | ExecutionException | DBInteractionException ex) {
+            JOptionPane.showMessageDialog(this, LocalizationWizard.getString("Delete_reservation")
+                    + LocalizationWizard.getString("Log_file_info"));
+            logger.error(ex.getMessage());
+        }
     }//GEN-LAST:event_reservationDeleteButtonMouseClicked
 
     private void reservationFilterButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reservationFilterButtonMouseClicked
@@ -568,9 +597,17 @@ public class AutoCampMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_parcelFilterButtonActionPerformed
 
     private void guestCreateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guestCreateButtonMouseClicked
-        ((GuestsTableModel) guestTable.getModel()).createGuest(guestFullNameField.getText(), guestPhoneField.getText());
-        guestFullNameField.setText(null);
-        guestPhoneField.setText(null);
+        try {
+            ((GuestsTableModel) guestTable.getModel()).createGuest(
+                    guestFullNameField.getText(),
+                    guestPhoneField.getText());
+            guestFullNameField.setText(null);
+            guestPhoneField.setText(null);
+        } catch (InterruptedException | ExecutionException ex) {
+            AutoCampMenu.jOptionPane.showMessageDialog(this, LocalizationWizard.getString("Create_guest")
+                    + LocalizationWizard.getString("Log_file_info"));
+            logger.error(ex.getMessage());
+        }
     }//GEN-LAST:event_guestCreateButtonMouseClicked
 
     private void reservationParcelFieldMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reservationParcelFieldMouseClicked
@@ -595,16 +632,23 @@ public class AutoCampMenu extends javax.swing.JFrame {
     }//GEN-LAST:event_reservationGuestButtonMouseClicked
 
     private void reservationsCreateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reservationsCreateButtonMouseClicked
-                ((ReservationsTableModel) reservationTable.getModel()).createReservation(
-                reservationsDateFromChooser.getDate(), 
-                reservationsDateToChooser.getDate(),
-                Long.parseLong(reservationGuestField.getToolTipText()),
-                Long.parseLong(reservationParcelField.getToolTipText()));
-        
-        reservationsDateFromChooser.setDate(null);
-        reservationsDateToChooser.setDate(null);
-        reservationGuestField.setText(null);
-        reservationParcelField.setText(null);
+        try {
+            ((ReservationsTableModel) reservationTable.getModel()).createReservation(
+                    reservationsDateFromChooser.getDate(),
+                    reservationsDateToChooser.getDate(),
+                    Long.parseLong(reservationGuestField.getToolTipText()),
+                    Long.parseLong(reservationParcelField.getToolTipText()));
+
+            reservationsDateFromChooser.setDate(null);
+            reservationsDateToChooser.setDate(null);
+            reservationGuestField.setText(null);
+            reservationParcelField.setText(null);
+        } catch (InterruptedException | ExecutionException ex) {
+            AutoCampMenu.jOptionPane.showMessageDialog(this, LocalizationWizard.getString("Create_reservation")
+                    + LocalizationWizard.getString("Log_file_info"));
+            logger.error(ex.getMessage());
+        }
+
     }//GEN-LAST:event_reservationsCreateButtonMouseClicked
 
     /**
@@ -699,6 +743,6 @@ public class AutoCampMenu extends javax.swing.JFrame {
 
     public JDateChooser getReservationsDateToChooser() {
         return reservationsDateToChooser;
-    }  
+    }
 
 }
