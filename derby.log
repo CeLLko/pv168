@@ -1,52 +1,52 @@
 ----------------------------------------------------------------
-Tue May 10 15:37:45 CEST 2016:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0154-9ae3-4004-00000675c6c8 
-on database directory memory:C:\Users\Lenka\Documents\MUNI\PV168-SeminarJava\AutoCampManager\autocampmgr-test with class loader sun.misc.Launcher$AppClassLoader@75b84c92 
-Loaded from file:/C:/Users/Lenka/.m2/repository/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
+Mon May 16 14:29:36 CEST 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance a816c00e-0154-b98b-0648-000006774a18 
+on database directory memory:C:\Dokumenty\Skola\PV168-Maven\PV168\autocampmgr-test with class loader sun.misc.Launcher$AppClassLoader@75b84c92 
+Loaded from file:/C:/Users/Administrator/.m2/repository/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_60-b27
-user.dir=C:\Users\Lenka\Documents\MUNI\PV168-SeminarJava\AutoCampManager
-os.name=Windows 7
+java.runtime.version=1.8.0_65-b17
+user.dir=C:\Dokumenty\Skola\PV168-Maven\PV168
+os.name=Windows 10
 os.arch=amd64
-os.version=6.1
+os.version=10.0
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-Tue May 10 15:37:46 CEST 2016:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance 00e08275-0154-9ae3-4004-00000675c6c8 
-on database directory memory:C:\Users\Lenka\Documents\MUNI\PV168-SeminarJava\AutoCampManager\guestmgr-test with class loader sun.misc.Launcher$AppClassLoader@75b84c92 
-Loaded from file:/C:/Users/Lenka/.m2/repository/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
+Mon May 16 14:29:37 CEST 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance 00e08275-0154-b98b-0648-000006774a18 
+on database directory memory:C:\Dokumenty\Skola\PV168-Maven\PV168\guestmgr-test with class loader sun.misc.Launcher$AppClassLoader@75b84c92 
+Loaded from file:/C:/Users/Administrator/.m2/repository/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_60-b27
-user.dir=C:\Users\Lenka\Documents\MUNI\PV168-SeminarJava\AutoCampManager
-os.name=Windows 7
+java.runtime.version=1.8.0_65-b17
+user.dir=C:\Dokumenty\Skola\PV168-Maven\PV168
+os.name=Windows 10
 os.arch=amd64
-os.version=6.1
+os.version=10.0
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-Tue May 10 15:37:46 CEST 2016:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance e6854407-0154-9ae3-4004-00000675c6c8 
-on database directory memory:C:\Users\Lenka\Documents\MUNI\PV168-SeminarJava\AutoCampManager\parcelmgr-test with class loader sun.misc.Launcher$AppClassLoader@75b84c92 
-Loaded from file:/C:/Users/Lenka/.m2/repository/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
+Mon May 16 14:29:38 CEST 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance db818404-0154-b98b-0648-000006774a18 
+on database directory memory:C:\Dokumenty\Skola\PV168-Maven\PV168\parcelmgr-test with class loader sun.misc.Launcher$AppClassLoader@75b84c92 
+Loaded from file:/C:/Users/Administrator/.m2/repository/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_60-b27
-user.dir=C:\Users\Lenka\Documents\MUNI\PV168-SeminarJava\AutoCampManager
-os.name=Windows 7
+java.runtime.version=1.8.0_65-b17
+user.dir=C:\Dokumenty\Skola\PV168-Maven\PV168
+os.name=Windows 10
 os.arch=amd64
-os.version=6.1
+os.version=10.0
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''
 ----------------------------------------------------------------
-Tue May 10 15:37:47 CEST 2016:
-Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance bf798644-0154-9ae3-4004-00000675c6c8 
-on database directory memory:C:\Users\Lenka\Documents\MUNI\PV168-SeminarJava\AutoCampManager\reservationmgr-test with class loader sun.misc.Launcher$AppClassLoader@75b84c92 
-Loaded from file:/C:/Users/Lenka/.m2/repository/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
+Mon May 16 14:29:38 CEST 2016:
+Booting Derby version The Apache Software Foundation - Apache Derby - 10.12.1.1 - (1704137): instance 0618c63e-0154-b98b-0648-000006774a18 
+on database directory memory:C:\Dokumenty\Skola\PV168-Maven\PV168\reservationmgr-test with class loader sun.misc.Launcher$AppClassLoader@75b84c92 
+Loaded from file:/C:/Users/Administrator/.m2/repository/org/apache/derby/derby/10.12.1.1/derby-10.12.1.1.jar
 java.vendor=Oracle Corporation
-java.runtime.version=1.8.0_60-b27
-user.dir=C:\Users\Lenka\Documents\MUNI\PV168-SeminarJava\AutoCampManager
-os.name=Windows 7
+java.runtime.version=1.8.0_65-b17
+user.dir=C:\Dokumenty\Skola\PV168-Maven\PV168
+os.name=Windows 10
 os.arch=amd64
-os.version=6.1
+os.version=10.0
 derby.system.home=null
 Database Class Loader started - derby.database.classpath=''

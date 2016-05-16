@@ -5,10 +5,15 @@
  */
 package cz.muni.fi.pv168.project.autocamp.gui;
 
+import cz.muni.fi.pv168.project.autocamp.Guest;
+import cz.muni.fi.pv168.project.autocamp.GuestManagerImpl;
+import cz.muni.fi.pv168.project.autocamp.Parcel;
 import cz.muni.fi.pv168.project.autocamp.Reservation;
 import cz.muni.fi.pv168.project.autocamp.ReservationManager;
 import cz.muni.fi.pv168.project.autocamp.ReservationManagerImpl;
-import java.util.ArrayList;
+import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.sql.DataSource;
 import javax.swing.SwingWorker;
@@ -84,7 +89,35 @@ public class ReservationsTableModel extends AbstractTableModel {
                 throw new IllegalArgumentException("columnIndex");
         }
     }
-    
+
+    @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        Reservation reservation = reservations.get(rowIndex);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        switch (columnIndex) {
+            case 0:
+                reservation.setId((Long) aValue);
+                break;
+            case 1:
+                LocalDate from = LocalDate.parse((CharSequence) aValue, dtf);
+                reservation.setFrom(from);
+                break;
+            case 2:
+                LocalDate to = LocalDate.parse((CharSequence) aValue, dtf);
+                reservation.setTo(to);
+                break;
+            case 3:
+                reservation.setParcel((Parcel) new ParcelManagerImpl(dataSource).findParcelByLocation((String) aValue));
+                break;
+            case 4:
+                reservation.setGuest((Guest) new GuestManagerImpl(dataSource).findGuestsByName((String) aValue));
+                break;
+            default:
+                throw new IllegalArgumentException("columnIndex");
+        }
+        updateReservation(reservation, rowIndex, columnIndex);
+    }
+
     @Override
     public String getColumnName(int columnIndex) {
         switch (columnIndex) {
@@ -98,6 +131,24 @@ public class ReservationsTableModel extends AbstractTableModel {
                 return LocalizationWizard.getString("Parcel");
             case 4:
                 return LocalizationWizard.getString("Guest");
+            default:
+                throw new IllegalArgumentException("columnIndex");
+        }
+    }
+
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        switch (columnIndex) {
+            case 0:
+                return false;
+            case 1:
+                return true;
+            case 2:
+                return true;
+            case 3:
+                return true;
+            case 4:
+                return true;
             default:
                 throw new IllegalArgumentException("columnIndex");
         }
@@ -136,7 +187,34 @@ public class ReservationsTableModel extends AbstractTableModel {
             tableModel.setReservations(reservations);
         }
     }*/
-    
+    public void updateReservation(Reservation reservation, int rowIndex, int columnIndex) {
+        UpdateReservationWorker updateReservationWorker = new UpdateReservationWorker(reservation, rowIndex, columnIndex, ReservationsTableModel.this);
+        updateReservationWorker.execute();
+    }
+
+    private class UpdateReservationWorker extends SwingWorker<Reservation, Void> {
+
+        private final Reservation reservation;
+        private int rowIndex;
+        private int coulmnIndex;
+
+        public UpdateReservationWorker(Reservation reservation, int rowIndex, int ColumnIndex, ReservationsTableModel tableModel) {
+            this.reservation = reservation;
+            this.rowIndex = rowIndex;
+            this.coulmnIndex = coulmnIndex;
+        }
+
+        @Override
+        protected Reservation doInBackground() throws Exception {
+            ReservationsTableModel.this.manager.updateReservation(reservation);
+            return reservation;
+        }
+
+        protected void done() {
+            fireTableCellUpdated(rowIndex, coulmnIndex);
+        }
+    }
+
     public void deleteReservation(int[] rows) {
         DeleteReservationWorker deleteReservationWorker = new DeleteReservationWorker(rows);
         deleteReservationWorker.execute();
@@ -152,7 +230,7 @@ public class ReservationsTableModel extends AbstractTableModel {
 
         @Override
         protected int[] doInBackground() throws Exception {
-            for (int i = rows.length - 1; i >= 0 ; i--) {
+            for (int i = rows.length - 1; i >= 0; i--) {
                 Reservation reservation = ReservationsTableModel.this.reservations.get(rows[i]);
                 ReservationsTableModel.this.manager.deleteReservation(reservation);
                 ReservationsTableModel.this.reservations.remove(reservation);
@@ -162,7 +240,7 @@ public class ReservationsTableModel extends AbstractTableModel {
 
         @Override
         protected void done() {
-            for (int i = rows.length-1; i >= 0; i--) {
+            for (int i = rows.length - 1; i >= 0; i--) {
                 ReservationsTableModel.this.fireTableRowsDeleted(rows[i], rows[i]);
             }
         }

@@ -5,6 +5,7 @@
  */
 package cz.muni.fi.pv168.project.autocamp.gui;
 
+import cz.muni.fi.pv168.project.autocamp.Guest;
 import cz.muni.fi.pv168.project.autocamp.Parcel;
 import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
 import java.util.ArrayList;
@@ -101,6 +102,28 @@ public class ParcelsTableModel extends AbstractTableModel {
     }
 
     @Override
+    public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
+        Parcel parcel = parcels.get(rowIndex);
+        switch (columnIndex) {
+            case 0:
+                parcel.setId((Long) aValue);
+                break;
+            case 1:
+                parcel.setLocation((String) aValue);
+                break;
+            case 2:
+                parcel.setWithElectricity((boolean) aValue);
+                break;
+            case 3:
+                parcel.setWithElectricity((boolean) aValue);
+                break;
+            default:
+                throw new IllegalArgumentException("columnIndex");
+        }
+        updateParcel(parcel, rowIndex, columnIndex);
+    }
+
+    @Override
     public Class<?> getColumnClass(int columnIndex) {
         switch (columnIndex) {
             case 0:
@@ -116,15 +139,59 @@ public class ParcelsTableModel extends AbstractTableModel {
         }
     }
 
+    @Override
+    public boolean isCellEditable(int rowIndex, int columnIndex) {
+        switch (columnIndex) {
+            case 0:
+                return false;
+            case 1:
+                return true;
+            case 2:
+                return true;
+            case 3:
+                return true;
+            default:
+                throw new IllegalArgumentException("columnIndex");
+        }
+    }
+
+    public void updateParcel(Parcel parcel, int rowIndex, int columnIndex) {
+        UpdateParcelWorker updateParcelWorker = new UpdateParcelWorker(parcel, rowIndex, columnIndex, ParcelsTableModel.this);
+        updateParcelWorker.execute();
+    }
+
+    private class UpdateParcelWorker extends SwingWorker<Parcel, Void> {
+
+        private final Parcel parcel;
+        private int rowIndex;
+        private int coulmnIndex;
+
+        public UpdateParcelWorker(Parcel parcel, int rowIndex, int ColumnIndex, ParcelsTableModel tableModel) {
+            this.parcel = parcel;
+            this.rowIndex = rowIndex;
+            this.coulmnIndex = coulmnIndex;
+        }
+
+        @Override
+        protected Parcel doInBackground() throws Exception {
+            ParcelsTableModel.this.manager.updateParcel(parcel);
+            return parcel;
+        }
+
+        protected void done() {
+            fireTableCellUpdated(rowIndex, coulmnIndex);
+        }
+    }
+
     public void createParcel(String location, Boolean withElectricity, Boolean withWater) {
         CreateParcelWorker createParcelWorker = new CreateParcelWorker(location, withElectricity, withWater);
         createParcelWorker.execute();
     }
-    
+
     private class CreateParcelWorker extends SwingWorker<Parcel, Void> {
-        
+
         private final Parcel parcel;
-        
+
         public CreateParcelWorker(String location, Boolean withElectricity, Boolean withWater) {
             this.parcel = new Parcel(location, withElectricity, withWater);
         }
@@ -135,7 +202,7 @@ public class ParcelsTableModel extends AbstractTableModel {
             ParcelsTableModel.this.parcels.add(parcel);
             return parcel;
         }
-        
+
         protected void done() {
             int row = ParcelsTableModel.this.parcels.size() - 1;
             ParcelsTableModel.this.fireTableRowsInserted(row, row);
@@ -146,18 +213,18 @@ public class ParcelsTableModel extends AbstractTableModel {
         DeleteParcelWorker deleteParcelWorker = new DeleteParcelWorker(rows);
         deleteParcelWorker.execute();
     }
-    
+
     public class DeleteParcelWorker extends SwingWorker<int[], Void> {
 
         private int[] rows;
-        
+
         public DeleteParcelWorker(int[] rows) {
             this.rows = rows;
         }
-        
+
         @Override
         protected int[] doInBackground() throws Exception {
-            for (int i = rows.length-1; i >= 0; i--) {
+            for (int i = rows.length - 1; i >= 0; i--) {
                 Parcel parcel = ParcelsTableModel.this.parcels.get(rows[i]);
                 ParcelsTableModel.this.manager.deleteParcel(parcel);
                 ParcelsTableModel.this.parcels.remove(parcel);
@@ -167,7 +234,7 @@ public class ParcelsTableModel extends AbstractTableModel {
 
         @Override
         protected void done() {
-            for (int i = rows.length-1; i >= 0; i--) {
+            for (int i = rows.length - 1; i >= 0; i--) {
                 ParcelsTableModel.this.fireTableRowsDeleted(rows[i], rows[i]);
             }
         }
@@ -177,15 +244,15 @@ public class ParcelsTableModel extends AbstractTableModel {
         FilterParcelWorker filterParcelWorker = new FilterParcelWorker(filter);
         filterParcelWorker.execute();
     }
-    
+
     public class FilterParcelWorker extends SwingWorker<List<Parcel>, Void> {
 
         private final String filter;
-        
+
         public FilterParcelWorker(String filter) {
             this.filter = filter;
         }
-        
+
         @Override
         protected List<Parcel> doInBackground() throws Exception {
             ParcelsTableModel.this.setParcels(ParcelsTableModel.this.manager.filterParcels(filter));
@@ -196,7 +263,7 @@ public class ParcelsTableModel extends AbstractTableModel {
         protected void done() {
             ParcelsTableModel.this.fireTableDataChanged();
         }
-        
+
     }
 
     public void clearParcelTable() {

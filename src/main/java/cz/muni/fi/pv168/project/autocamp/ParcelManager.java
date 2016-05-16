@@ -41,6 +41,13 @@ public interface ParcelManager {
     Parcel findParcelByID(Long id);
     
     /**
+     * find specific parcel by its location
+     * @param location of the parcel
+     * @return parcel with given location
+     */
+    Parcel findParcelByLocation(String location);
+    
+    /**
      * finds all parcels
      * @return list of all parcels
      */

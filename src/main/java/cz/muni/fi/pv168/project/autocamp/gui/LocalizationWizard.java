@@ -15,10 +15,13 @@ import java.util.ResourceBundle;
  * @version May 16, 2016
  */
 public class LocalizationWizard {
-    private static final String DEFAULT_SETTINGS = "default_locales_"+Locale.getDefault().toString();
+    private static final String DEFAULT_SETTINGS = "default_locales";
 
     static public String getString(String key) {
-        return ResourceBundle.getBundle(DEFAULT_SETTINGS).getString(key);
+        try{
+            return ResourceBundle.getBundle(DEFAULT_SETTINGS+"_"+Locale.getDefault().toString()).getString(key);
+        } catch(Exception ex){
+            return ResourceBundle.getBundle(DEFAULT_SETTINGS).getString(key);
+        }
     }
-
 }

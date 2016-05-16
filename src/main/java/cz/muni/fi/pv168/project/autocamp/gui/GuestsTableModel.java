@@ -125,8 +125,7 @@ public class GuestsTableModel extends AbstractTableModel {
             default:
                 throw new IllegalArgumentException("columnIndex");
         }
-        manager.updateGuest(guest);
-        fireTableCellUpdated(rowIndex, columnIndex);
+        updateGuest(guest, rowIndex, columnIndex);
     }
 
     @Override
@@ -148,14 +147,43 @@ public class GuestsTableModel extends AbstractTableModel {
         this.fireTableDataChanged();
     }
 
+    public void updateGuest(Guest guest, int rowIndex, int columnIndex) {
+        UpdateGuestWorker updateGuestWorker = new UpdateGuestWorker(guest, rowIndex, columnIndex, GuestsTableModel.this);
+        updateGuestWorker.execute();
+    }
+
+    private class UpdateGuestWorker extends SwingWorker<Guest, Void> {
+
+        private final Guest guest;
+        private int rowIndex;
+        private int coulmnIndex;
+
+        public UpdateGuestWorker(Guest guest, int rowIndex, int ColumnIndex, GuestsTableModel tableModel) {
+            this.guest = guest;
+            this.rowIndex = rowIndex;
+            this.coulmnIndex = coulmnIndex;
+        }
+
+        @Override
+        protected Guest doInBackground() throws Exception {
+            GuestsTableModel.this.manager.updateGuest(guest);
+            return guest;
+        }
+
+        protected void done() {
+            fireTableCellUpdated(rowIndex, coulmnIndex);
+        }
+    }
+
     public void createGuest(String fullName, String phone) {
         CreateGuestWorker createGuestWorker = new CreateGuestWorker(fullName, phone, GuestsTableModel.this);
         createGuestWorker.execute();
     }
+
     private class CreateGuestWorker extends SwingWorker<Guest, Void> {
-        
+
         private final Guest guest;
-        
+
         public CreateGuestWorker(String fullName, String phone, GuestsTableModel tableModel) {
             this.guest = new Guest(fullName, phone);
         }
@@ -166,30 +194,29 @@ public class GuestsTableModel extends AbstractTableModel {
             GuestsTableModel.this.guests.add(guest);
             return guest;
         }
-        
+
         protected void done() {
             int row = GuestsTableModel.this.guests.size() - 1;
-            GuestsTableModel.this.fireTableRowsInserted(row , row);
+            GuestsTableModel.this.fireTableRowsInserted(row, row);
         }
     }
-    
 
     public void deleteGuest(int[] rows) {
         DeleteGuestWorker deleteGuestWorker = new DeleteGuestWorker(rows);
         deleteGuestWorker.execute();
     }
-    
+
     private class DeleteGuestWorker extends SwingWorker<int[], Void> {
 
         private int[] rows;
-        
+
         public DeleteGuestWorker(int[] rows) {
             this.rows = rows;
         }
-        
+
         @Override
         protected int[] doInBackground() throws Exception {
-            for (int i = rows.length - 1; i >= 0 ; i--) {
+            for (int i = rows.length - 1; i >= 0; i--) {
                 Guest guest = GuestsTableModel.this.guests.get(rows[i]);
                 GuestsTableModel.this.manager.deleteGuest(guest);
                 GuestsTableModel.this.guests.remove(guest);
@@ -199,7 +226,7 @@ public class GuestsTableModel extends AbstractTableModel {
 
         @Override
         protected void done() {
-            for (int i = rows.length-1; i >= 0; i--) {
+            for (int i = rows.length - 1; i >= 0; i--) {
                 GuestsTableModel.this.fireTableRowsDeleted(rows[i], rows[i]);
             }
         }
@@ -209,15 +236,15 @@ public class GuestsTableModel extends AbstractTableModel {
         FilterGuestWorker filterGuestWorker = new FilterGuestWorker(filter);
         filterGuestWorker.execute();
     }
-    
+
     private class FilterGuestWorker extends SwingWorker<List<Guest>, Void> {
 
         private final String filter;
-        
+
         public FilterGuestWorker(String filter) {
             this.filter = filter;
         }
-        
+
         @Override
         protected List<Guest> doInBackground() throws Exception {
             GuestsTableModel.this.setGuests(GuestsTableModel.this.manager.filterGuests(filter));

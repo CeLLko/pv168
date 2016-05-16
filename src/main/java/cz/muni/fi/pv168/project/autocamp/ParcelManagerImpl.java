@@ -182,6 +182,35 @@ public class ParcelManagerImpl implements ParcelManager {
                     "Error while retrieving parcel with id " + id, ex);
         }
     }
+    @Override
+    public Parcel findParcelByLocation(String location) {
+        try (Connection connection = dataSource.getConnection();
+             PreparedStatement st = connection.prepareStatement(
+                        "SELECT * FROM PARCEL WHERE location = ?")) {
+            
+            st.setString(1, location);
+            
+            ResultSet rs = st.executeQuery();
+
+            if (rs.next()) {
+                Parcel parcel = resultSetToParcel(rs);
+                
+                if (rs.next()) {
+                    throw new DBInteractionException(
+                        "Internal Error: More entities with the same location"
+                        + "(given location:" + location +"; found parcels:" + parcel
+                        + " and " + resultSetToParcel(rs) + ")");
+                }
+                
+                return parcel;
+            } else {
+                return null;
+            }
+
+        } catch (SQLException ex) {
+            throw new DBInteractionException("Error when retrieving parcels with location" + location, ex);
+        }
+    }
 
     @Override
     public List<Parcel> findAllParcels() {
