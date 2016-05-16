@@ -33,9 +33,17 @@ public class ReservationsTableModel extends AbstractTableModel {
     private ReservationManager manager;
 
     public ReservationsTableModel() {
-        dataSource = DBUtils.setDataSource();
+        dataSource = prepareDataSource();
         manager = new ReservationManagerImpl(dataSource);
         reservations = manager.findAllReservations();
+    }
+
+    private DataSource prepareDataSource() {
+        ClientDataSource ds = new ClientDataSource();
+        ds.setDatabaseName("pv168");
+        ds.setUser("pv168");
+        ds.setPassword("pv168");
+        return ds;
     }
 
     public ReservationManager getManager() {
