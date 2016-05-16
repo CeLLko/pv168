@@ -334,4 +334,97 @@ public class ReservationManagerImplTest {
         ds.setCreateDatabase("create");
         return ds;
     }
+    
+    @Test
+    public void testFilterUsingEmptyString()  {
+        prepareTestFilter();
+        
+        assertThat(manager.filterReservations(""))
+                .usingFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(reservationExpired1, 
+                                           reservationExpired2,
+                                           reservationFuture1, 
+                                           reservationFuture2,
+                                           reservationCurrent1, 
+                                           reservationCurrent2,
+                                           reservationCurrent3);
+    }
+    
+    @Test
+    public void testFilterSingleLetter()  {
+        prepareTestFilter();
+        
+        assertThat(manager.filterReservations("a"))
+                .usingFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(reservationExpired1, 
+                                           reservationExpired2,
+                                           reservationFuture1, 
+                                           reservationFuture2);
+    }
+    
+    @Test
+    public void testFilterSingleDigit()  {
+        prepareTestFilter();
+        
+        assertThat(manager.filterReservations("2"))
+                .usingFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(reservationExpired2,  //id of the parcel is 2 -> filter should catch it
+                                           reservationCurrent2,
+                                           reservationCurrent3);
+    }
+    
+    @Test
+    public void testFilterLetters()  {
+        prepareTestFilter();
+        
+        assertThat(manager.filterReservations("ab"))
+                .usingFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(reservationExpired2,
+                                           reservationFuture2);
+        
+        assertThat(manager.filterReservations("ba"))
+                .usingFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(reservationFuture1,
+                                           reservationFuture2);
+    }
+    
+    @Test
+    public void testFilterDigits()  {
+        prepareTestFilter();
+        
+        assertThat(manager.filterReservations("12"))
+                .usingFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(reservationCurrent2);
+        
+        assertThat(manager.filterReservations("21"))
+                .usingFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(reservationCurrent3);
+    }
+    
+    @Test
+    public void testFilterMiddle()  {
+        prepareTestFilter();
+        
+        assertThat(manager.filterReservations("b:1"))
+                .usingFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(reservationExpired2,
+                                           reservationFuture2,
+                                           reservationCurrent1,
+                                           reservationCurrent2);
+        
+        assertThat(manager.filterReservations("a:1"))
+                .usingFieldByFieldElementComparator()
+                .containsExactlyInAnyOrder(reservationExpired1,
+                                           reservationFuture1);
+    }
+    
+    private void prepareTestFilter() {
+        manager.createReservation(reservationExpired1);
+        manager.createReservation(reservationExpired2);
+        manager.createReservation(reservationFuture1);
+        manager.createReservation(reservationFuture2);
+        manager.createReservation(reservationCurrent1);
+        manager.createReservation(reservationCurrent2);
+        manager.createReservation(reservationCurrent3);
+    }
 }
