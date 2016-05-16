@@ -116,7 +116,11 @@ public class ParcelsTableModel extends AbstractTableModel {
         }
     }
 
-    public void createParcel(Parcel parcel) {
+    public void createParcel(String location, Boolean withElectricity, Boolean withWater) {
+        Parcel parcel = new Parcel();
+        parcel.setLocation(location);
+        parcel.setWithElectricity(withElectricity);
+        parcel.setWithWater(withWater);
         CreateParcelWorker createParcelWorker = new CreateParcelWorker(parcel);
         createParcelWorker.execute();
     }

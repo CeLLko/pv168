@@ -522,11 +522,10 @@ public class AutoCampMenu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void parcelCreateButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parcelCreateButtonActionPerformed
-        Parcel parcel = new Parcel();
-        parcel.setLocation(parcelLocationField.getText());
-        parcel.setWithElectricity(parcelElectricityCheckBox.isSelected());
-        parcel.setWithWater(parcelWaterCheckBox.isSelected());
-        ((ParcelsTableModel) parcelTable.getModel()).createParcel(parcel);
+        ((ParcelsTableModel) parcelTable.getModel()).createParcel(
+                parcelLocationField.getText(), 
+                parcelElectricityCheckBox.isSelected(), 
+                parcelWaterCheckBox.isSelected());
         parcelLocationField.setText(null);
         parcelElectricityCheckBox.setSelected(false);
         parcelWaterCheckBox.setSelected(false);
@@ -582,6 +581,8 @@ public class AutoCampMenu extends javax.swing.JFrame {
 
     private void guestCreateButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_guestCreateButtonMouseClicked
         ((GuestsTableModel) guestTable.getModel()).createGuest(guestFullNameField.getText(), guestPhoneField.getText());
+        guestFullNameField.setText(null);
+        guestPhoneField.setText(null);
     }//GEN-LAST:event_guestCreateButtonMouseClicked
 
     private void parcelPopupSelectFilterButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_parcelPopupSelectFilterButtonMouseClicked
