@@ -57,4 +57,13 @@ public interface ReservationManager {
      */
     List<Reservation> findAllReservations();
     
+    /**
+     * Find all reservations with given filter parameter in their 
+     * ID or location.
+     *
+     * @param filter wanted value
+     * @return list of reservations whose attributes contain given filter, 
+     *         in case of id values must be the same
+     */
+    List<Reservation> filterReservations(String filter);
 }

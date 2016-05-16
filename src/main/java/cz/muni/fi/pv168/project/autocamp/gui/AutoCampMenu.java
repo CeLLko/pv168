@@ -34,6 +34,13 @@ public class AutoCampMenu extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        parcelPopupSelect = new javax.swing.JFrame();
+        parcelPopupSelectFilterLabel = new javax.swing.JLabel();
+        parcelPopupSelectFilterField = new javax.swing.JTextField();
+        parcelPopupSelectFilterButton = new javax.swing.JButton();
+        parcelPopupSelectConfirmButton = new javax.swing.JButton();
+        parcelPopupSelectScrollPane = new javax.swing.JScrollPane();
+        parcelPopupSelectTable = new javax.swing.JTable();
         leftPanel = new javax.swing.JPanel();
         reservationsButton = new javax.swing.JButton();
         guestsButton = new javax.swing.JButton();
@@ -80,6 +87,67 @@ public class AutoCampMenu extends javax.swing.JFrame {
         reservationDeleteButton = new javax.swing.JButton();
         reservationParcelField = new javax.swing.JTextField();
         reservationParcelLabel = new javax.swing.JLabel();
+
+        parcelPopupSelectFilterLabel.setText("Filter:");
+
+        parcelPopupSelectFilterButton.setText("Filter");
+        parcelPopupSelectFilterButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                parcelPopupSelectFilterButtonMouseClicked(evt);
+            }
+        });
+        parcelPopupSelectFilterButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                parcelPopupSelectFilterButtonActionPerformed(evt);
+            }
+        });
+
+        parcelPopupSelectConfirmButton.setText("Select");
+        parcelPopupSelectConfirmButton.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                parcelPopupSelectConfirmButtonMouseClicked(evt);
+            }
+        });
+
+        parcelPopupSelectTable.setModel(new ParcelsTableModel());
+        parcelPopupSelectScrollPane.setViewportView(parcelPopupSelectTable);
+
+        javax.swing.GroupLayout parcelPopupSelectLayout = new javax.swing.GroupLayout(parcelPopupSelect.getContentPane());
+        parcelPopupSelect.getContentPane().setLayout(parcelPopupSelectLayout);
+        parcelPopupSelectLayout.setHorizontalGroup(
+            parcelPopupSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 800, Short.MAX_VALUE)
+            .addGroup(parcelPopupSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(parcelPopupSelectLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(parcelPopupSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(parcelPopupSelectScrollPane)
+                        .addGroup(parcelPopupSelectLayout.createSequentialGroup()
+                            .addComponent(parcelPopupSelectFilterLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(parcelPopupSelectFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 471, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(parcelPopupSelectFilterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(parcelPopupSelectConfirmButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addContainerGap()))
+        );
+        parcelPopupSelectLayout.setVerticalGroup(
+            parcelPopupSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(parcelPopupSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(parcelPopupSelectLayout.createSequentialGroup()
+                    .addContainerGap()
+                    .addGroup(parcelPopupSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(parcelPopupSelectFilterLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(parcelPopupSelectLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(parcelPopupSelectConfirmButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(parcelPopupSelectFilterButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(parcelPopupSelectFilterField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                    .addComponent(parcelPopupSelectScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 235, Short.MAX_VALUE)
+                    .addContainerGap()))
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         getContentPane().setLayout(new javax.swing.BoxLayout(getContentPane(), javax.swing.BoxLayout.LINE_AXIS));
@@ -427,12 +495,13 @@ public class AutoCampMenu extends javax.swing.JFrame {
                             .addComponent(reservationsDateToChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(reservationsToLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(ReservationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(reservationGuestField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(reservationGuestLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(ReservationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(ReservationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                 .addComponent(reservationParcelField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addComponent(reservationParcelLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(reservationParcelLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(ReservationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(reservationGuestField, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(reservationGuestLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(reservationsFromLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(reservationsCreateButton, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -515,6 +584,18 @@ public class AutoCampMenu extends javax.swing.JFrame {
         ((GuestsTableModel) guestTable.getModel()).createGuest(guestFullNameField.getText(), guestPhoneField.getText());
     }//GEN-LAST:event_guestCreateButtonMouseClicked
 
+    private void parcelPopupSelectFilterButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_parcelPopupSelectFilterButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_parcelPopupSelectFilterButtonMouseClicked
+
+    private void parcelPopupSelectFilterButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_parcelPopupSelectFilterButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_parcelPopupSelectFilterButtonActionPerformed
+
+    private void parcelPopupSelectConfirmButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_parcelPopupSelectConfirmButtonMouseClicked
+        // TODO add your handling code here:
+    }//GEN-LAST:event_parcelPopupSelectConfirmButtonMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -575,6 +656,13 @@ public class AutoCampMenu extends javax.swing.JFrame {
     private javax.swing.JLabel parcelFilterLabel;
     private javax.swing.JTextField parcelLocationField;
     private javax.swing.JLabel parcelLocationLabel;
+    private javax.swing.JFrame parcelPopupSelect;
+    private javax.swing.JButton parcelPopupSelectConfirmButton;
+    private javax.swing.JButton parcelPopupSelectFilterButton;
+    private javax.swing.JTextField parcelPopupSelectFilterField;
+    private javax.swing.JLabel parcelPopupSelectFilterLabel;
+    private javax.swing.JScrollPane parcelPopupSelectScrollPane;
+    private javax.swing.JTable parcelPopupSelectTable;
     private javax.swing.JLabel parcelResourcesLabel;
     private javax.swing.JTable parcelTable;
     private javax.swing.JScrollPane parcelTablePanel;

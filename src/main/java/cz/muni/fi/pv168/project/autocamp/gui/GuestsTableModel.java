@@ -8,11 +8,11 @@ package cz.muni.fi.pv168.project.autocamp.gui;
 import cz.muni.fi.pv168.project.autocamp.Guest;
 import cz.muni.fi.pv168.project.autocamp.GuestManager;
 import cz.muni.fi.pv168.project.autocamp.GuestManagerImpl;
-import cz.muni.fi.pv168.project.autocamp.Parcel;
-import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
+import java.util.ArrayList;
 
 import java.util.List;
 import javax.sql.DataSource;
+import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
 import org.apache.derby.jdbc.ClientDataSource;
 
@@ -150,44 +150,88 @@ public class GuestsTableModel extends AbstractTableModel {
     }
 
     public void createGuest(String fullName, String phone) {
-        GuestWorker.CreateGuestWorker createGuestWorker = new GuestWorker.CreateGuestWorker(fullName, phone, GuestsTableModel.this);
+        CreateGuestWorker createGuestWorker = new CreateGuestWorker(fullName, phone, GuestsTableModel.this);
         createGuestWorker.execute();
     }
 
     public void deleteGuest(List<Guest> guests) {
-        GuestWorker.DeleteGuestWorker deleteGuestWorker = new GuestWorker.DeleteGuestWorker(guests, GuestsTableModel.this);
+        DeleteGuestWorker deleteGuestWorker = new DeleteGuestWorker(guests, GuestsTableModel.this);
         deleteGuestWorker.execute();
     }
 
     public void filterGuests(String filter) {
-        GuestWorker.FilterGuestWorker filterGuestWorker = new GuestWorker.FilterGuestWorker(filter, GuestsTableModel.this);
+        FilterGuestWorker filterGuestWorker = new FilterGuestWorker(filter, GuestsTableModel.this);
         filterGuestWorker.execute();
     }
-    /*
-    private class fillingWorker extends SwingWorker<List<Guest>, Void> {
-
-        private List<Guest> filteredGuests;
-        private String filter = "";
-
-        private fillingWorker() {
+    private static class CreateGuestWorker extends SwingWorker<List<Guest>, Void> {
+        
+        private final Guest guest;
+        private final GuestsTableModel tableModel;
+        public static List<Guest> guests;
+        
+        public CreateGuestWorker(String fullName, String phone, GuestsTableModel tableModel) {
+            this.guest = new Guest(fullName, phone);
+            this.tableModel = tableModel;
         }
 
-        private fillingWorker(String param) {
-            filter = param;
-        }
-
+        @Override
         protected List<Guest> doInBackground() throws Exception {
-            GuestsTableModel.this.dataSource = prepareDataSource();
-            GuestManager manager = new GuestManagerImpl(GuestsTableModel.this.dataSource);
-            this.filteredGuests = new ArrayList(manager.filterGuestsWithGivenParamter(filter));
-            return this.filteredGuests;
+            tableModel.getManager().createGuest(guest);
+            guests = tableModel.getManager().findAllGuests();
+            return guests;
+        }
+        
+        protected void done() {
+            tableModel.setGuests(guests);
+        }
+    }
+    
+    private static class DeleteGuestWorker extends SwingWorker<List<Guest>, Void> {
+
+        private final GuestsTableModel tableModel;
+        private List<Guest> guests = new ArrayList<>();
+        
+        public DeleteGuestWorker(List<Guest> guests, GuestsTableModel tableModel) {
+            this.tableModel = tableModel;
+            this.guests.addAll(guests);
+        }
+        
+        @Override
+        protected List<Guest> doInBackground() throws Exception {
+            for (int i = 0; i < guests.size(); i++) {
+                tableModel.getManager().deleteGuest(guests.get(i));
+            }
+            guests = tableModel.getManager().findAllGuests();
+            return guests;
         }
 
+        @Override
         protected void done() {
-            GuestsTableModel.this.clearTable();
-            for (int i = 0; i < this.filteredGuests.size(); ++i) {
-                GuestsTableModel.this.addGuest((Guest) this.filteredGuests.get(i));
-            }
+            tableModel.setGuests(guests);
         }
-    }*/
+    }
+    
+    private static class FilterGuestWorker extends SwingWorker<List<Guest>, Void> {
+
+        private final GuestsTableModel tableModel;
+        private final String filter;
+        private List<Guest> guests = new ArrayList<>();
+        
+        public FilterGuestWorker(String filter, GuestsTableModel tableModel) {
+            this.filter = filter;
+            this.tableModel = tableModel;
+        }
+        
+        @Override
+        protected List<Guest> doInBackground() throws Exception {
+            guests.addAll(tableModel.getManager().filterGuests(filter));
+            return guests;
+        }
+
+        @Override
+        protected void done() {
+            tableModel.clearGuestTable();
+            tableModel.setGuests(this.guests);
+        }
+    }
 }
