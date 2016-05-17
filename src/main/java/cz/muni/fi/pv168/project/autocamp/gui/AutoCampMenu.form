@@ -566,7 +566,6 @@
                       <Connection code="new ReservationsTableModel()" type="code"/>
                     </Property>
                     <Property name="cellEditor" postCode="TableColumn parcelColumn =  reservationTable.getColumnModel().getColumn(3);&#xa;parcelColumn.setCellEditor(new ParcelCellEditor(this));&#xa;parcelColumn.setCellRenderer(new ParcelCellRenderer());&#xa;TableColumn guestColumn =  reservationTable.getColumnModel().getColumn(4);&#xa;guestColumn.setCellEditor(new GuestCellEditor(this));&#xa;guestColumn.setCellRenderer(new GuestCellRenderer());"/>
-                    <Property name="rowHeight" type="int" value="25"/>
                     <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                       <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                     </Property>

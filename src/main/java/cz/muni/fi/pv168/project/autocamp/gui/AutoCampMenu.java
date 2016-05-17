@@ -358,7 +358,6 @@ public class AutoCampMenu extends javax.swing.JFrame {
         TableColumn guestColumn =  reservationTable.getColumnModel().getColumn(4);
         guestColumn.setCellEditor(new GuestCellEditor(this));
         guestColumn.setCellRenderer(new GuestCellRenderer());
-        reservationTable.setRowHeight(25);
         reservationsScrollPane.setViewportView(reservationTable);
 
         reservationsCreateButton.setText(LocalizationWizard.getString("Create"));
