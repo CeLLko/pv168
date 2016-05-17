@@ -351,7 +351,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
 
         autocampTabbedPane.addTab("Parcels", parcelsTab);
 
-        reservationTable.setModel(new ReservationsTableModel());
+        reservationTable.setModel(new ReservationsTableModel(reservationTable));
         TableColumn parcelColumn =  reservationTable.getColumnModel().getColumn(3);
         parcelColumn.setCellEditor(new ParcelCellEditor(this));
         parcelColumn.setCellRenderer(new ParcelCellRenderer());
@@ -674,20 +674,22 @@ public class AutoCampMenu extends javax.swing.JFrame {
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(AutoCampMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }  catch (ClassNotFoundException ex) {
+            logger.error(ex.getMessage());
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(AutoCampMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.error(ex.getMessage());
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(AutoCampMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.error(ex.getMessage());
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(AutoCampMenu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            logger.error(ex.getMessage());
         }
         //</editor-fold>
+        
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
+                logger.info("Application initialized.");
                 new AutoCampMenu().setVisible(true);
             }
         });

@@ -4,7 +4,7 @@
     <!--Console appender-->
     <appender name="console" class="org.apache.log4j.ConsoleAppender">
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{DATE} [%t] %-5p (%F [%M]:%L) - %m %n"/>
+            <param name="ConversionPattern" value="%d{DATE} - %m [%t] %-5p (%F [%M]:%L) %n"/>
         </layout>
     </appender>
     
@@ -15,14 +15,14 @@
         <param name="MaxBackupIndex" value="3"/>
         <param name="Encoding" value="UTF-8"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d %-5p (%F [%M]:%L) - %m %n"/>
+            <param name="ConversionPattern" value="%d %-5p - %m (%F [%M]:%L) %n"/>
         </layout>
     </appender>
     
     <!--null appender-->
     <appender name="null" class="org.apache.log4j.varia.NullAppender">
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d %-5p (%F [%M]:%L) - %m %n"/>
+            <param name="ConversionPattern" value="%d %-5p - %m (%F [%M]:%L) %n"/>
         </layout>
     </appender>
     
