@@ -15,6 +15,8 @@ import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.sql.DataSource;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
 import org.apache.derby.jdbc.ClientDataSource;
@@ -30,11 +32,13 @@ public class GuestsTableModel extends AbstractTableModel {
     private List<Guest> guests;
     private DataSource dataSource;
     private GuestManager manager;
+    private JTable table;
 
-    public GuestsTableModel() {
+    public GuestsTableModel(JTable table) {
         dataSource = DBUtils.setDataSource();
         manager = new GuestManagerImpl(dataSource);
         guests = manager.findAllGuests();
+        this.table = table;
     }
 
     public GuestManager getManager() {
@@ -124,6 +128,8 @@ public class GuestsTableModel extends AbstractTableModel {
         try {
             updateGuest(guest, rowIndex, columnIndex);
         } catch (InterruptedException | ExecutionException ex) {
+            JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Update_guest") + "\n"
+                    + LocalizationWizard.getString("Log_file_info"));
             AutoCampMenu.logger.error(ex.getMessage());
         }
     }

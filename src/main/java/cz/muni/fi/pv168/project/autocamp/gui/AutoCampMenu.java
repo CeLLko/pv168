@@ -20,7 +20,6 @@ import org.slf4j.LoggerFactory;
  */
 public class AutoCampMenu extends javax.swing.JFrame {
 
-    public static JOptionPane jOptionPane;
     public static final Logger logger = LoggerFactory.getLogger(AutoCampMenu.class);
 
     /**
@@ -169,7 +168,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
         autocampTabbedPane.setTabPlacement(javax.swing.JTabbedPane.BOTTOM);
         autocampTabbedPane.setToolTipText("");
 
-        guestTable.setModel(new GuestsTableModel() );
+        guestTable.setModel(new GuestsTableModel(guestTable) );
         guestTablePanel.setViewportView(guestTable);
 
         guestCreateButton.setText(LocalizationWizard.getString("Create"));
@@ -260,7 +259,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
 
         autocampTabbedPane.addTab("Guest", guestsTab);
 
-        parcelTable.setModel(new ParcelsTableModel());
+        parcelTable.setModel(new ParcelsTableModel(parcelTable));
         parcelTablePanel.setViewportView(parcelTable);
 
         parcelCreateButton.setText(LocalizationWizard.getString("Create"));
@@ -543,7 +542,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
             parcelElectricityCheckBox.setSelected(false);
             parcelWaterCheckBox.setSelected(false);
         } catch (ExecutionException | InterruptedException ex) {
-            AutoCampMenu.jOptionPane.showMessageDialog(this, LocalizationWizard.getString("Create_parcel")
+            JOptionPane.showMessageDialog(this, LocalizationWizard.getString("Create_parcel") + "\n"
                     + LocalizationWizard.getString("Log_file_info"));
             logger.error(ex.getMessage());
         }
@@ -569,7 +568,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
         try {
             ((GuestsTableModel) guestTable.getModel()).deleteGuest(guestTable.getSelectedRows());
         } catch (InterruptedException | ExecutionException | DBInteractionException ex) {
-            JOptionPane.showMessageDialog(this, LocalizationWizard.getString("Delete_guest")
+            JOptionPane.showMessageDialog(this, LocalizationWizard.getString("Delete_guest") + "\n"
                     + LocalizationWizard.getString("Log_file_info"));
             logger.error(ex.getMessage());
         }
@@ -587,7 +586,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
         try {
             ((ParcelsTableModel) parcelTable.getModel()).deleteParcel(parcelTable.getSelectedRows());
         } catch (InterruptedException | ExecutionException | DBInteractionException ex) {
-            JOptionPane.showMessageDialog(this, LocalizationWizard.getString("Delete_parcel")
+            JOptionPane.showMessageDialog(this, LocalizationWizard.getString("Delete_parcel") + "\n"
                     + LocalizationWizard.getString("Log_file_info"));
             logger.error(ex.getMessage());
         }
@@ -597,7 +596,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
         try {
             ((ReservationsTableModel) reservationTable.getModel()).deleteReservation(reservationTable.getSelectedRows());
         } catch (InterruptedException | ExecutionException | DBInteractionException ex) {
-            JOptionPane.showMessageDialog(this, LocalizationWizard.getString("Delete_reservation")
+            JOptionPane.showMessageDialog(this, LocalizationWizard.getString("Delete_reservation") + "\n"
                     + LocalizationWizard.getString("Log_file_info"));
             logger.error(ex.getMessage());
         }
@@ -623,7 +622,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
             guestFullNameField.setText(null);
             guestPhoneField.setText(null);
         } catch (InterruptedException | ExecutionException ex) {
-            AutoCampMenu.jOptionPane.showMessageDialog(this, LocalizationWizard.getString("Create_guest")
+            JOptionPane.showMessageDialog(this, LocalizationWizard.getString("Create_guest") + "\n"
                     + LocalizationWizard.getString("Log_file_info"));
             logger.error(ex.getMessage());
         }
@@ -663,7 +662,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
             reservationGuestField.setText(null);
             reservationParcelField.setText(null);
         } catch (InterruptedException | ExecutionException |NumberFormatException ex) {
-            AutoCampMenu.jOptionPane.showMessageDialog(this, LocalizationWizard.getString("Create_reservation")
+            JOptionPane.showMessageDialog(this, LocalizationWizard.getString("Create_reservation") + "\n"
                     + LocalizationWizard.getString("Log_file_info"));
             logger.error(ex.getMessage());
         }
@@ -756,13 +755,4 @@ public class AutoCampMenu extends javax.swing.JFrame {
     private javax.swing.JScrollPane reservationsScrollPane;
     private javax.swing.JLabel reservationsToLabel;
     // End of variables declaration//GEN-END:variables
-
-    public JDateChooser getReservationsDateFromChooser() {
-        return reservationsDateFromChooser;
-    }
-
-    public JDateChooser getReservationsDateToChooser() {
-        return reservationsDateToChooser;
-    }
-
 }
