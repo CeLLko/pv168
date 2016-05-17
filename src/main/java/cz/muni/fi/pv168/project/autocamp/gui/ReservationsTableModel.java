@@ -22,6 +22,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.sql.DataSource;
+import javax.swing.JTable;
 import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
 
@@ -38,13 +39,15 @@ public class ReservationsTableModel extends AbstractTableModel {
     private final ReservationManager manager;
     private final GuestManager guestManager;
     private final ParcelManager parcelManager;
+    private JTable table;
 
-    public ReservationsTableModel() {
+    public ReservationsTableModel(JTable table) {
         dataSource = DBUtils.setDataSource();
         manager = new ReservationManagerImpl(dataSource);
         guestManager = new GuestManagerImpl(dataSource);
         parcelManager = new ParcelManagerImpl(dataSource);
         reservations = manager.findAllReservations();
+        this.table = table;
     }
 
     public ReservationManager getManager() {
