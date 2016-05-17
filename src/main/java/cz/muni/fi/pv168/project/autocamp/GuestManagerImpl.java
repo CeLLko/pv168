@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.project.autocamp;
 
+import cz.muni.fi.pv168.project.autocamp.gui.AutoCampMenu;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +25,7 @@ public class GuestManagerImpl implements GuestManager {
     }
 
     @Override
-    public void createGuest(Guest guest) throws DBInteractionException {
+    public void createGuest(Guest guest) {
         validate(guest);
         
         if (guest.getId() != null) {
@@ -86,7 +87,7 @@ public class GuestManagerImpl implements GuestManager {
     }
 
     @Override
-    public void deleteGuest(Guest guest) {
+    public void deleteGuest(Guest guest){
         if (guest == null) {
             throw new IllegalArgumentException("Guest is null.");
         }
@@ -105,7 +106,7 @@ public class GuestManagerImpl implements GuestManager {
             int count = st.executeUpdate();
             if (count == 0) {
                 throw new DBInteractionException(
-                        "Given guest " + guest + " does not exist within the database.");
+                        "Given guest " + guest + " does not exist within the database or there is a reservation for this guest.");
             }
             else if(count != 1) {
                 throw new DBInteractionException(
@@ -118,7 +119,7 @@ public class GuestManagerImpl implements GuestManager {
     }
 
     @Override
-    public Guest findGuestByID(Long id)  throws  DBInteractionException{
+    public Guest findGuestByID(Long id) throws  DBInteractionException {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement st = connection.prepareStatement(
                      "SELECT id,fullname,phone FROM GUEST WHERE id = ?")) {
@@ -147,7 +148,7 @@ public class GuestManagerImpl implements GuestManager {
     }
 
     @Override
-    public List<Guest> findAllGuests() {
+    public List<Guest> findAllGuests() throws  DBInteractionException {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement st = connection.prepareStatement(
                      "SELECT id,fullname,phone FROM GUEST")) {
@@ -166,7 +167,7 @@ public class GuestManagerImpl implements GuestManager {
     }
     
     @Override
-    public List<Guest> findGuestsByName(String fullName) {
+    public List<Guest> findGuestsByName(String fullName) throws  DBInteractionException {
         try (Connection connection = dataSource.getConnection();
              PreparedStatement st = connection.prepareStatement(
                         "SELECT id,fullname,phone FROM GUEST WHERE fullname = ?")) {
@@ -225,12 +226,19 @@ public class GuestManagerImpl implements GuestManager {
 
     private void validate(Guest guest) throws IllegalArgumentException{
         if(guest == null) {
+            AutoCampMenu.logger.error("Guest is not initialized.");
             throw new IllegalArgumentException("Guest is null");
         }
-        if(guest.getFullName()== null) {
+        if(guest.getFullName() == null) {
+            AutoCampMenu.logger.error("Guest does not have name set.");
             throw new IllegalArgumentException("Name is null");
         }
+        if(guest.getFullName().length() == 0) {
+            AutoCampMenu.logger.error("Guest does not have name set.");
+            throw new IllegalArgumentException("Name is empty");
+        }
         if(guest.getPhone()== null) {
+            AutoCampMenu.logger.error("Guest does not have a phone number set.");
             throw new IllegalArgumentException("Phone is null");
         }
     }

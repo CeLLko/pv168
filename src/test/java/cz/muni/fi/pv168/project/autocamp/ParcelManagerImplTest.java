@@ -217,7 +217,7 @@ public class ParcelManagerImplTest {
         assertThat(manager.findParcelByID(correctParcel2.getId())).isNotNull();
     }
     
-    @Test (expected = IllegalArgumentException.class)
+    @Test (expected = DBInteractionException.class)
     public void testDeleteNullParcel() {
         manager.deleteParcel(null);
     }

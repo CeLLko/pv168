@@ -5,6 +5,7 @@
  */
 package cz.muni.fi.pv168.project.autocamp.gui;
 
+import cz.muni.fi.pv168.project.autocamp.DBInteractionException;
 import cz.muni.fi.pv168.project.autocamp.Guest;
 import cz.muni.fi.pv168.project.autocamp.GuestManagerImpl;
 import cz.muni.fi.pv168.project.autocamp.Parcel;
@@ -21,6 +22,9 @@ import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.sql.DataSource;
 import javax.swing.AbstractCellEditor;
 import javax.swing.Box;
@@ -42,9 +46,9 @@ import org.apache.derby.jdbc.ClientDataSource;
  */
 public class ReservationsTableModel extends AbstractTableModel {
 
-    private List<Reservation> reservations;
-    private DataSource dataSource;
-    private ReservationManager manager;
+    private final List<Reservation> reservations;
+    private final DataSource dataSource;
+    private final ReservationManager manager;
 
     public ReservationsTableModel() {
         dataSource = DBUtils.setDataSource();
@@ -87,9 +91,9 @@ public class ReservationsTableModel extends AbstractTableModel {
             case 2:
                 return Date.class;
             case 3:
-                return new TextFieldCell().getClass();
-            case 4:
-                return new TextFieldCell().getClass();
+                return String.class;
+            case 4:        
+                return String.class;
             default:
                 throw new IllegalArgumentException("columnIndex");
         }
@@ -139,7 +143,11 @@ public class ReservationsTableModel extends AbstractTableModel {
             default:
                 throw new IllegalArgumentException("columnIndex");
         }
-        updateReservation(reservation, rowIndex, columnIndex);
+        try {
+            updateReservation(reservation, rowIndex, columnIndex);
+        } catch (InterruptedException | ExecutionException ex) {
+            AutoCampMenu.logger.error(ex.getMessage());
+        }
     }
 
     @Override
@@ -183,9 +191,11 @@ public class ReservationsTableModel extends AbstractTableModel {
         this.fireTableDataChanged();
     }
 
-    public void createReservation(Date from, Date to, Long guest, Long parcel) {
+    public void createReservation(Date from, Date to, Long guest, Long parcel) 
+            throws InterruptedException, ExecutionException {
         CreateReservationWorker createReservationWorker = new CreateReservationWorker(from, to, guest, parcel, ReservationsTableModel.this);
         createReservationWorker.execute();
+        createReservationWorker.get();
     }
 
     private class CreateReservationWorker extends SwingWorker<Reservation, Void> {
@@ -204,6 +214,7 @@ public class ReservationsTableModel extends AbstractTableModel {
         protected Reservation doInBackground() throws Exception {
             ReservationsTableModel.this.manager.createReservation(reservation);
             ReservationsTableModel.this.reservations.add(reservation);
+            AutoCampMenu.logger.info("CREATE:" + reservation.toString() + " was succesfully created.");
             return reservation;
         }
 
@@ -213,9 +224,11 @@ public class ReservationsTableModel extends AbstractTableModel {
         }
     }
 
-    public void updateReservation(Reservation reservation, int rowIndex, int columnIndex) {
+    public void updateReservation(Reservation reservation, int rowIndex, int columnIndex) 
+            throws InterruptedException, ExecutionException {
         UpdateReservationWorker updateReservationWorker = new UpdateReservationWorker(reservation, rowIndex, columnIndex, ReservationsTableModel.this);
         updateReservationWorker.execute();
+        updateReservationWorker.get();
     }
 
     private class UpdateReservationWorker extends SwingWorker<Reservation, Void> {
@@ -224,15 +237,16 @@ public class ReservationsTableModel extends AbstractTableModel {
         private int rowIndex;
         private int coulmnIndex;
 
-        public UpdateReservationWorker(Reservation reservation, int rowIndex, int ColumnIndex, ReservationsTableModel tableModel) {
+        public UpdateReservationWorker(Reservation reservation, int rowIndex, int columnIndex, ReservationsTableModel tableModel) {
             this.reservation = reservation;
             this.rowIndex = rowIndex;
-            this.coulmnIndex = coulmnIndex;
+            this.coulmnIndex = columnIndex;
         }
 
         @Override
         protected Reservation doInBackground() throws Exception {
             ReservationsTableModel.this.manager.updateReservation(reservation);
+            AutoCampMenu.logger.info("UPDATE:" + reservation.toString() + " was succesfully updated.");
             return reservation;
         }
 
@@ -241,27 +255,39 @@ public class ReservationsTableModel extends AbstractTableModel {
         }
     }
 
-    public void deleteReservation(int[] rows) {
+    public void deleteReservation(int[] rows) 
+            throws InterruptedException, ExecutionException, DBInteractionException {
         DeleteReservationWorker deleteReservationWorker = new DeleteReservationWorker(rows);
         deleteReservationWorker.execute();
+        if (!deleteReservationWorker.get()) {
+            throw new DBInteractionException("Some reservations could not be deleted.");
+        }
     }
 
-    private class DeleteReservationWorker extends SwingWorker<int[], Void> {
+    private class DeleteReservationWorker extends SwingWorker<Boolean, Void> {
 
         private int[] rows;
+        private boolean result = true;
 
         public DeleteReservationWorker(int[] rows) {
             this.rows = rows;
         }
 
         @Override
-        protected int[] doInBackground() throws Exception {
+        protected Boolean doInBackground() throws Exception {
             for (int i = rows.length - 1; i >= 0; i--) {
                 Reservation reservation = ReservationsTableModel.this.reservations.get(rows[i]);
-                ReservationsTableModel.this.manager.deleteReservation(reservation);
-                ReservationsTableModel.this.reservations.remove(reservation);
+                try {
+                    ReservationsTableModel.this.manager.deleteReservation(reservation);
+                    ReservationsTableModel.this.reservations.remove(reservation);
+                    AutoCampMenu.logger.info("DELETE: " + reservation.toString() + " was succesfully deleted.");
+                } catch (DBInteractionException e) {
+                    AutoCampMenu.logger.error("Could not delete " + reservation.toString() + "; Exception: " + e.getMessage());
+                    result = false;
+                }
+                
             }
-            return rows;
+            return result;
         }
 
         @Override
@@ -288,6 +314,7 @@ public class ReservationsTableModel extends AbstractTableModel {
         @Override
         protected List<Reservation> doInBackground() throws Exception {
             ReservationsTableModel.this.setReservations(ReservationsTableModel.this.manager.filterReservations(filter));
+            AutoCampMenu.logger.info("FILTER: Reservations were succesfully filtered, filter: " + filter + ".");
             return ReservationsTableModel.this.reservations;
         }
 
@@ -297,7 +324,7 @@ public class ReservationsTableModel extends AbstractTableModel {
         }
     }
 
-    private class DialogStringEditor extends AbstractCellEditor
+    /*private class DialogStringEditor extends AbstractCellEditor
             implements TableCellEditor,
             ActionListener {
 
@@ -320,7 +347,7 @@ public class ReservationsTableModel extends AbstractTableModel {
         public void actionPerformed(ActionEvent e) {
             if (EDIT.equals(e.getActionCommand())) {
                 ParcelSelectPopup parcelPopup = new ParcelSelectPopup(this, true,
-                        reservationsDateFromChooser.getDate(),
+                        reservationsDateFromChooser().getDate(),
                         reservationsDateToChooser.getDate(),
                         field);
                 if (newInput == null) {
@@ -345,5 +372,5 @@ public class ReservationsTableModel extends AbstractTableModel {
             oldValue = (String) value;
             return button;
         }
-    }
+    }*/
 }

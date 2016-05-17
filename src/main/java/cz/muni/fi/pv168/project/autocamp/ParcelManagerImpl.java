@@ -1,5 +1,6 @@
 package cz.muni.fi.pv168.project.autocamp;
 
+import cz.muni.fi.pv168.project.autocamp.gui.AutoCampMenu;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,7 +26,7 @@ public class ParcelManagerImpl implements ParcelManager {
     }
 
     @Override
-    public void createParcel(Parcel parcel) throws DBInteractionException {
+    public void createParcel(Parcel parcel) {
         validate(parcel);
         
         if (parcel.getId() != null) {
@@ -52,17 +53,20 @@ public class ParcelManagerImpl implements ParcelManager {
             
         } catch (SQLException ex) {
             throw new DBInteractionException("Error while inserting parcel " + parcel, ex);
-        }
+        } 
     }
 
     private void validate(Parcel parcel) throws IllegalArgumentException{
         if(parcel == null) {
+            AutoCampMenu.logger.error("Parcel is not initialized.");
             throw new IllegalArgumentException("Parcel is null");
         }
         if(parcel.getLocation() == null) {
+            AutoCampMenu.logger.error("Parcel does not have a location set.");
             throw new IllegalArgumentException("Location is null");
         }
         if (!Pattern.matches("\\w+:\\d+", parcel.getLocation())) {
+            AutoCampMenu.logger.error("Location of given parcel has wrong format.");
             throw new IllegalArgumentException("Location has wrong format");
         }
     }
@@ -125,11 +129,11 @@ public class ParcelManagerImpl implements ParcelManager {
     @Override
     public void deleteParcel(Parcel parcel) {
         if (parcel == null) {
-            throw new IllegalArgumentException("Parcel is null.");
+            throw new DBInteractionException("Parcel is null.");
         }
         
         if (parcel.getId() == null) {
-            throw new IllegalArgumentException("Parcel's id is null.");
+            throw new DBInteractionException("Parcel's id is null.");
         }
         
         try (Connection connection = dataSource.getConnection();
@@ -142,7 +146,7 @@ public class ParcelManagerImpl implements ParcelManager {
             int count = st.executeUpdate();
             if (count == 0) {
                 throw new DBInteractionException(
-                        "Given parcel " + parcel + " does not exist within the database.");
+                        "Given parcel " + parcel + " does not exist within the database or there is a reservation for this parcel.");
             }
             else if(count != 1) {
                 throw new DBInteractionException(
@@ -183,7 +187,7 @@ public class ParcelManagerImpl implements ParcelManager {
         }
     }
     @Override
-    public Parcel findParcelByLocation(String location) {
+    public Parcel findParcelByLocation(String location) throws DBInteractionException{
         try (Connection connection = dataSource.getConnection();
              PreparedStatement st = connection.prepareStatement(
                         "SELECT * FROM PARCEL WHERE location = ?")) {
@@ -213,7 +217,7 @@ public class ParcelManagerImpl implements ParcelManager {
     }
 
     @Override
-    public List<Parcel> findAllParcels() {
+    public List<Parcel> findAllParcels() throws DBInteractionException{
         try (Connection connection = dataSource.getConnection();
              PreparedStatement st = connection.prepareStatement(
                      "SELECT id,location,electricity,water FROM parcel")) {
@@ -249,7 +253,7 @@ public class ParcelManagerImpl implements ParcelManager {
     }
 
     @Override
-    public List<Parcel> filterParcels(String filter) {
+    public List<Parcel> filterParcels(String filter) throws DBInteractionException{
         try (Connection connection = dataSource.getConnection();
              PreparedStatement st = connection.prepareStatement(
                      "SELECT id,location,electricity,water FROM PARCEL WHERE LOWER(location) LIKE LOWER(?) OR id = ?")) {
@@ -271,7 +275,7 @@ public class ParcelManagerImpl implements ParcelManager {
             return result;
             
         } catch (SQLException ex) {
-            throw new DBInteractionException("Error while retrieving all parcels.", ex);
+            throw new DBInteractionException("Error while retrieving filtered parcels.", ex);
         }
     }
 }
