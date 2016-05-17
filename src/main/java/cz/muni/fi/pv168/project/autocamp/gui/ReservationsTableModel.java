@@ -13,30 +13,15 @@ import cz.muni.fi.pv168.project.autocamp.Reservation;
 import cz.muni.fi.pv168.project.autocamp.ReservationManager;
 import cz.muni.fi.pv168.project.autocamp.ReservationManagerImpl;
 import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sql.DataSource;
-import javax.swing.AbstractCellEditor;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JPanel;
-import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableCellEditor;
-import org.apache.derby.jdbc.ClientDataSource;
 
 /**
  *
@@ -87,9 +72,9 @@ public class ReservationsTableModel extends AbstractTableModel {
             case 0:
                 return Long.class;
             case 1:
-                return Date.class;
+                return String.class;
             case 2:
-                return Date.class;
+                return String.class;
             case 3:
                 return String.class;
             case 4:        

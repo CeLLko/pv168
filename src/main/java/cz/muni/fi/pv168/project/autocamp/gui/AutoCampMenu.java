@@ -643,7 +643,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
             reservationsDateToChooser.setDate(null);
             reservationGuestField.setText(null);
             reservationParcelField.setText(null);
-        } catch (InterruptedException | ExecutionException ex) {
+        } catch (InterruptedException | ExecutionException |NumberFormatException ex) {
             AutoCampMenu.jOptionPane.showMessageDialog(this, LocalizationWizard.getString("Create_reservation")
                     + LocalizationWizard.getString("Log_file_info"));
             logger.error(ex.getMessage());

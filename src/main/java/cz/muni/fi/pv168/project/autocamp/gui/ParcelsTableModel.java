@@ -9,15 +9,10 @@ import cz.muni.fi.pv168.project.autocamp.DBInteractionException;
 import cz.muni.fi.pv168.project.autocamp.Parcel;
 import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
 
-import java.sql.SQLException;
-import java.util.ArrayList;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sql.DataSource;
-import javax.swing.JOptionPane;
 import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
 
