@@ -173,8 +173,9 @@ public class GuestsTableModel extends AbstractTableModel {
 
         @Override
         protected Guest doInBackground() throws Exception {
+            Guest oldGuest = manager.findGuestByID(guest.getId());
             GuestsTableModel.this.manager.updateGuest(guest);
-            AutoCampMenu.logger.info("UPDATE:" + guest.toString() + " was succesfully updated.");
+            AutoCampMenu.logger.info("UPDATE:" + oldGuest.toString() + " was succesfully updated to " + guest.toString());
             return guest;
         }
 

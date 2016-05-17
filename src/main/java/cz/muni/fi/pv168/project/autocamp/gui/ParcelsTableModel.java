@@ -177,8 +177,9 @@ public class ParcelsTableModel extends AbstractTableModel {
 
         @Override
         protected Parcel doInBackground() throws Exception {
+            Parcel oldParcel = manager.findParcelByID(parcel.getId());
             ParcelsTableModel.this.manager.updateParcel(parcel);
-            AutoCampMenu.logger.info("UPDATE:" + parcel.toString() + " was succesfully updated.");
+            AutoCampMenu.logger.info("UPDATE:" + oldParcel.toString() + " was succesfully updated to " + parcel.toString());
             return parcel;
         }
 

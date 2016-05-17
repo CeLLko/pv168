@@ -239,8 +239,9 @@ public class ReservationsTableModel extends AbstractTableModel {
 
         @Override
         protected Reservation doInBackground() throws Exception {
+            Reservation oldReservation = manager.findReservationByID(reservation.getId());
             ReservationsTableModel.this.manager.updateReservation(reservation);
-            AutoCampMenu.logger.info("UPDATE:" + reservation.toString() + " was succesfully updated.");
+            AutoCampMenu.logger.info("UPDATE:" + oldReservation.toString() + " was succesfully updated to " + reservation.toString());
             return reservation;
         }
 
