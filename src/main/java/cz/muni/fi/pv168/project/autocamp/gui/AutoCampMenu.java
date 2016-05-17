@@ -11,6 +11,7 @@ import cz.muni.fi.pv168.project.autocamp.Parcel;
 import java.util.concurrent.ExecutionException;
 import java.util.logging.Level;
 import javax.swing.JOptionPane;
+import javax.swing.table.TableColumn;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +46,6 @@ public class AutoCampMenu extends javax.swing.JFrame {
         reservationsButton = new javax.swing.JButton();
         guestsButton = new javax.swing.JButton();
         parcelsButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
         autocampTabbedPane = new javax.swing.JTabbedPane();
         guestsTab = new javax.swing.JPanel();
         guestTablePanel = new javax.swing.JScrollPane();
@@ -125,14 +125,6 @@ public class AutoCampMenu extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setText("jButton1");
-        jButton1.setBorder(null);
-        jButton1.setBorderPainted(false);
-        jButton1.setContentAreaFilled(false);
-        jButton1.setDefaultCapable(false);
-        jButton1.setIconTextGap(0);
-        jButton1.setMargin(new java.awt.Insets(0, 0, 0, 0));
-
         javax.swing.GroupLayout leftPanelLayout = new javax.swing.GroupLayout(leftPanel);
         leftPanel.setLayout(leftPanelLayout);
         leftPanelLayout.setHorizontalGroup(
@@ -144,10 +136,6 @@ public class AutoCampMenu extends javax.swing.JFrame {
                     .addComponent(guestsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(parcelsButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addGroup(leftPanelLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 125, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         leftPanelLayout.setVerticalGroup(
             leftPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -158,9 +146,7 @@ public class AutoCampMenu extends javax.swing.JFrame {
                 .addComponent(parcelsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(reservationsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(102, 102, 102)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(350, Short.MAX_VALUE))
+                .addContainerGap(494, Short.MAX_VALUE))
         );
 
         getContentPane().add(leftPanel);
@@ -366,9 +352,13 @@ public class AutoCampMenu extends javax.swing.JFrame {
         autocampTabbedPane.addTab("Parcels", parcelsTab);
 
         reservationTable.setModel(new ReservationsTableModel());
-        reservationTable.setDefaultEditor(Parcel.class, new ParcelCellEditor(this));
-        reservationTable.setDefaultRenderer(Parcel.class, new ParcelCellRenderer());
-        reservationTable.setRowHeight(50);
+        TableColumn parcelColumn =  reservationTable.getColumnModel().getColumn(3);
+        parcelColumn.setCellEditor(new ParcelCellEditor(this));
+        parcelColumn.setCellRenderer(new ParcelCellRenderer());
+        TableColumn guestColumn =  reservationTable.getColumnModel().getColumn(4);
+        guestColumn.setCellEditor(new GuestCellEditor(this));
+        guestColumn.setCellRenderer(new GuestCellRenderer());
+        reservationTable.setRowHeight(25);
         reservationsScrollPane.setViewportView(reservationTable);
 
         reservationsCreateButton.setText(LocalizationWizard.getString("Create"));
@@ -720,7 +710,6 @@ public class AutoCampMenu extends javax.swing.JFrame {
     private javax.swing.JScrollPane guestTablePanel;
     private javax.swing.JButton guestsButton;
     private javax.swing.JPanel guestsTab;
-    private javax.swing.JButton jButton1;
     private javax.swing.JPanel leftPanel;
     private javax.swing.JButton parcelCreateButton;
     private javax.swing.JButton parcelDeleteButton;
