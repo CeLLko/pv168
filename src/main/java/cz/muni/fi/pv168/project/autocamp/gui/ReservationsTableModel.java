@@ -76,7 +76,7 @@ public class ReservationsTableModel extends AbstractTableModel {
             case 2:
                 return String.class;
             case 3:
-                return String.class;
+                return Parcel.class;
             case 4:        
                 return String.class;
             default:
@@ -95,7 +95,7 @@ public class ReservationsTableModel extends AbstractTableModel {
             case 2:
                 return reservation.getTo();
             case 3:
-                return reservation.getParcel().getLocation();
+                return reservation.getParcel();
             case 4:
                 return reservation.getGuest().getFullName();
             default:

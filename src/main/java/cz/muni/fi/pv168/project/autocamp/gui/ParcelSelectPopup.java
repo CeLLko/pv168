@@ -10,6 +10,9 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 /**
@@ -20,7 +23,7 @@ public class ParcelSelectPopup extends javax.swing.JDialog {
 
     private LocalDate from;
     private LocalDate to;
-    private JTextField field;
+    private JComponent field;
 
     /**
      * Creates new form ParcelSelectPop
@@ -31,8 +34,8 @@ public class ParcelSelectPopup extends javax.swing.JDialog {
         this.from = LocalDate.of(0, 1, 1);
         this.to = LocalDate.of(9000, 1, 1);
     }
-
-    public ParcelSelectPopup(java.awt.Frame parent, boolean modal, Date from, Date to, JTextField field) {
+    
+    public ParcelSelectPopup(java.awt.Frame parent, boolean modal, Date from, Date to, JComponent field) {
         super(parent, modal);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         try {
@@ -142,7 +145,11 @@ public class ParcelSelectPopup extends javax.swing.JDialog {
 
     private void parceSelectDeleteButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_parceSelectDeleteButtonMouseClicked
         Parcel parcel = ((ParcelSelectPopupTableModel) parcelSelectTable.getModel()).selectParcel(parcelSelectTable.getSelectedRow());
-        field.setText(parcel.getLocation());
+        if (field instanceof JButton) {
+            ((JButton) field).setText(parcel.getLocation());
+        } else if (field instanceof JTextField) {
+            ((JTextField) field).setText(parcel.getLocation());
+        }
         field.setToolTipText(parcel.getId().toString());
         this.dispose();
     }//GEN-LAST:event_parceSelectDeleteButtonMouseClicked
