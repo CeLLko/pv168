@@ -6,10 +6,8 @@
 package cz.muni.fi.pv168.project.autocamp.gui;
 
 import cz.muni.fi.pv168.project.autocamp.Guest;
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
-import java.util.Date;
+import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JTextField;
 
 /**
@@ -17,7 +15,7 @@ import javax.swing.JTextField;
  * @author Administrator
  */
 public class GuestSelectPopup extends javax.swing.JDialog {
-    private JTextField field;
+    private JComponent field;
 
     /**
      * Creates new form GuestSelectPop
@@ -27,7 +25,7 @@ public class GuestSelectPopup extends javax.swing.JDialog {
         initComponents();
     }
 
-    public GuestSelectPopup(java.awt.Frame parent, boolean modal, JTextField field) {
+    public GuestSelectPopup(java.awt.Frame parent, boolean modal, JComponent field) {
         super(parent, modal);
         this.field = field;        
         initComponents();
@@ -125,7 +123,11 @@ public class GuestSelectPopup extends javax.swing.JDialog {
 
     private void parceSelectDeleteButtonMouseClicked(java.awt.event.MouseEvent evt) {                                                     
         Guest guest = ((GuestSelectPopupTableModel) guestSelectTable.getModel()).selectGuest(guestSelectTable.getSelectedRow());
-        field.setText(guest.getFullName());
+        if (field instanceof JButton) {
+            ((JButton) field).setText(guest.getFullName());
+        } else if (field instanceof JTextField) {
+            ((JTextField) field).setText(guest.getFullName());
+        }
         field.setToolTipText(guest.getId().toString());
         this.dispose();
     }                                                    

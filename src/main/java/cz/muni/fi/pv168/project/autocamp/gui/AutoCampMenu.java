@@ -367,8 +367,8 @@ public class AutoCampMenu extends javax.swing.JFrame {
         autocampTabbedPane.addTab("Parcels", parcelsTab);
 
         reservationTable.setModel(new ReservationsTableModel());
-        reservationTable.setDefaultEditor(Parcel.class, new ParcelEditor(this));
-        reservationTable.setDefaultRenderer(Parcel.class, new ParcelRenderer());
+        reservationTable.setDefaultEditor(Parcel.class, new ParcelCellEditor(this));
+        reservationTable.setDefaultRenderer(Parcel.class, new ParcelCellRenderer());
         reservationTable.setRowHeight(50);
         reservationsScrollPane.setViewportView(reservationTable);
 

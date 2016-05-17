@@ -12,13 +12,10 @@ import java.awt.Component;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
 import javax.swing.AbstractCellEditor;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JTable;
-import javax.swing.JTextField;
 import javax.swing.table.TableCellEditor;
 
 /**
@@ -26,7 +23,7 @@ import javax.swing.table.TableCellEditor;
  * Adam Gdovin, 433305
  * @version May 17, 2016
  */
-public class ParcelEditor extends AbstractCellEditor implements TableCellEditor, ActionListener{
+public class ParcelCellEditor extends AbstractCellEditor implements TableCellEditor, ActionListener{
     
     private Parcel currentParcel;
     private JButton field;
@@ -34,7 +31,7 @@ public class ParcelEditor extends AbstractCellEditor implements TableCellEditor,
     
     protected static final String EDIT = "edit";
     
-    public ParcelEditor(JFrame parent){
+    public ParcelCellEditor(JFrame parent){
         field = new JButton();
 
         field.setFocusPainted(false);
@@ -49,24 +46,23 @@ public class ParcelEditor extends AbstractCellEditor implements TableCellEditor,
         parcelSelectPopup = new ParcelSelectPopup(parent, true, null, null, field);
     }
     
+    @Override
     public void actionPerformed(ActionEvent e) {
         if (EDIT.equals(e.getActionCommand())) {
-            //The user has clicked the cell, so
-            //bring up the dialog.
             parcelSelectPopup.setVisible(true);
-
-            //Make the renderer reappear.
             fireEditingStopped();
 
-        } else { //User pressed dialog's "OK" button.
+        } else { 
             currentParcel = new ParcelManagerImpl(DBUtils.setDataSource()).findParcelByID(Long.valueOf(field.getToolTipText()));
         }
     }
     
+    @Override
     public Object getCellEditorValue(){
-        return field.getText();
+        return field.getToolTipText();
     }
     
+    @Override
     public Component getTableCellEditorComponent(JTable table,
                                                  Object value,
                                                  boolean isSelected,
@@ -75,5 +71,4 @@ public class ParcelEditor extends AbstractCellEditor implements TableCellEditor,
         currentParcel = (Parcel)value;
         return field;
     }
-
 }

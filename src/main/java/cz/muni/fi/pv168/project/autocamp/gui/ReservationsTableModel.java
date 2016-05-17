@@ -7,8 +7,10 @@ package cz.muni.fi.pv168.project.autocamp.gui;
 
 import cz.muni.fi.pv168.project.autocamp.DBInteractionException;
 import cz.muni.fi.pv168.project.autocamp.Guest;
+import cz.muni.fi.pv168.project.autocamp.GuestManager;
 import cz.muni.fi.pv168.project.autocamp.GuestManagerImpl;
 import cz.muni.fi.pv168.project.autocamp.Parcel;
+import cz.muni.fi.pv168.project.autocamp.ParcelManager;
 import cz.muni.fi.pv168.project.autocamp.Reservation;
 import cz.muni.fi.pv168.project.autocamp.ReservationManager;
 import cz.muni.fi.pv168.project.autocamp.ReservationManagerImpl;
@@ -34,10 +36,14 @@ public class ReservationsTableModel extends AbstractTableModel {
     private final List<Reservation> reservations;
     private final DataSource dataSource;
     private final ReservationManager manager;
+    private final GuestManager guestManager;
+    private final ParcelManager parcelManager;
 
     public ReservationsTableModel() {
         dataSource = DBUtils.setDataSource();
         manager = new ReservationManagerImpl(dataSource);
+        guestManager = new GuestManagerImpl(dataSource);
+        parcelManager = new ParcelManagerImpl(dataSource);
         reservations = manager.findAllReservations();
     }
 
@@ -78,7 +84,7 @@ public class ReservationsTableModel extends AbstractTableModel {
             case 3:
                 return Parcel.class;
             case 4:        
-                return String.class;
+                return Guest.class;
             default:
                 throw new IllegalArgumentException("columnIndex");
         }
@@ -97,7 +103,7 @@ public class ReservationsTableModel extends AbstractTableModel {
             case 3:
                 return reservation.getParcel();
             case 4:
-                return reservation.getGuest().getFullName();
+                return reservation.getGuest();
             default:
                 throw new IllegalArgumentException("columnIndex");
         }
@@ -120,10 +126,10 @@ public class ReservationsTableModel extends AbstractTableModel {
                 reservation.setTo(to);
                 break;
             case 3:
-                reservation.setParcel((Parcel) new ParcelManagerImpl(dataSource).findParcelByLocation((String) aValue));
+                reservation.setParcel((Parcel) parcelManager.findParcelByID(Long.valueOf((String) aValue)));
                 break;
             case 4:
-                reservation.setGuest((Guest) new GuestManagerImpl(dataSource).findGuestsByName((String) aValue));
+                reservation.setGuest((Guest) guestManager.findGuestByID(Long.valueOf((String) aValue)));
                 break;
             default:
                 throw new IllegalArgumentException("columnIndex");
@@ -308,54 +314,4 @@ public class ReservationsTableModel extends AbstractTableModel {
             ReservationsTableModel.this.fireTableDataChanged();
         }
     }
-
-    /*private class DialogStringEditor extends AbstractCellEditor
-            implements TableCellEditor,
-            ActionListener {
-
-        String newInput;
-        String oldValue;
-        JButton button;
-        JTextField field;
-        static final String EDIT = "edit";
-
-        public DialogStringEditor() {
-            button = new JButton();
-            button.setBackground(Color.WHITE);
-            button.setActionCommand(EDIT);
-            button.addActionListener(this);
-            button.setBorderPainted(false);
-            field = new JTextField();
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            if (EDIT.equals(e.getActionCommand())) {
-                ParcelSelectPopup parcelPopup = new ParcelSelectPopup(this, true,
-                        reservationsDateFromChooser().getDate(),
-                        reservationsDateToChooser.getDate(),
-                        field);
-                if (newInput == null) {
-                    newInput = oldValue;
-                }
-                fireEditingStopped();
-            }
-        }
-
-        @Override
-        public Object getCellEditorValue() {
-            return newInput;
-        }
-
-        @Override
-        public Component getTableCellEditorComponent(JTable table,
-                Object value,
-                boolean isSelected,
-                int row,
-                int column) {
-            newInput = (String) value;
-            oldValue = (String) value;
-            return button;
-        }
-    }*/
 }
