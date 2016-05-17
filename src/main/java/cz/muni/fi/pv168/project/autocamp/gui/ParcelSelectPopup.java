@@ -41,15 +41,14 @@ public class ParcelSelectPopup extends javax.swing.JDialog {
         try {
             this.from = from.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         } catch (Exception ex) {
-            this.from = LocalDate.of(0, 1, 1);
+            this.from = LocalDate.now();
         }
         try {
             this.to = to.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         } catch (Exception ex) {
-            this.to = LocalDate.of(9000, 1, 1);
+            this.to = LocalDate.now().plusDays(1);
         }
         this.field = field;
-        System.out.println(this.from + "  " + this.to);
         initComponents();
     }
 
