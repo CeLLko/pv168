@@ -13,6 +13,8 @@ import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.sql.DataSource;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
 
@@ -28,11 +30,13 @@ public class ParcelsTableModel extends AbstractTableModel {
     private List<Parcel> parcels;
     private DataSource dataSource;
     private ParcelManagerImpl manager;
+    private JTable table;
 
-    public ParcelsTableModel() {
+    public ParcelsTableModel( JTable table) {
         dataSource = DBUtils.setDataSource();
         manager = new ParcelManagerImpl(dataSource);
         parcels = manager.findAllParcels();
+        this.table = table;
     }
 
     public ParcelManagerImpl getManager() {
@@ -115,6 +119,8 @@ public class ParcelsTableModel extends AbstractTableModel {
             }
             updateParcel(parcel, rowIndex, columnIndex);
         } catch (InterruptedException | ExecutionException ex) {
+            JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Update_parcel") + "\n"
+                    + LocalizationWizard.getString("Log_file_info"));
             AutoCampMenu.logger.error(ex.getMessage());
         }
     }
