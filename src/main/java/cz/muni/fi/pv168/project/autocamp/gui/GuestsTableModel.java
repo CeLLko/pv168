@@ -12,14 +12,11 @@ import cz.muni.fi.pv168.project.autocamp.GuestManagerImpl;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.sql.DataSource;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
-import org.apache.derby.jdbc.ClientDataSource;
 
 /**
  *
@@ -125,13 +122,7 @@ public class GuestsTableModel extends AbstractTableModel {
             default:
                 throw new IllegalArgumentException("columnIndex");
         }
-        try {
-            updateGuest(guest, rowIndex, columnIndex);
-        } catch (InterruptedException | ExecutionException ex) {
-            JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Update_guest") + "\n"
-                    + LocalizationWizard.getString("Log_file_info"));
-            AutoCampMenu.logger.error(ex.getMessage());
-        }
+        updateGuest(guest, rowIndex, columnIndex);
     }
 
     @Override
@@ -148,15 +139,9 @@ public class GuestsTableModel extends AbstractTableModel {
         }
     }
 
-    public void clearGuestTable() {
-        this.guests.clear();
-        this.fireTableDataChanged();
-    }
-
-    public void updateGuest(Guest guest, int rowIndex, int columnIndex) throws InterruptedException, ExecutionException {
+    public void updateGuest(Guest guest, int rowIndex, int columnIndex) {
         UpdateGuestWorker updateGuestWorker = new UpdateGuestWorker(guest, rowIndex, columnIndex, GuestsTableModel.this);
         updateGuestWorker.execute();
-        updateGuestWorker.get();
     }
 
     private class UpdateGuestWorker extends SwingWorker<Guest, Void> {
@@ -180,14 +165,20 @@ public class GuestsTableModel extends AbstractTableModel {
         }
 
         protected void done() {
+            try {
+                get();
+            } catch (InterruptedException | ExecutionException ex) {
+                JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Update_guest") + "\n"
+                        + LocalizationWizard.getString("Log_file_info"));
+                AutoCampMenu.logger.error(ex.getMessage());
+            }
             fireTableCellUpdated(rowIndex, coulmnIndex);
         }
     }
 
-    public void createGuest(String fullName, String phone) throws InterruptedException, ExecutionException {
+    public void createGuest(String fullName, String phone) {
         CreateGuestWorker createGuestWorker = new CreateGuestWorker(fullName, phone, GuestsTableModel.this);
         createGuestWorker.execute();
-        createGuestWorker.get();
     }
 
     private class CreateGuestWorker extends SwingWorker<Guest, Void> {
@@ -202,23 +193,26 @@ public class GuestsTableModel extends AbstractTableModel {
         protected Guest doInBackground() throws Exception {
             GuestsTableModel.this.manager.createGuest(guest);
             GuestsTableModel.this.guests.add(guest);
-            AutoCampMenu.logger.info("CREATE:" + guest.toString() + " was succesfully created.");
             return guest;
         }
 
         protected void done() {
+            try {
+                get();
+                AutoCampMenu.logger.info("CREATE:" + guest.toString() + " was succesfully created.");
+            } catch (InterruptedException | ExecutionException ex) {
+                JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Delete_guest") + "\n"
+                        + LocalizationWizard.getString("Log_file_info"));
+                AutoCampMenu.logger.error(ex.getMessage());
+            }
             int row = GuestsTableModel.this.guests.size() - 1;
             GuestsTableModel.this.fireTableRowsInserted(row, row);
         }
     }
 
-    public void deleteGuest(int[] rows) 
-            throws InterruptedException, ExecutionException, DBInteractionException {
+    public void deleteGuest(int[] rows) {
         DeleteGuestWorker deleteGuestWorker = new DeleteGuestWorker(rows);
         deleteGuestWorker.execute();
-        if (!deleteGuestWorker.get()) {
-            throw new DBInteractionException("Some parcels could not be deleted.");
-        }
     }
 
     private class DeleteGuestWorker extends SwingWorker<Boolean, Void> {
@@ -248,6 +242,18 @@ public class GuestsTableModel extends AbstractTableModel {
 
         @Override
         protected void done() {
+            try {
+                if (!get()) {
+                    JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Delete_guest") + "\n"
+                        + LocalizationWizard.getString("Log_file_info"));
+                } else {
+                    AutoCampMenu.logger.info("DELETE: All selected guests were succesfully deleted.");
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Delete") + "\n"
+                        + LocalizationWizard.getString("Log_file_info"));
+                AutoCampMenu.logger.error(ex.getMessage());
+            }
             for (int i = rows.length - 1; i >= 0; i--) {
                 GuestsTableModel.this.fireTableRowsDeleted(rows[i], rows[i]);
             }
@@ -270,13 +276,25 @@ public class GuestsTableModel extends AbstractTableModel {
         @Override
         protected List<Guest> doInBackground() throws Exception {
             GuestsTableModel.this.setGuests(GuestsTableModel.this.manager.filterGuests(filter));
-            AutoCampMenu.logger.info("FILTER: Guests were succesfully filtered, filter: " + filter + ".");
             return GuestsTableModel.this.guests;
         }
 
         @Override
         protected void done() {
-            GuestsTableModel.this.fireTableDataChanged();
+            try {
+                get();
+                AutoCampMenu.logger.info("FILTER: Guests were succesfully filtered, filter: " + filter + ".");              
+                GuestsTableModel.this.fireTableDataChanged();
+            } catch (InterruptedException | ExecutionException ex) {
+                JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Filter_error") + "\n"
+                        + LocalizationWizard.getString("Log_file_info"));
+                AutoCampMenu.logger.error(ex.getMessage());
+            }
         }
+    }
+
+    public void clearGuestTable() {
+        this.guests.clear();
+        this.fireTableDataChanged();
     }
 }

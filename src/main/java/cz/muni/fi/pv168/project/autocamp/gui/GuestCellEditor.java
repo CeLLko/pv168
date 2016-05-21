@@ -7,7 +7,6 @@ package cz.muni.fi.pv168.project.autocamp.gui;
 
 import cz.muni.fi.pv168.project.autocamp.Guest;
 import cz.muni.fi.pv168.project.autocamp.GuestManagerImpl;
-import cz.muni.fi.pv168.project.autocamp.gui.DBUtils;
 import java.awt.Component;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;

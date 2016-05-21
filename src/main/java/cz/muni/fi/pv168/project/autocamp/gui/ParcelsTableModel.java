@@ -8,7 +8,7 @@ package cz.muni.fi.pv168.project.autocamp.gui;
 import cz.muni.fi.pv168.project.autocamp.DBInteractionException;
 import cz.muni.fi.pv168.project.autocamp.Parcel;
 import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
-
+import static cz.muni.fi.pv168.project.autocamp.gui.AutoCampMenu.logger;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -32,7 +32,7 @@ public class ParcelsTableModel extends AbstractTableModel {
     private ParcelManagerImpl manager;
     private JTable table;
 
-    public ParcelsTableModel( JTable table) {
+    public ParcelsTableModel(JTable table) {
         dataSource = DBUtils.setDataSource();
         manager = new ParcelManagerImpl(dataSource);
         parcels = manager.findAllParcels();
@@ -99,30 +99,25 @@ public class ParcelsTableModel extends AbstractTableModel {
 
     @Override
     public void setValueAt(Object aValue, int rowIndex, int columnIndex) {
-        try {
-            Parcel parcel = parcels.get(rowIndex);
-            switch (columnIndex) {
-                case 0:
-                    parcel.setId((Long) aValue);
-                    break;
-                case 1:
-                    parcel.setLocation((String) aValue);
-                    break;
-                case 2:
-                    parcel.setWithElectricity((boolean) aValue);
-                    break;
-                case 3:
-                    parcel.setWithElectricity((boolean) aValue);
-                    break;
-                default:
-                    throw new IllegalArgumentException("columnIndex");
-            }
-            updateParcel(parcel, rowIndex, columnIndex);
-        } catch (InterruptedException | ExecutionException ex) {
-            JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Update_parcel") + "\n"
-                    + LocalizationWizard.getString("Log_file_info"));
-            AutoCampMenu.logger.error(ex.getMessage());
+        Parcel parcel = parcels.get(rowIndex);
+        switch (columnIndex) {
+            case 0:
+                parcel.setId((Long) aValue);
+                break;
+            case 1:
+                parcel.setLocation((String) aValue);
+                break;
+            case 2:
+                parcel.setWithElectricity((boolean) aValue);
+                break;
+            case 3:
+                parcel.setWithElectricity((boolean) aValue);
+                break;
+            default:
+                throw new IllegalArgumentException("columnIndex");
         }
+        updateParcel(parcel, rowIndex, columnIndex);
+
     }
 
     @Override
@@ -157,10 +152,9 @@ public class ParcelsTableModel extends AbstractTableModel {
         }
     }
 
-    public void updateParcel(Parcel parcel, int rowIndex, int columnIndex) throws InterruptedException, ExecutionException {
+    public void updateParcel(Parcel parcel, int rowIndex, int columnIndex) {
         UpdateParcelWorker updateParcelWorker = new UpdateParcelWorker(parcel, rowIndex, columnIndex, ParcelsTableModel.this);
         updateParcelWorker.execute();
-        updateParcelWorker.get();
     }
 
     private class UpdateParcelWorker extends SwingWorker<Parcel, Void> {
@@ -184,15 +178,20 @@ public class ParcelsTableModel extends AbstractTableModel {
         }
 
         protected void done() {
-            fireTableCellUpdated(rowIndex, coulmnIndex);
+            try {
+                get();
+                fireTableCellUpdated(rowIndex, coulmnIndex);
+            } catch (InterruptedException | ExecutionException ex) {
+                JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Update_parcel") + "\n"
+                        + LocalizationWizard.getString("Log_file_info"));
+                AutoCampMenu.logger.error(ex.getMessage());
+            }
         }
     }
 
-    public void createParcel(String location, Boolean withElectricity, Boolean withWater)
-            throws ExecutionException, InterruptedException {
+    public void createParcel(String location, Boolean withElectricity, Boolean withWater) {
         CreateParcelWorker createParcelWorker = new CreateParcelWorker(location, withElectricity, withWater);
         createParcelWorker.execute();
-        createParcelWorker.get();
     }
 
     private class CreateParcelWorker extends SwingWorker<Parcel, Void> {
@@ -204,26 +203,29 @@ public class ParcelsTableModel extends AbstractTableModel {
         }
 
         @Override
-        protected Parcel doInBackground() throws Exception{
+        protected Parcel doInBackground() throws Exception {
             ParcelsTableModel.this.manager.createParcel(parcel);
             ParcelsTableModel.this.parcels.add(parcel);
-            AutoCampMenu.logger.info("CREATE:" + parcel.toString() + " was succesfully created.");
             return parcel;
         }
 
         protected void done() {
-            int row = ParcelsTableModel.this.parcels.size() - 1;
-            ParcelsTableModel.this.fireTableRowsInserted(row, row);
+            try {
+                get();
+                AutoCampMenu.logger.info("CREATE:" + parcel.toString() + " was succesfully created.");
+                int row = ParcelsTableModel.this.parcels.size() - 1;
+                ParcelsTableModel.this.fireTableRowsInserted(row, row);
+            } catch (ExecutionException | InterruptedException ex) {
+                JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Create_parcel") + "\n"
+                        + LocalizationWizard.getString("Log_file_info"));
+                logger.error(ex.getMessage());
+            }
         }
     }
 
-    public void deleteParcel(int[] rows)
-            throws InterruptedException, ExecutionException, DBInteractionException {
+    public void deleteParcel(int[] rows) {
         DeleteParcelWorker deleteParcelWorker = new DeleteParcelWorker(rows);
         deleteParcelWorker.execute();
-        if (!deleteParcelWorker.get()) {
-            throw new DBInteractionException("Some parcels could not be deleted.");
-        }
     }
 
     public class DeleteParcelWorker extends SwingWorker<Boolean, Void> {
@@ -253,8 +255,18 @@ public class ParcelsTableModel extends AbstractTableModel {
 
         @Override
         protected void done() {
-            for (int i = rows.length - 1; i >= 0; i--) {
-                ParcelsTableModel.this.fireTableRowsDeleted(rows[i], rows[i]);
+            try {
+                if (!get()) {
+                    JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Delete_parcel") + "\n"
+                            + LocalizationWizard.getString("Log_file_info"));
+                }
+                for (int i = rows.length - 1; i >= 0; i--) {
+                    ParcelsTableModel.this.fireTableRowsDeleted(rows[i], rows[i]);
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Delete") + "\n"
+                        + LocalizationWizard.getString("Log_file_info"));
+                logger.error(ex.getMessage());
             }
         }
     }
@@ -275,13 +287,20 @@ public class ParcelsTableModel extends AbstractTableModel {
         @Override
         protected List<Parcel> doInBackground() throws Exception {
             ParcelsTableModel.this.setParcels(ParcelsTableModel.this.manager.filterParcels(filter));
-            AutoCampMenu.logger.info("FILTER: Parcels were succesfully filtered, filter: " + filter + ".");
             return ParcelsTableModel.this.parcels;
         }
 
         @Override
         protected void done() {
-            ParcelsTableModel.this.fireTableDataChanged();
+            try {
+                get();
+                AutoCampMenu.logger.info("FILTER: Parcels were succesfully filtered, filter: " + filter + ".");
+                ParcelsTableModel.this.fireTableDataChanged();
+            } catch (InterruptedException | ExecutionException ex) {
+                JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Filter_error") + "\n"
+                        + LocalizationWizard.getString("Log_file_info"));
+                AutoCampMenu.logger.error(ex.getMessage());
+            }
         }
 
     }

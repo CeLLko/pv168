@@ -7,7 +7,6 @@
 package cz.muni.fi.pv168.project.autocamp.gui;
 
 import cz.muni.fi.pv168.project.autocamp.Guest;
-import static cz.muni.fi.pv168.project.autocamp.gui.GuestCellEditor.EDIT;
 import java.awt.Component;
 import java.awt.Insets;
 import javax.swing.JButton;

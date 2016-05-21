@@ -12,7 +12,6 @@ import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 import javax.swing.JTextField;
 
 /**

@@ -14,7 +14,6 @@ import java.util.List;
 import javax.sql.DataSource;
 import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
-import org.apache.derby.jdbc.ClientDataSource;
 
 /**
  *

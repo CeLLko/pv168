@@ -15,6 +15,7 @@ import cz.muni.fi.pv168.project.autocamp.Reservation;
 import cz.muni.fi.pv168.project.autocamp.ReservationManager;
 import cz.muni.fi.pv168.project.autocamp.ReservationManagerImpl;
 import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
+import static cz.muni.fi.pv168.project.autocamp.gui.AutoCampMenu.logger;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -22,6 +23,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import javax.sql.DataSource;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.SwingWorker;
 import javax.swing.table.AbstractTableModel;
@@ -86,7 +88,7 @@ public class ReservationsTableModel extends AbstractTableModel {
                 return String.class;
             case 3:
                 return Parcel.class;
-            case 4:        
+            case 4:
                 return Guest.class;
             default:
                 throw new IllegalArgumentException("columnIndex");
@@ -137,11 +139,7 @@ public class ReservationsTableModel extends AbstractTableModel {
             default:
                 throw new IllegalArgumentException("columnIndex");
         }
-        try {
-            updateReservation(reservation, rowIndex, columnIndex);
-        } catch (InterruptedException | ExecutionException ex) {
-            AutoCampMenu.logger.error(ex.getMessage());
-        }
+        updateReservation(reservation, rowIndex, columnIndex);
     }
 
     @Override
@@ -180,16 +178,9 @@ public class ReservationsTableModel extends AbstractTableModel {
         }
     }
 
-    public void clearReservationTable() {
-        this.reservations.clear();
-        this.fireTableDataChanged();
-    }
-
-    public void createReservation(Date from, Date to, Long guest, Long parcel) 
-            throws InterruptedException, ExecutionException {
+    public void createReservation(Date from, Date to, Long guest, Long parcel) {
         CreateReservationWorker createReservationWorker = new CreateReservationWorker(from, to, guest, parcel, ReservationsTableModel.this);
         createReservationWorker.execute();
-        createReservationWorker.get();
     }
 
     private class CreateReservationWorker extends SwingWorker<Reservation, Void> {
@@ -208,21 +199,26 @@ public class ReservationsTableModel extends AbstractTableModel {
         protected Reservation doInBackground() throws Exception {
             ReservationsTableModel.this.manager.createReservation(reservation);
             ReservationsTableModel.this.reservations.add(reservation);
-            AutoCampMenu.logger.info("CREATE:" + reservation.toString() + " was succesfully created.");
             return reservation;
         }
 
         protected void done() {
-            int row = ReservationsTableModel.this.reservations.size() - 1;
-            ReservationsTableModel.this.fireTableRowsInserted(row, row);
+            try {
+                get();
+                AutoCampMenu.logger.info("CREATE:" + reservation.toString() + " was succesfully created.");
+                int row = ReservationsTableModel.this.reservations.size() - 1;
+                ReservationsTableModel.this.fireTableRowsInserted(row, row);
+            } catch (InterruptedException | ExecutionException | NumberFormatException ex) {
+                JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Create_reservation") + "\n"
+                        + LocalizationWizard.getString("Log_file_info"));
+                logger.error(ex.getMessage());
+            }
         }
     }
 
-    public void updateReservation(Reservation reservation, int rowIndex, int columnIndex) 
-            throws InterruptedException, ExecutionException {
+    public void updateReservation(Reservation reservation, int rowIndex, int columnIndex) {
         UpdateReservationWorker updateReservationWorker = new UpdateReservationWorker(reservation, rowIndex, columnIndex, ReservationsTableModel.this);
         updateReservationWorker.execute();
-        updateReservationWorker.get();
     }
 
     private class UpdateReservationWorker extends SwingWorker<Reservation, Void> {
@@ -246,17 +242,20 @@ public class ReservationsTableModel extends AbstractTableModel {
         }
 
         protected void done() {
-            fireTableCellUpdated(rowIndex, coulmnIndex);
+            try {
+                get();
+                fireTableCellUpdated(rowIndex, coulmnIndex);
+            } catch (InterruptedException | ExecutionException ex) {
+                JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Update_reservation") + "\n"
+                        + LocalizationWizard.getString("Log_file_info"));
+                AutoCampMenu.logger.error(ex.getMessage());
+            }
         }
     }
 
-    public void deleteReservation(int[] rows) 
-            throws InterruptedException, ExecutionException, DBInteractionException {
+    public void deleteReservation(int[] rows) {
         DeleteReservationWorker deleteReservationWorker = new DeleteReservationWorker(rows);
         deleteReservationWorker.execute();
-        if (!deleteReservationWorker.get()) {
-            throw new DBInteractionException("Some reservations could not be deleted.");
-        }
     }
 
     private class DeleteReservationWorker extends SwingWorker<Boolean, Void> {
@@ -280,15 +279,25 @@ public class ReservationsTableModel extends AbstractTableModel {
                     AutoCampMenu.logger.error("Could not delete " + reservation.toString() + "; Exception: " + e.getMessage());
                     result = false;
                 }
-                
+
             }
             return result;
         }
 
         @Override
         protected void done() {
-            for (int i = rows.length - 1; i >= 0; i--) {
-                ReservationsTableModel.this.fireTableRowsDeleted(rows[i], rows[i]);
+            try {
+                if (!get()) {
+                    JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Delete_reservation") + "\n"
+                            + LocalizationWizard.getString("Log_file_info"));
+                }
+                for (int i = rows.length - 1; i >= 0; i--) {
+                    ReservationsTableModel.this.fireTableRowsDeleted(rows[i], rows[i]);
+                }
+            } catch (InterruptedException | ExecutionException ex) {
+                JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Delete") + "\n"
+                        + LocalizationWizard.getString("Log_file_info"));
+                logger.error(ex.getMessage());
             }
         }
     }
@@ -309,13 +318,25 @@ public class ReservationsTableModel extends AbstractTableModel {
         @Override
         protected List<Reservation> doInBackground() throws Exception {
             ReservationsTableModel.this.setReservations(ReservationsTableModel.this.manager.filterReservations(filter));
-            AutoCampMenu.logger.info("FILTER: Reservations were succesfully filtered, filter: " + filter + ".");
             return ReservationsTableModel.this.reservations;
         }
 
         @Override
         protected void done() {
-            ReservationsTableModel.this.fireTableDataChanged();
+            try {
+                get();
+                AutoCampMenu.logger.info("FILTER: Reservations were succesfully filtered, filter: " + filter + ".");
+                ReservationsTableModel.this.fireTableDataChanged();
+            } catch (InterruptedException | ExecutionException ex) {
+                JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Filter_error") + "\n"
+                        + LocalizationWizard.getString("Log_file_info"));
+                AutoCampMenu.logger.error(ex.getMessage());
+            }
         }
+    }
+
+    public void clearReservationTable() {
+        this.reservations.clear();
+        this.fireTableDataChanged();
     }
 }

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+
+<!--
+    TODO define vocabulary identification data
+    PUBLIC ID  : -//vendor//vocabulary//EN
+    SYSTEM ID  : http://server/path/__NAME__
+-->
+
+<!-- TODO define your own vocabulary/syntax. Example follows:  -->
+<!--Root element definition:-->
+<!ELEMENT log4j:configuration (appender*,category*,root?)>
+
+<!ATTLIST log4j:configuration
+  xmlns:log4j              CDATA #FIXED "http://jakarta.apache.org/log4j/" 
+  threshold                (all|debug|info|warn|error|fatal|off|null) "null"
+  debug                    (true|false|null)  "null"
+>
+
+<!--Definition of the rest of the elements: -->
+<!--Appender element and its child elements: -->
+<!ELEMENT appender (param*, layout?)>
+<!ATTLIST appender
+  name 		ID 	#REQUIRED
+  class 	CDATA	#REQUIRED
+>
+
+<!ELEMENT layout (param*)>
+<!ATTLIST layout
+  class		CDATA	#REQUIRED
+>
+
+<!ELEMENT param EMPTY>
+<!ATTLIST param
+  name		CDATA   #REQUIRED
+  value		CDATA	#REQUIRED
+>
+
+<!--Category element and its child elements-->
+<!ELEMENT category (param*,priority?,appender-ref*)>
+<!ATTLIST category
+  class         CDATA   #IMPLIED
+  name		CDATA	#REQUIRED
+  additivity	(true|false) "true"  
+>
+
+<!ELEMENT priority (param*)>
+<!ATTLIST priority
+  class   CDATA	#IMPLIED
+  value	  CDATA #REQUIRED
+>
+
+<!ELEMENT appender-ref EMPTY>
+<!ATTLIST appender-ref
+  ref IDREF #REQUIRED
+>
+
+<!ELEMENT root (param*, priority?, appender-ref*)>
