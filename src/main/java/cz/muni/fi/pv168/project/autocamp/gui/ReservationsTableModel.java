@@ -19,6 +19,7 @@ import static cz.muni.fi.pv168.project.autocamp.gui.AutoCampMenu.logger;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -41,14 +42,14 @@ public class ReservationsTableModel extends AbstractTableModel {
     private final ReservationManager manager;
     private final GuestManager guestManager;
     private final ParcelManager parcelManager;
-    private JTable table;
+    private final JTable table;
 
     public ReservationsTableModel(JTable table) {
         dataSource = DBUtils.setDataSource();
         manager = new ReservationManagerImpl(dataSource);
         guestManager = new GuestManagerImpl(dataSource);
         parcelManager = new ParcelManagerImpl(dataSource);
-        reservations = manager.findAllReservations();
+        reservations = Collections.synchronizedList(manager.findAllReservations());
         this.table = table;
     }
 
@@ -62,9 +63,11 @@ public class ReservationsTableModel extends AbstractTableModel {
 
     public void setReservations(List<Reservation> reservations) {
         clearReservationTable();
-        reservations.stream().forEach((reservation) -> {
-            this.reservations.add(reservation);
-        });
+        synchronized (reservations) {
+            reservations.stream().forEach((reservation) -> {
+                this.reservations.add(reservation);
+            });
+        }
     }
 
     @Override
@@ -317,7 +320,7 @@ public class ReservationsTableModel extends AbstractTableModel {
 
         @Override
         protected List<Reservation> doInBackground() throws Exception {
-            ReservationsTableModel.this.setReservations(ReservationsTableModel.this.manager.filterReservations(filter));
+            ReservationsTableModel.this.setReservations(Collections.synchronizedList(ReservationsTableModel.this.manager.filterReservations(filter)));
             return ReservationsTableModel.this.reservations;
         }
 

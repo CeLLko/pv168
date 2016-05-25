@@ -9,6 +9,7 @@ import cz.muni.fi.pv168.project.autocamp.DBInteractionException;
 import cz.muni.fi.pv168.project.autocamp.Guest;
 import cz.muni.fi.pv168.project.autocamp.GuestManager;
 import cz.muni.fi.pv168.project.autocamp.GuestManagerImpl;
+import java.util.Collections;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -26,15 +27,15 @@ import javax.swing.table.AbstractTableModel;
  */
 public class GuestsTableModel extends AbstractTableModel {
 
-    private List<Guest> guests;
-    private DataSource dataSource;
-    private GuestManager manager;
-    private JTable table;
+    private final List<Guest> guests;
+    private final DataSource dataSource;
+    private final GuestManager manager;
+    private final JTable table;
 
     public GuestsTableModel(JTable table) {
         dataSource = DBUtils.setDataSource();
         manager = new GuestManagerImpl(dataSource);
-        guests = manager.findAllGuests();
+        guests = Collections.synchronizedList(manager.findAllGuests());
         this.table = table;
     }
 
@@ -48,9 +49,11 @@ public class GuestsTableModel extends AbstractTableModel {
 
     public void setGuests(List<Guest> guests) {
         clearGuestTable();
-        guests.stream().forEach((guest) -> {
-            this.guests.add(guest);
-        });
+        synchronized (guests) {
+            guests.stream().forEach((guest) -> {
+                this.guests.add(guest);
+            });
+        }
     }
 
     @Override
@@ -245,7 +248,7 @@ public class GuestsTableModel extends AbstractTableModel {
             try {
                 if (!get()) {
                     JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Delete_guest") + "\n"
-                        + LocalizationWizard.getString("Log_file_info"));
+                            + LocalizationWizard.getString("Log_file_info"));
                 } else {
                     AutoCampMenu.logger.info("DELETE: All selected guests were succesfully deleted.");
                 }
@@ -283,7 +286,7 @@ public class GuestsTableModel extends AbstractTableModel {
         protected void done() {
             try {
                 get();
-                AutoCampMenu.logger.info("FILTER: Guests were succesfully filtered, filter: " + filter + ".");              
+                AutoCampMenu.logger.info("FILTER: Guests were succesfully filtered, filter: " + filter + ".");
                 GuestsTableModel.this.fireTableDataChanged();
             } catch (InterruptedException | ExecutionException ex) {
                 JOptionPane.showMessageDialog(table, LocalizationWizard.getString("Filter_error") + "\n"

@@ -9,6 +9,7 @@ import cz.muni.fi.pv168.project.autocamp.DBInteractionException;
 import cz.muni.fi.pv168.project.autocamp.Parcel;
 import cz.muni.fi.pv168.project.autocamp.ParcelManagerImpl;
 import static cz.muni.fi.pv168.project.autocamp.gui.AutoCampMenu.logger;
+import java.util.Collections;
 
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -27,15 +28,15 @@ import javax.swing.table.AbstractTableModel;
  */
 public class ParcelsTableModel extends AbstractTableModel {
 
-    private List<Parcel> parcels;
-    private DataSource dataSource;
-    private ParcelManagerImpl manager;
-    private JTable table;
+    private final List<Parcel> parcels;
+    private final DataSource dataSource;
+    private final ParcelManagerImpl manager;
+    private final JTable table;
 
     public ParcelsTableModel(JTable table) {
         dataSource = DBUtils.setDataSource();
         manager = new ParcelManagerImpl(dataSource);
-        parcels = manager.findAllParcels();
+        parcels = Collections.synchronizedList(manager.findAllParcels());
         this.table = table;
     }
 
@@ -49,9 +50,11 @@ public class ParcelsTableModel extends AbstractTableModel {
 
     public void setParcels(List<Parcel> parcels) {
         clearParcelTable();
-        parcels.stream().forEach((parcel) -> {
-            this.parcels.add(parcel);
-        });
+        synchronized (parcels) {
+            parcels.stream().forEach((parcel) -> {
+                this.parcels.add(parcel);
+            });
+        }
     }
 
     @Override
